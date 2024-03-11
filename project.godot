@@ -30,7 +30,7 @@ window/vsync/vsync_mode=0
 
 [dotnet]
 
-project/assembly_name="Bloons TD 5 Custom"
+project/assembly_name="Bloons TD 5 Rewritten"
 
 [rendering]
 

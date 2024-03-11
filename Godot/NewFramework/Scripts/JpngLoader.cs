@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
-using System.Net.Mime;
 using BloonsTD5Custom.Godot.Scripts;
 using Godot;
-using Range = System.Range;
 
-namespace BloonsTD5Custom.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public partial class JpngLoader : Node
 {

@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloons TD 5 Custom", "Bloons TD 5 Custom.csproj", "{2D0A90C6-800E-46D7-9D21-95C81EA64874}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloons TD 5 Rewritten", "Bloons TD 5 Rewritten.csproj", "{2D0A90C6-800E-46D7-9D21-95C81EA64874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

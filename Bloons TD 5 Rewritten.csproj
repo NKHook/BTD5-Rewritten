@@ -4,7 +4,7 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>BloonsTD5Custom</RootNamespace>
+    <RootNamespace>BloonsTD5Rewritten</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Godot\NewFramework\CompoundSprite.tscn" />

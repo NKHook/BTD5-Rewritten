@@ -1,4 +1,4 @@
-﻿namespace BloonsTD5Custom.Godot.Scripts;
+﻿namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public enum TextureType
 {

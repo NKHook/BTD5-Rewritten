@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BloonsTD5Custom.Godot.Scripts;
 using Godot;
 
-namespace BloonsTD5Custom.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public class FrameInfo
 {

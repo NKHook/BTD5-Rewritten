@@ -1,6 +1,6 @@
-﻿using BloonsTD5Custom.Godot.NewFramework.Scripts;
-using BloonsTD5Custom.Godot.Scripts;
-using Godot;
+﻿using Godot;
+
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public class CellEntry
 {

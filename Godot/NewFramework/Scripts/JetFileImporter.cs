@@ -1,6 +1,6 @@
 using Godot;
-using System;
-using System.IO.Compression;
+
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public partial class JetFileImporter : Node
 {

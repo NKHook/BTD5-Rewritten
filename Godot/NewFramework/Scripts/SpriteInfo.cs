@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BloonsTD5Custom.Godot.Scripts;
 using Godot;
 using Godot.Collections;
 
-namespace BloonsTD5Custom.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public class SpriteInfo
 {

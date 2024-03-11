@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e6be9a3a-2f4e-4b2a-a52d-a986ebd568bf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Bloons TD 5 Custom.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Bloons TD 5 Rewritten.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bloons TD 5 Custom.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Bloons TD 5 Rewritten.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/AnimationEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/AnimationEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/CellEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/CellEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/FrameInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/FrameInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JpngLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JpngLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/SpriteInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/SpriteInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureQuality.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureQuality.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/Scripts/Debug/SheetTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/Scripts/Debug/SheetTester.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2dYxI8yopV4igaVadM2y4clKxuZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Executable.Player.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\micha\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\micha\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\micha\\AppData\\Local\\Symbols\\src"
+    ]
+  }
+}]]></component>
+  <component name="RunManager" selected=".NET Executable.Player">
+    <configuration name="Editor" type="RunExe" factoryName=".NET Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Godot/4.2.1/Godot_v4.2.1-stable_mono_win64/Godot_v4.2.1-stable_mono_win64/Godot_v4.2.1-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;D:\Github\BTD5-Rewritten&quot; --editor" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="RUNTIME_TYPE" value="coreclr" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Player" type="RunExe" factoryName=".NET Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../Godot/4.2.1/Godot_v4.2.1-stable_mono_win64/Godot_v4.2.1-stable_mono_win64/Godot_v4.2.1-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;D:\Github\BTD5-Rewritten&quot;" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="RUNTIME_TYPE" value="coreclr" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e6be9a3a-2f4e-4b2a-a52d-a986ebd568bf" name="Changes" comment="" />
+      <created>1710198731473</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710198731473</updated>
+      <workItem from="1710198736533" duration="297000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BloonsTD5Custom.Godot.Scripts;
 
-namespace BloonsTD5Custom.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public class AnimationEntry
 {
