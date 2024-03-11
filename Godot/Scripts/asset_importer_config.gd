@@ -1,0 +1,21 @@
+extends Node
+
+var game_dir: String = ""
+var assets_dir: String = ""
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if OS.has_feature("standalone"):
+		var executable_path: String = OS.get_executable_path()
+		game_dir = PathUtil.get_parent_path(executable_path)
+	else:
+		game_dir = "D:/SteamLibrary/steamapps/common/BloonsTD5"
+		#HEY!!! You probably see this isnt working for you!!
+		#CHANGE THE PATH ABOVE to the path of *YOUR OWN BTD5 ASSETS FOLDER*!!!
+		#This is done so you can have the godot editor installed anywhere
+		#But the exe is expected to be in the game's install folder
+		#You also may need to replace the \ with / instead
+		assert(DirAccess.dir_exists_absolute(game_dir))
+		
+	assets_dir = game_dir + "/Assets"
+	print("Assets Dir (GDScript): ", assets_dir)
