@@ -6,7 +6,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public class FrameInfo
+public partial class FrameInfo : Node
 {
     private SpriteInfo _parent;
     private string _texturesDirPath;

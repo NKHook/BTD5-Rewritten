@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdcrc2sg0ndu5"]
+[gd_scene load_steps=2 format=3 uid="uid://1pcddtp0t23f"]
 
 [ext_resource type="Script" path="res://Godot/Scripts/compound_sprite_loader.gd" id="1_ic83n"]
 
@@ -7,13 +7,13 @@
 [node name="bg_hills" type="Node2D" parent="."]
 visible = false
 script = ExtResource("1_ic83n")
-sprite_definition_res = "res://Assets/JSON/UILayout/main_menu_bg_hills.json"
+sprite_definition_res = "Assets/JSON/UILayout/main_menu_bg_hills.json"
 
 [node name="sky" type="Node2D" parent="."]
 visible = false
 script = ExtResource("1_ic83n")
-sprite_definition_res = "res://Assets/JSON/UILayout/main_menu_sky.json"
+sprite_definition_res = "Assets/JSON/UILayout/main_menu_sky.json"
 
 [node name="intro" type="Node2D" parent="."]
 script = ExtResource("1_ic83n")
-sprite_definition_res = "res://Assets/JSON/UILayout/intro_hd.json"
+sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"

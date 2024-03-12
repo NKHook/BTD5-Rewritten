@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloons TD 5 Rewritten", "Bloons TD 5 Rewritten.csproj", "{2D0A90C6-800E-46D7-9D21-95C81EA64874}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bloons TD 5 Rewritten", "Bloons TD 5 Rewritten.csproj", "{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{2D0A90C6-800E-46D7-9D21-95C81EA64874}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{D3FC03E6-18DE-4CEB-BFED-5007D1DBF357}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

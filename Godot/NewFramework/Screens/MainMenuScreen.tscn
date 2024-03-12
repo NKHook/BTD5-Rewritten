@@ -13,7 +13,7 @@ shader_parameter/color = Color(1, 1, 1, 1)
 [node name="intro" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_dwk6t")
 script = ExtResource("1_ic83n")
-sprite_definition_res = "res://Assets/JSON/UILayout/intro_hd.json"
+sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"
 
 [node name="overlay" type="CanvasLayer" parent="."]
 

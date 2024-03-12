@@ -2,24 +2,24 @@
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public class CellEntry
+public partial class CellEntry : Node
 {
     private string _texturesDirPath;
     private string _filePath;
     private TextureQuality _quality;
-    private int _x;
-    private int _y = 0;
-    private int _w = 0;
-    private int _h = 0;
-    private int _ax = 0;
-    private int _ay = 0;
-    private int _aw = 0;
-    private int _ah = 0;
     private Image _image = null;
     private ImageTexture _texture = null;
     
     public object Parent = null;
     public readonly string Name;
+    public readonly int X;
+    public readonly int Y;
+    public readonly int W;
+    public readonly int H;
+    public readonly int Ax;
+    public readonly int Ay;
+    public readonly int Aw;
+    public readonly int Ah;
 
     public CellEntry(object parent, string texturesDirPath, string filePath, TextureQuality quality, string name, int x,
         int y, int w, int h, int ax, int ay, int aw, int ah)
@@ -28,14 +28,14 @@ public class CellEntry
         _texturesDirPath = texturesDirPath;
         _filePath = filePath;
         _quality = quality;
-        _x = x;
-        _y = y;
-        _w = w;
-        _h = h;
-        _ax = ax;
-        _ay = ay;
-        _aw = aw;
-        _ah = ah;
+        X = x;
+        Y = y;
+        W = w;
+        H = h;
+        Ax = ax;
+        Ay = ay;
+        Aw = aw;
+        Ah = ah;
         
         Name = name;
     }
@@ -70,6 +70,6 @@ public class CellEntry
         var frameImage = properFrame?.GetImage();
         if (frameImage is null) return;
 
-        _image = frameImage.GetRegion(new Rect2I(_x, _y, _w, _h));
+        _image = frameImage.GetRegion(new Rect2I(X, Y, W, H));
     }
 }

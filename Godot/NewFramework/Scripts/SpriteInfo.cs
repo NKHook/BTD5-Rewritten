@@ -7,7 +7,7 @@ using Godot.Collections;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public class SpriteInfo
+public partial class SpriteInfo : Node
 {
     private string _name;
     private SpriteInfo _parent = null;

@@ -55,22 +55,22 @@ class ActorState:
 		
 	func apply(node: Node2D):
 		if node is Sprite2D:
-			var center_point = Vector2(cell.aw, cell.ah) * 0.5
+			var center_point = Vector2(cell.Aw, cell.Ah) * 0.5
 			node.centered = false
 			match alignment[0]:
 				AlignmentValues.Default:
-					node.offset.x = cell.ax
+					node.offset.x = cell.Ax
 				AlignmentValues.MinX:
-					node.offset.x = cell.ax + (cell.aw * 0.5)
+					node.offset.x = cell.Ax + (cell.Aw * 0.5)
 				AlignmentValues.MaxX:
-					node.offset.x = cell.ax - (cell.aw * 0.5)
+					node.offset.x = cell.Ax - (cell.Aw * 0.5)
 			match alignment[1]:
 				AlignmentValues.Default:
-					node.offset.y = cell.ay
+					node.offset.y = cell.Ay
 				AlignmentValues.MinY:
-					node.offset.y = cell.ay + (cell.ah * 0.5)
+					node.offset.y = cell.Ay + (cell.Ah * 0.5)
 				AlignmentValues.MaxY:
-					node.offset.y = cell.ay - (cell.ah * 0.5)
+					node.offset.y = cell.Ay - (cell.Ah * 0.5)
 			node.offset -= center_point
 		
 		node.scale = Vector2(1.0, 1.0)
@@ -174,13 +174,7 @@ class TimelineInterpolator:
 func load_compound_sprite(sprite: String) -> Node2D:
 	var compound_sprite = Node2D.new()
 	compound_sprite.set_script(this_script)
-	var assets_dir = DirAccess.open("res://Assets/JSON")
-	var desired_file = PathUtil.walk(assets_dir, func(path: String):
-		if path.ends_with(sprite):
-			return path
-		return null
-	)
-	compound_sprite.sprite_definition_res = desired_file
+	compound_sprite.sprite_definition_res = PathUtil.get_parent_path(sprite_definition_res) + "/" + sprite;
 	compound_sprite.animating = animating
 	return compound_sprite
 
@@ -203,7 +197,7 @@ func load_actor(actor: Variant) -> Node2D:
 		ActorTypes.Sprite:
 			var cell: Variant = null #TODO: CELL WAS CELL ENTRY NOT VARIANT
 			for used in used_cells:
-				if used.name == sprite:
+				if used.Name == sprite:
 					cell = used
 			if cell == null:
 				return null
@@ -217,6 +211,7 @@ func load_actor(actor: Variant) -> Node2D:
 		ActorTypes.CompoundSprite:
 			result = load_compound_sprite(sprite)
 			child_cells.push_back(null)
+			
 	
 	result.name = String.num_int64(uid)
 	return result
@@ -229,6 +224,7 @@ func load_sprite_info(stage_options: Variant) -> Array[Variant]: #TODO: ARRRAY O
 		var sprite: String = info["SpriteInfo"]
 		var texture: String = info["Texture"]
 		
+		assert(TextureLoader.has_method("FindCell"))
 		var cell = TextureLoader.FindCell(sprite, texture)
 		if cell != null:
 			result.push_back(cell)

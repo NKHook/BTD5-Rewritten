@@ -38,11 +38,11 @@ public partial class TextureLoader : Node
 		return _spritesRoot.FirstOrDefault(info => info.Path.EndsWith(name + ".xml"));
 	}
 
-	public CellEntry FindCell(string name, string texture)
+	public Variant FindCell(string name, string texture)
 	{
-		return _spritesRoot.Select(info => info.FindCell(name, texture)).FirstOrDefault(result => result != null);
+		return Variant.From(_spritesRoot.Select(info => info.FindCell(name, texture)).FirstOrDefault(result => result != null));
 	}
-	public CellEntry FindCell(string name) => FindCell(name, "");
+	public Variant FindCell(string name) => FindCell(name, "");
 
 	public FrameInfo FindFrame(string name)
 	{

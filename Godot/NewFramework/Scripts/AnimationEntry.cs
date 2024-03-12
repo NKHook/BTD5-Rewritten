@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public class AnimationEntry
+public partial class AnimationEntry : Node
 {
     private string _texturesDirPath;
     private string _filePath;

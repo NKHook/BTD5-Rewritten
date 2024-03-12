@@ -7,19 +7,6 @@
     <RootNamespace>BloonsTD5Rewritten</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Godot\NewFramework\CompoundSprite.tscn" />
-    <Content Include="Godot\NewFramework\DebugOverlay.tscn" />
-    <Content Include="Godot\NewFramework\GameRoot.tscn" />
-    <Content Include="Godot\NewFramework\PathUtil.tscn" />
-    <Content Include="Godot\NewFramework\Screens\DGSplashScreen.gd" />
-    <Content Include="Godot\NewFramework\Screens\DGSplashScreen.tscn" />
-    <Content Include="Godot\NewFramework\Screens\MainMenuScreen.tscn" />
-    <Content Include="Godot\NewFramework\TestRoot.tscn" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Godot\Scripts\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.16.0" />
   </ItemGroup>
 </Project>
