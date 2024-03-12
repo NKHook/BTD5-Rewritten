@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_camera.gd" id="2_lrutq"]
 [ext_resource type="PackedScene" uid="uid://b2c7lcjokten3" path="res://Godot/NewFramework/DebugOverlay.tscn" id="3_cv8am"]
 [ext_resource type="Script" path="res://Godot/Scripts/screen_manager.gd" id="3_rh2vc"]
-[ext_resource type="PackedScene" uid="uid://chymuxsvrvl3f" path="res://Godot/NewFramework/Screens/DGSplashScreen.tscn" id="4_585ef"]
+[ext_resource type="PackedScene" uid="uid://chymuxsvrvl3f" path="res://Godot/Screens/DGSplashScreen.tscn" id="4_585ef"]
 
 [node name="game_root" type="Node2D"]
 

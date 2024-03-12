@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://chymuxsvrvl3f"]
 
-[ext_resource type="Script" path="res://Godot/NewFramework/Screens/DGSplashScreen.gd" id="1_cjn11"]
+[ext_resource type="Script" path="res://Godot/Screens/DGSplashScreen.gd" id="1_cjn11"]
 [ext_resource type="Script" path="res://Godot/Scripts/compound_sprite_loader.gd" id="1_qh282"]
 
 [node name="DgSplashScreen" type="Node2D"]

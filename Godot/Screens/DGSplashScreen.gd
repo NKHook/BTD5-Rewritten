@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var screen_manager: Node2D
-const main_menu = preload("res://Godot/NewFramework/Screens/MainMenuScreen.tscn")
+const main_menu = preload("res://Godot/Screens/MainMenuScreen.tscn")
 
 var time: float = 0.0
 

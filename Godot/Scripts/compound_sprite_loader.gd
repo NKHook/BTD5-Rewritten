@@ -166,6 +166,8 @@ class TimelineInterpolator:
 				break
 
 		var previous = states[previous_idx]
+		if next_idx >= end:
+			return previous
 		var next = states[next_idx]
 
 		if next.time < previous.time:
@@ -205,7 +207,7 @@ func load_actor(actor: Variant) -> Node2D:
 	var result = null
 	match type:
 		ActorTypes.Sprite:
-			var cell: Variant = null #TODO: CELL WAS CELL ENTRY NOT VARIANT
+			var cell: Variant = null
 			for used in used_cells:
 				if used.Name == sprite:
 					cell = used

@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://bdcrc2sg0ndu5"]
+
+[ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.gd" id="1_r7733"]
+[ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
+[ext_resource type="Script" path="res://Godot/Scripts/compound_sprite_loader.gd" id="3_wi5vk"]
+[ext_resource type="Script" path="res://Godot/Scripts/Intro/fade_in.gd" id="4_hndw2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
+shader = ExtResource("2_cswtu")
+shader_parameter/color = Color(1, 1, 1, 1)
+
+[node name="MainMenuScreen" type="Node2D"]
+script = ExtResource("1_r7733")
+
+[node name="sky" type="Node2D" parent="."]
+script = ExtResource("3_wi5vk")
+sprite_definition_res = "Assets/JSON/UILayout/main_menu_sky.json"
+
+[node name="intro" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_dwk6t")
+script = ExtResource("3_wi5vk")
+sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"
+
+[node name="overlay" type="CanvasLayer" parent="."]
+
+[node name="fade_in" type="Node2D" parent="overlay"]
+script = ExtResource("4_hndw2")
