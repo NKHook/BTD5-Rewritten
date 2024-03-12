@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System.Diagnostics;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
@@ -68,7 +69,7 @@ public partial class CellEntry : Node
 
         var properFrame = frame as FrameInfo;
         var frameImage = properFrame?.GetImage();
-        if (frameImage is null) return;
+        Debug.Assert(frameImage is not null, "Unable to load cell because frameImage is missing for " + properFrame?.Name);
 
         _image = frameImage.GetRegion(new Rect2I(X, Y, W, H));
     }

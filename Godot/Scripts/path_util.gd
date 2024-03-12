@@ -1,6 +1,6 @@
 extends Node
 
-static func walk(dir: DirAccess, callback: Callable):
+func walk(dir: DirAccess, callback: Callable):
 	dir.list_dir_begin()
 	var filename = dir.get_next()
 	while filename != "":
@@ -16,6 +16,6 @@ static func walk(dir: DirAccess, callback: Callable):
 	dir.list_dir_end()
 	return null
 
-static func get_parent_path(path: String) -> String:
+func get_parent_path(path: String) -> String:
 	var path_end = path.rfind("/")
 	return path.substr(0, path_end)
