@@ -2,6 +2,8 @@
 
 public enum TextureQuality
 {
-    Tablet,
-    Ultra
+    Low = 1,
+    Mobile = 2,
+    Tablet = 3,
+    Ultra = 4
 }

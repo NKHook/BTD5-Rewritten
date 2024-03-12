@@ -5,17 +5,25 @@ extends Node2D
 const compound_sprite_script = preload("res://Godot/Scripts/compound_sprite.gd")
 
 var time_passed: float = 0.0
+var buildings: Array[Node2D]
 
-func get_compound_by_file(file: String) -> Node2D:
-	for child in get_children():
-		if child.get_script() == compound_sprite_script and child.sprite_definition_res.ends_with(file):
-			return child
-	return null
+func get_building_sprites(buildingJson: Variant) -> Array[Node2D]:
+	var result: Array[Node2D] = []
+	for child in $menu.get_children():
+		if child.get_script() == compound_sprite_script:
+			for building in buildingJson:
+				if child.sprite_definition_res.ends_with(building["SpriteFile"]):
+					result.push_back(child)
+	return result
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var buildingsJson = JetFileImporter.GetJsonEntry("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json")
-	
+	buildings = get_building_sprites(buildingsJson["Buildings"])
+	for building in buildings:
+		var area = Area2D.new()
+		area.name = "interaction_check"
+		building.add_child(area)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
