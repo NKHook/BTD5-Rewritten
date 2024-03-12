@@ -23,6 +23,9 @@ func _process(delta):
 	if time_passed > intro_duration:
 		var camera_follow = $camera_path/camera_follow as PathFollow2D
 		camera_follow.progress_ratio += delta
+		if camera_follow.progress_ratio > 1.0:
+			$sky.queue_free()
+			$intro.queue_free()
 		
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		time_passed = intro_duration

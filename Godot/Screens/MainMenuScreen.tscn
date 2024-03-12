@@ -11,13 +11,12 @@ shader_parameter/color = Color(1, 1, 1, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_aj36y"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1440)
 }
 point_count = 2
 
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource("1_r7733")
-intro_duration = null
 
 [node name="sky" type="Node2D" parent="."]
 script = ExtResource("2_hq2h1")
@@ -29,7 +28,7 @@ script = ExtResource("2_hq2h1")
 sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"
 
 [node name="menu" type="Node2D" parent="."]
-position = Vector2(0, 1920)
+position = Vector2(0, 1440)
 script = ExtResource("2_hq2h1")
 sprite_definition_res = "Assets/JSON/Tablet/UILayout/main_menu.json"
 
