@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var intro_duration: float = 7.0
+@export var intro_duration: float = 10.0
 
 const compound_sprite_script = preload("res://Godot/Scripts/compound_sprite.gd")
 
