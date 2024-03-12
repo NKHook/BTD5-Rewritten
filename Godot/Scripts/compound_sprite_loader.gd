@@ -73,19 +73,18 @@ class ActorState:
 					node.offset.y = cell.Ay - (cell.Ah * 0.5)
 			node.offset -= center_point
 		
-		node.scale = Vector2(1.0, 1.0)
-		node.scale.x *= -1.0 if self.flip == FlipValues.Horizontal || self.flip == FlipValues.Both else 1.0
-		node.scale.y *= -1.0 if self.flip == FlipValues.Vertical || self.flip == FlipValues.Both else 1.0
-	
 		if node.material == null:
 			node.material = ShaderMaterial.new()
 			node.material.shader = shader
 		node.material.set_shader_parameter("color", self.color)
 	
 		node.rotation_degrees = self.angle
-		node.scale *= self.scale
+		node.scale = self.scale
 		node.visible = self.shown
 		node.position = self.position * 4
+		
+		node.scale.x *= -1.0 if self.flip == FlipValues.Horizontal || self.flip == FlipValues.Both else 1.0
+		node.scale.y *= -1.0 if self.flip == FlipValues.Vertical || self.flip == FlipValues.Both else 1.0
 		
 	func interpolate(other: ActorState, delta: float) -> ActorState:
 		if self.cell == null || other.cell == null:
@@ -116,10 +115,11 @@ class TimelineInterpolator:
 	func _init(length: float):
 		self.length = length
 	
-	func tick(delta: float):
+	func tick(delta: float) -> bool:
 		self.time += delta
 		if self.time >= self.length and loop:
 			self.time -= self.time
+		return self.time >= self.length;
 	
 	func add_timeline(uid: int, node: Node2D, states: Array[ActorState]):
 		self.uids.push_back(uid)
@@ -145,30 +145,40 @@ class TimelineInterpolator:
 		return result
 		
 	func get_state_for_uid(uid: int) -> ActorState:
-		if self.states.is_empty():
+		if states.is_empty():
 			return null
-			
+
 		var begin = start_state_idx_for_uid(uid)
 		var end = end_state_idx_for_uid(uid)
+
 		if begin == end:
 			return null
 
-		var previous: ActorState = self.states[begin]
-		var next: ActorState = previous
-		for i in range(begin, end):
-			var current = self.states[i]
-			if current.time < self.time:
-				previous = current
-			elif current.time > self.time:
-				next = current
-				break
+		var previous_idx = begin
+		var next_idx = begin + 1
+
+		# Find the indices of the previous and next states
+		for i in range(begin + 1, end):
+			if states[i].time <= time:
+				previous_idx = i
 			else:
-				return current
+				next_idx = i
+				break
+
+		var previous = states[previous_idx]
+		var next = states[next_idx]
+
 		if next.time < previous.time:
-			return self.states[end - 1]
-		var lerp_factor: float = smoothstep(previous.time, next.time, self.time)
-		if lerp_factor >= 1.0:
+			return states[end - 1]
+
+		# Check if we need to interpolate or return one of the states directly
+		if time <= previous.time:
+			return previous
+		elif time >= next.time:
 			return next
+
+		# Interpolate between the previous and next states
+		var lerp_factor = (time - previous.time) / (next.time - previous.time)
 		return previous.interpolate(next, lerp_factor)
 
 func load_compound_sprite(sprite: String) -> Node2D:
@@ -199,8 +209,7 @@ func load_actor(actor: Variant) -> Node2D:
 			for used in used_cells:
 				if used.Name == sprite:
 					cell = used
-			if cell == null:
-				return null
+			assert(cell != null)
 			
 			var state: ActorState = ActorState.new(cell, actor)
 			
@@ -262,6 +271,14 @@ func _ready():
 			if stage_json == null:
 				continue
 			
+			# Prevent states with the same time overwriting eachother
+			# the game only uses the first one at the same time for some reason
+			var time = stage_json["Time"]
+			if not stages.filter(func (stage):
+				return stage.time == time
+			).is_empty():
+				continue
+			
 			var index: int = child_uids.find(uid)
 			var cell: Variant = child_cells[index] #TODO: CELL WAS CELL ENTRY NOT VARIANT
 			stages.push_back(ActorState.new(cell, stage_json))
@@ -278,8 +295,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if animating:
-		timeline.tick(delta)
+		var visible = not timeline.tick(delta)
 		for child in get_children(false):
+			child.visible = visible;
 			var uid: int = child.name.to_int()
 			var state: ActorState = timeline.get_state_for_uid(uid)
 			if state != null:
