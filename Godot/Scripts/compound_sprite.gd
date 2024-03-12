@@ -1,9 +1,10 @@
 extends Node
 
+class_name CompoundSprite
+
 @export var sprite_definition_res: String;
 @export var animating: bool = true
 
-const this_script = preload("res://Godot/Scripts/compound_sprite_loader.gd")
 const shader = preload("res://Godot/Shaders/compound_sprite.tres")
 
 enum AlignmentValues { Default, MinX, MaxX, MinY, MaxY, Unknown3 }
@@ -11,8 +12,8 @@ enum ActorTypes { Invalid, Sprite, CompoundSprite }
 enum FlipValues { Default, Horizontal, Vertical, Both }
 var timeline: TimelineInterpolator = null
 var used_cells: Array[Variant] = [] #TODO: THIS WAS CELL ENTRY NOT VARIANT
-
 var child_uids: Array[int] = []
+var initial_states: Array[ActorState] = []
 var child_cells: Array[Variant] = [] #TODO: THIS WAS CELL ENTRY NOT VARIANT
 
 class ActorState:
@@ -55,23 +56,24 @@ class ActorState:
 		
 	func apply(node: Node2D):
 		if node is Sprite2D:
-			var center_point = Vector2(cell.Aw, cell.Ah) * 0.5
-			node.centered = false
-			match alignment[0]:
-				AlignmentValues.Default:
-					node.offset.x = cell.Ax
-				AlignmentValues.MinX:
-					node.offset.x = cell.Ax + (cell.Aw * 0.5)
-				AlignmentValues.MaxX:
-					node.offset.x = cell.Ax - (cell.Aw * 0.5)
-			match alignment[1]:
-				AlignmentValues.Default:
-					node.offset.y = cell.Ay
-				AlignmentValues.MinY:
-					node.offset.y = cell.Ay + (cell.Ah * 0.5)
-				AlignmentValues.MaxY:
-					node.offset.y = cell.Ay - (cell.Ah * 0.5)
-			node.offset -= center_point
+			if cell != null:
+				var center_point = Vector2(cell.Aw, cell.Ah) * 0.5
+				node.centered = false
+				match alignment[0]:
+					AlignmentValues.Default:
+						node.offset.x = cell.Ax
+					AlignmentValues.MinX:
+						node.offset.x = cell.Ax + (cell.Aw * 0.5)
+					AlignmentValues.MaxX:
+						node.offset.x = cell.Ax - (cell.Aw * 0.5)
+				match alignment[1]:
+					AlignmentValues.Default:
+						node.offset.y = cell.Ay
+					AlignmentValues.MinY:
+						node.offset.y = cell.Ay + (cell.Ah * 0.5)
+					AlignmentValues.MaxY:
+						node.offset.y = cell.Ay - (cell.Ah * 0.5)
+				node.offset -= center_point
 		
 		if node.material == null:
 			node.material = ShaderMaterial.new()
@@ -185,7 +187,7 @@ class TimelineInterpolator:
 
 func load_compound_sprite(sprite: String) -> Node2D:
 	var compound_sprite = Node2D.new()
-	compound_sprite.set_script(this_script)
+	compound_sprite.set_script(get_script())
 	compound_sprite.sprite_definition_res = PathUtil.get_parent_path(sprite_definition_res) + "/" + sprite;
 	compound_sprite.animating = animating
 	return compound_sprite
@@ -214,6 +216,7 @@ func load_actor(actor: Variant) -> Node2D:
 			assert(cell != null)
 			
 			var state: ActorState = ActorState.new(cell, actor)
+			initial_states.push_back(state)
 			
 			child_cells.push_back(cell)
 	
@@ -221,6 +224,7 @@ func load_actor(actor: Variant) -> Node2D:
 			
 		ActorTypes.CompoundSprite:
 			result = load_compound_sprite(sprite)
+			initial_states.push_back(ActorState.new(null, actor))
 			child_cells.push_back(null)
 			
 	
@@ -302,5 +306,8 @@ func _process(delta):
 			child.visible = visible;
 			var uid: int = child.name.to_int()
 			var state: ActorState = timeline.get_state_for_uid(uid)
-			if state != null:
-				state.apply(child)
+			if state == null:
+				var index = child_uids.find(uid)
+				state = initial_states[index]
+				assert(state != null)
+			state.apply(child)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhfpsgj1w4jo6"]
 
-[ext_resource type="Script" path="res://Godot/Scripts/compound_sprite_loader.gd" id="1_3hxp1"]
+[ext_resource type="Script" path="res://Godot/Scripts/compound_sprite.gd" id="1_3hxp1"]
 
 [node name="compound_sprite" type="Node2D"]
 script = ExtResource("1_3hxp1")

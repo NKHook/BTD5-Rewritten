@@ -2,12 +2,20 @@ extends Node2D
 
 @export var intro_duration: float = 7.0
 
+const compound_sprite_script = preload("res://Godot/Scripts/compound_sprite.gd")
+
 var time_passed: float = 0.0
 
+func get_compound_by_file(file: String) -> Node2D:
+	for child in get_children():
+		if child.get_script() == compound_sprite_script and child.sprite_definition_res.ends_with(file):
+			return child
+	return null
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	var buildingsJson = JetFileImporter.GetJsonEntry("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json")
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
