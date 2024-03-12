@@ -18,6 +18,7 @@ public partial class FrameInfo : Node
     private readonly List<AnimationEntry> _animations = new();
     private readonly List<CellEntry> _cells = new();
     private Image _frameImage;
+    private ImageTexture _frameTexture;
     
     public string Name;
     
@@ -33,6 +34,15 @@ public partial class FrameInfo : Node
         _type = type;
     }
 
+    public ImageTexture GetTexture()
+    {
+        if (_frameTexture != null) return _frameTexture;
+        
+        var image = GetImage();
+        _frameTexture = ImageTexture.CreateFromImage(image);
+        return _frameTexture;
+    }
+    
     public Image GetImage()
     {
         if (_frameImage == null)

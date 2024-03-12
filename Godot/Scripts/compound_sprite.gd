@@ -196,6 +196,8 @@ func load_single_sprite(cell: Variant, state: ActorState) -> Sprite2D: #TODO: CE
 	# Search the global sprite_table for the sprite
 	var sprite_obj = Sprite2D.new()
 	sprite_obj.texture = cell.GetTexture()
+	sprite_obj.region_enabled = true;
+	sprite_obj.region_rect = Rect2(cell.X, cell.Y, cell.W, cell.H)
 	state.apply(sprite_obj)
 	return sprite_obj
 

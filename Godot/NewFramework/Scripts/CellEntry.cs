@@ -9,7 +9,6 @@ public partial class CellEntry : Node
     private string _filePath;
     private TextureQuality _quality;
     private Image _image = null;
-    private ImageTexture _texture = null;
     
     public object Parent = null;
     public readonly string Name;
@@ -43,11 +42,8 @@ public partial class CellEntry : Node
 
     public ImageTexture GetTexture()
     {
-        if (_texture != null) return _texture;
-        
-        var image = GetImage();
-        _texture = ImageTexture.CreateFromImage(image);
-        return _texture;
+        var frame = GetFrame();
+        return frame.GetTexture(); 
     }
     
     public Image GetImage()
@@ -58,6 +54,19 @@ public partial class CellEntry : Node
         return _image;
     }
 
+    private FrameInfo GetFrame()
+    {
+        var frame = Parent;
+        while (frame is not FrameInfo && frame is AnimationEntry)
+        {
+            var entry = frame as AnimationEntry;
+            frame = entry.Parent;
+        }
+
+        var properFrame = frame as FrameInfo;
+        return properFrame;
+    }
+    
     private void LoadImage()
     {
         var frame = Parent;
