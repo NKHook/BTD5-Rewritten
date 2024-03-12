@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e6be9a3a-2f4e-4b2a-a52d-a986ebd568bf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Bloons TD 5 Custom.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Bloons TD 5 Rewritten.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Bloons TD 5 Custom.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Bloons TD 5 Rewritten.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/AnimationEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/AnimationEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/CellEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/CellEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/FrameInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/FrameInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Bloons TD 5 Custom/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bloons TD 5 Custom/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bloons TD 5 Rewritten.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Bloons TD 5 Rewritten.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JpngLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/JpngLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/SpriteInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/SpriteInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureQuality.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureQuality.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/NewFramework/Scripts/TextureType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Godot/Scripts/Debug/SheetTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/Scripts/Debug/SheetTester.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/Scripts/asset_importer_config.gd" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/Scripts/asset_importer_config.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Godot/Scripts/compound_sprite_loader.gd" beforeDir="false" afterPath="$PROJECT_DIR$/Godot/Scripts/compound_sprite_loader.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +19,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/dc45e96840243b203b13e61952230e225d2aac52/src/libraries/System.Private.CoreLib/src/System/IO/Stream.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2a06cc2dcdf24eaabb95cdb7ef70db73459400/58/1b4f20f5/Json.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7eded1f67f7942cf8dbff79143b3dea93dc00/4b/4cabfbec/ZipEntry.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7eded1f67f7942cf8dbff79143b3dea93dc00/62/bbc9b7cb/ZipOutputStream.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7eded1f67f7942cf8dbff79143b3dea93dc00/c0/47a0363c/ZipFile.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7eded1f67f7942cf8dbff79143b3dea93dc00/cb/0d2c796d/ZipInputStream.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -42,6 +46,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
@@ -90,7 +98,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1710198731473</updated>
-      <workItem from="1710198736533" duration="297000" />
+      <workItem from="1710198736533" duration="2917000" />
     </task>
     <servers />
   </component>
@@ -99,5 +107,37 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs</url>
+          <line>42</line>
+          <properties documentPath="D:\Github\BTD5-Rewritten\Godot\NewFramework\Scripts\JetFileImporter.cs" initialLine="42" containingFunctionPresentation="Method 'GetFileContent'">
+            <startOffsets>
+              <option value="1078" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1116" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Godot/NewFramework/Scripts/JetFileImporter.cs</url>
+          <line>40</line>
+          <properties documentPath="D:\Github\BTD5-Rewritten\Godot\NewFramework\Scripts\JetFileImporter.cs" initialLine="40" containingFunctionPresentation="Method 'GetFileContent'">
+            <startOffsets>
+              <option value="1052" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1074" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

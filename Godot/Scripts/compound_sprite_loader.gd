@@ -185,7 +185,7 @@ func load_compound_sprite(sprite: String) -> Node2D:
 	return compound_sprite
 
 func load_single_sprite(cell: Variant, state: ActorState) -> Sprite2D: #TODO: CELL WAS CELL ENTRY NOT VARIANT
-	var sprite_file: Resource = TextureLoader.load_sprite(cell)
+	var sprite_file = TextureLoader.load_sprite(cell)
 	assert(sprite_file)
 	
 	# Search the global sprite_table for the sprite

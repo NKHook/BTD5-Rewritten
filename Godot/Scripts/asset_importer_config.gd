@@ -2,6 +2,7 @@ extends Node
 
 var game_dir: String = ""
 var assets_dir: String = ""
+var jet_file: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,4 +19,5 @@ func _ready():
 		assert(DirAccess.dir_exists_absolute(game_dir))
 		
 	assets_dir = game_dir + "/Assets"
+	jet_file = assets_dir + "/BTD5.jet"
 	print("Assets Dir (GDScript): ", assets_dir)
