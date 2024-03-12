@@ -29,7 +29,8 @@ public class SpriteInfo
         Load();
     }
 
-    public CellEntry FindCell(string name, string texture = "")
+    public CellEntry FindCell(string name) => FindCell(name, "");
+    public CellEntry FindCell(string name, string texture)
     {
         foreach (var result in _children.Select(info => info.FindCell(name, texture)).Where(result => result != null))
         {

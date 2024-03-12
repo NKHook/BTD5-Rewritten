@@ -185,12 +185,9 @@ func load_compound_sprite(sprite: String) -> Node2D:
 	return compound_sprite
 
 func load_single_sprite(cell: Variant, state: ActorState) -> Sprite2D: #TODO: CELL WAS CELL ENTRY NOT VARIANT
-	var sprite_file = TextureLoader.load_sprite(cell)
-	assert(sprite_file)
-	
 	# Search the global sprite_table for the sprite
 	var sprite_obj = Sprite2D.new()
-	sprite_obj.texture = sprite_file
+	sprite_obj.texture = cell.GetTexture()
 	state.apply(sprite_obj)
 	return sprite_obj
 
@@ -229,10 +226,10 @@ func load_sprite_info(stage_options: Variant) -> Array[Variant]: #TODO: ARRRAY O
 	
 	var infos_json = stage_options["SpriteInfo"]
 	for info in infos_json:
-		var sprite = info["SpriteInfo"]
-		var texture = info["Texture"]
+		var sprite: String = info["SpriteInfo"]
+		var texture: String = info["Texture"]
 		
-		var cell = TextureLoader.find_cell(sprite, texture)
+		var cell = TextureLoader.FindCell(sprite, texture)
 		if cell != null:
 			result.push_back(cell)
 		
@@ -245,8 +242,7 @@ func load_stage_options(stage_options: Variant) -> TimelineInterpolator:
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	assert(sprite_definition_res != "")
-	var sprite_definition_file = FileAccess.open(sprite_definition_res, FileAccess.READ)
-	var sprite_definition_json: Variant = JSON.parse_string(sprite_definition_file.get_as_text())
+	var sprite_definition_json: Variant = JetFileImporter.GetJsonEntry(sprite_definition_res)
 		
 	var stage_options = sprite_definition_json["stageOptions"]
 	used_cells = load_sprite_info(stage_options)

@@ -16,6 +16,7 @@ public class CellEntry
     private int _aw = 0;
     private int _ah = 0;
     private Image _image = null;
+    private ImageTexture _texture = null;
     
     public object Parent = null;
     public readonly string Name;
@@ -39,6 +40,15 @@ public class CellEntry
         Name = name;
     }
 
+    public ImageTexture GetTexture()
+    {
+        if (_texture != null) return _texture;
+        
+        var image = GetImage();
+        _texture = ImageTexture.CreateFromImage(image);
+        return _texture;
+    }
+    
     public Image GetImage()
     {
         if (_image == null)

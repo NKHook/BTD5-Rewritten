@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Bloons TD 5 Rewritten"
-run/main_scene="res://Godot/NewFramework/TestRoot.tscn"
+run/main_scene="res://Godot/NewFramework/GameRoot.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 

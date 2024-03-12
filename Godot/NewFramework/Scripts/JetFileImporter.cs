@@ -45,9 +45,9 @@ public partial class JetFileImporter : Node
 		return reader.ReadToEnd();
 	}
 	
-	public Json GetJsonEntry(string path)
+	public Variant GetJsonEntry(string path)
 	{
 		var data = GetFileContent(path);
-		return Json.ParseString(data).As<Json>();
+		return Json.ParseString(data);
 	}
 }

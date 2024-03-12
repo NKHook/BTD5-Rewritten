@@ -8,4 +8,4 @@ script = ExtResource("1_cjn11")
 
 [node name="splash" type="Node2D" parent="."]
 script = ExtResource("1_qh282")
-sprite_definition_res = "res://Assets/JSON/ScreenDefinitions/NinjaSplashScreen/ninja_splash.json"
+sprite_definition_res = "Assets/JSON/ScreenDefinitions/NinjaSplashScreen/ninja_splash.json"
