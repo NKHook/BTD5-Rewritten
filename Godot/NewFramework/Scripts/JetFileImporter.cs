@@ -22,11 +22,6 @@ public partial class JetFileImporter : Node
 		var zipFile = new ZipFile(jetFile);
 		zipFile.Password = "Q%_{6#Px]]";
 		_jetFile = zipFile;
-
-		const string testPath = "Assets/JSON/TowerSprites/DartMonkey.json";
-		GD.Print("Path: " + testPath);
-		var data = GetFileContent(testPath);
-		GD.Print(data);
 	}
 
 	public ZipEntry GetFileEntry(string path)
