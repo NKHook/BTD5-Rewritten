@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var intro_duration: float = 5.0
+@export var intro_duration: float = 7.0
 
 var time_passed: float = 0.0
 
@@ -13,5 +13,8 @@ func _ready():
 func _process(delta):
 	time_passed += delta;
 	if time_passed > intro_duration:
-		var intro_node = get_child(0)
-		intro_node.animating = false;
+		var camera_follow = $camera_path/camera_follow as PathFollow2D
+		camera_follow.progress_ratio += delta
+		
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		time_passed = intro_duration

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdcrc2sg0ndu5"]
+[gd_scene load_steps=7 format=3 uid="uid://bdcrc2sg0ndu5"]
 
 [ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.gd" id="1_r7733"]
 [ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
@@ -8,6 +8,12 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
 shader = ExtResource("2_cswtu")
 shader_parameter/color = Color(1, 1, 1, 1)
+
+[sub_resource type="Curve2D" id="Curve2D_aj36y"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920)
+}
+point_count = 2
 
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource("1_r7733")
@@ -21,7 +27,22 @@ material = SubResource("ShaderMaterial_dwk6t")
 script = ExtResource("3_wi5vk")
 sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"
 
+[node name="menu" type="Node2D" parent="."]
+position = Vector2(0, 1920)
+script = ExtResource("3_wi5vk")
+sprite_definition_res = "Assets/JSON/Tablet/UILayout/main_menu.json"
+
 [node name="overlay" type="CanvasLayer" parent="."]
 
 [node name="fade_in" type="Node2D" parent="overlay"]
 script = ExtResource("4_hndw2")
+
+[node name="camera_path" type="Path2D" parent="."]
+curve = SubResource("Curve2D_aj36y")
+
+[node name="camera_follow" type="PathFollow2D" parent="camera_path"]
+rotation = 1.5708
+loop = false
+
+[node name="main_camera" type="Camera2D" parent="camera_path/camera_follow"]
+zoom = Vector2(0.5, 0.5)
