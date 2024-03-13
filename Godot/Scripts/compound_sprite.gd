@@ -53,7 +53,7 @@ class ActorState:
 		if actor.has("Time"):
 			self.time = actor["Time"]
 		
-	func apply(node: Node2D):
+	func apply_and_align(node: Node2D):
 		if node is Sprite2D:
 			if cell != null:
 				var center_point = Vector2(cell.Aw, cell.Ah) * 0.5
@@ -73,7 +73,9 @@ class ActorState:
 					AlignmentValues.MaxY:
 						node.offset.y = cell.Ay - (cell.Ah * 0.5)
 				node.offset -= center_point
+		self.apply(node)
 		
+	func apply(node: Node2D):
 		if node.material == null:
 			node.material = ShaderMaterial.new()
 			node.material.shader = shader
@@ -190,7 +192,7 @@ func load_single_sprite(cell: Variant, state: ActorState) -> Sprite2D: #TODO: CE
 	sprite_obj.texture = cell.GetTexture()
 	sprite_obj.region_enabled = true;
 	sprite_obj.region_rect = Rect2(cell.X, cell.Y, cell.W, cell.H)
-	state.apply(sprite_obj)
+	state.apply_and_align(sprite_obj)
 	return sprite_obj
 
 func load_actor(actor: Variant) -> Node2D:
