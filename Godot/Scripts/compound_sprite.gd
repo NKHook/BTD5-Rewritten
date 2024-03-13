@@ -75,12 +75,13 @@ class ActorState:
 				node.offset -= center_point
 		self.apply(node)
 		
-	func apply(node: Node2D):
+	func apply_color(node: Node2D):
 		if node.material == null:
 			node.material = ShaderMaterial.new()
 			node.material.shader = shader
 		node.material.set_shader_parameter("color", self.color)
-	
+
+	func apply(node: Node2D):
 		node.rotation_degrees = self.angle
 		node.scale = self.scale
 		node.visible = self.shown
@@ -302,12 +303,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if animating:
-		timeline.tick(delta)
-		for child in get_children(false):
-			var uid: int = child.name.to_int()
-			var state: ActorState = timeline.get_state_for_uid(uid)
-			if state == null:
-				state = initial_states[uid]
-				assert(state != null)
-			state.apply(child)
+	if not animating:
+		return
+	
+	timeline.tick(delta)
+	for child in get_children(false):
+		var uid: int = child.name.to_int()
+		var state: ActorState = timeline.get_state_for_uid(uid)
+		if state == null:
+			state = initial_states[uid]
+			assert(state != null)
+		if state.color != Color.WHITE and state.color.a != 0:
+			state.apply_color(child)
+		state.apply(child)
