@@ -150,16 +150,18 @@ class TimelineInterpolator:
 
 		var actor_states: Array[ActorState] = self.states[uid]
 
-		var previous: ActorState = initial_states[uid]
+		var previous_idx: int = 0
 		var next: ActorState = null
 
 		# Find the indices of the previous and next states
 		for i in range(actor_states.size()):
 			if actor_states[i].time <= time:
-				previous = actor_states[i]
+				previous_idx = i
 			else:
 				next = actor_states[i]
 				break
+
+		var previous = initial_states[uid] if actor_states[previous_idx].time > self.time else actor_states[previous_idx]
 
 		if next == null:
 			return previous
@@ -167,10 +169,7 @@ class TimelineInterpolator:
 		if next.time < previous.time:
 			return actor_states.back()
 
-		# Check if we need to interpolate or return one of the states directly
-		if time <= previous.time:
-			return previous
-		elif time >= next.time:
+		if time >= next.time:
 			return next
 
 		# Interpolate between the previous and next states
