@@ -144,6 +144,9 @@ class TimelineInterpolator:
 			self.initial_states.push_back(null)
 		initial_states[uid] = state
 	
+	# Below is a VERY expensive function.
+	# Try to keep code inside here very simple, and branchless if possible
+	# Allocations (using new) is BANNED
 	func get_state_for_uid(uid: int) -> ActorState:
 		if states.is_empty():
 			return null
@@ -254,7 +257,14 @@ func load_stage_options(stage_options: Variant) -> TimelineInterpolator:
 	return TimelineInterpolator.new(duration)
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func initialize():
+	timeline = null
+	used_cells.clear()
+	initial_states.clear()
+	child_cells.clear()
+	for child in get_children():
+		child.free()
+	
 	assert(sprite_definition_res != "")
 	var sprite_definition_json: Variant = JetFileImporter.GetJsonEntry(sprite_definition_res)
 		
@@ -300,6 +310,9 @@ func _ready():
 		timeline.add_timeline(uid, node, stages)
 		timeline.set_initial_state(uid, initial_states[uid])
 
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.initialize()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -308,6 +321,8 @@ func _process(delta):
 	
 	timeline.tick(delta)
 	for child in get_children(false):
+		if not child.name.is_valid_int():
+			continue
 		var uid: int = child.name.to_int()
 		var state: ActorState = timeline.get_state_for_uid(uid)
 		if state == null:
