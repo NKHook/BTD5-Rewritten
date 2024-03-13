@@ -20,10 +20,10 @@ func get_building_sprites(buildingJson: Variant) -> Array[Node2D]:
 func _ready():
 	var buildingsJson = JetFileImporter.GetJsonEntry("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json")
 	buildings = get_building_sprites(buildingsJson["Buildings"])
-	for building in buildings:
-		var area = Area2D.new()
-		area.name = "interaction_check"
-		building.add_child(area)
+	#for building in buildings:
+	#	var area = RectangleShape2D.new()
+	#	area.name = "interaction_check"
+	#	building.add_child(area)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
