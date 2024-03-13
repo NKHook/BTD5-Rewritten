@@ -11,8 +11,7 @@ enum AlignmentValues { Default, MinX, MaxX, MinY, MaxY, Unknown3 }
 enum ActorTypes { Invalid, Sprite, CompoundSprite }
 enum FlipValues { Default, Horizontal, Vertical, Both }
 var timeline: TimelineInterpolator = null
-var used_cells: Array[Variant] = [] #TODO: THIS WAS CELL ENTRY NOT VARIANT
-var child_uids: Array[int] = []
+var used_cells: Array[Variant] = []
 var initial_states: Array[ActorState] = []
 var child_cells: Array[Variant] = [] #TODO: THIS WAS CELL ENTRY NOT VARIANT
 
@@ -109,71 +108,59 @@ class TimelineInterpolator:
 	var time: float = 0.0
 	var length: float = 0.0
 	var loop: bool = true
-	var uids: Array[int] = []
 	var nodes: Array[Node2D] = []
-	var states: Array[ActorState] = []
-	var states_length: Array[int] = []
+	var states: Array[Variant] = [] # Array[Array[ActorState]] can't be done so array variant
+	var current_states: Array[ActorState] = []
 	
 	func _init(length: float):
 		self.length = length
 	
-	func tick(delta: float) -> bool:
+	func tick(delta: float):
 		self.time += delta
 		if self.time >= self.length and loop:
 			self.time -= self.time
-		return self.time >= self.length;
 	
 	func add_timeline(uid: int, node: Node2D, states: Array[ActorState]):
-		self.uids.push_back(uid)
-		self.nodes.push_back(node)
+		while self.nodes.size() <= uid + 1:
+			self.nodes.push_back(null)
+		self.nodes[uid] = node
+		
 		states.sort_custom(func(x: ActorState, y: ActorState):
 			return x.time < y.time
 		)
-		self.states.append_array(states)
-		self.states_length.push_back(states.size())
+		while self.states.size() <= uid + 1:
+			self.states.push_back(null)
+		self.states[uid] = states
 		
-	func start_state_idx_for_uid(uid: int) -> int:
-		var index = self.uids.find(uid)
-		var result: int = 0
-		for i in range(0, index):
-			result += self.states_length[i]
-		return result
-		
-	func end_state_idx_for_uid(uid: int) -> int:
-		var index = self.uids.find(uid)
-		var result: int = 0
-		for i in range(0, index + 1):
-			result += self.states_length[i]
-		return result
+		while self.current_states.size() <= uid + 1:
+			self.current_states.push_back(null)
+		self.current_states[uid] = states.front()
 		
 	func get_state_for_uid(uid: int) -> ActorState:
 		if states.is_empty():
 			return null
 
-		var begin = start_state_idx_for_uid(uid)
-		var end = end_state_idx_for_uid(uid)
-
-		if begin == end:
+		if self.states.size() <= uid or self.states[uid] == null:
 			return null
 
-		var previous_idx = begin
-		var next_idx = begin + 1
+		var actor_states: Array[ActorState] = self.states[uid]
+
+		var previous = actor_states.front()
+		var next = null
 
 		# Find the indices of the previous and next states
-		for i in range(begin + 1, end):
-			if states[i].time <= time:
-				previous_idx = i
+		for i in range(0, actor_states.size()):
+			if actor_states[i].time <= time:
+				previous = actor_states[i]
 			else:
-				next_idx = i
+				next = actor_states[i]
 				break
 
-		var previous = states[previous_idx]
-		if next_idx >= end:
+		if next == null:
 			return previous
-		var next = states[next_idx]
 
 		if next.time < previous.time:
-			return states[end - 1]
+			return actor_states.back()
 
 		# Check if we need to interpolate or return one of the states directly
 		if time <= previous.time:
@@ -206,8 +193,6 @@ func load_actor(actor: Variant) -> Node2D:
 	var type: ActorTypes = ActorTypes.values()[actor["type"]]
 	var uid: int = actor["uid"]
 	
-	child_uids.push_back(uid)
-	
 	var result = null
 	match type:
 		ActorTypes.Sprite:
@@ -218,16 +203,25 @@ func load_actor(actor: Variant) -> Node2D:
 			assert(cell != null)
 			
 			var state: ActorState = ActorState.new(cell, actor)
-			initial_states.push_back(state)
 			
-			child_cells.push_back(cell)
+			while initial_states.size() <= uid + 1:
+				initial_states.push_back(null)
+			initial_states[uid] = state
+			
+			while child_cells.size() <= uid + 1:
+				child_cells.push_back(null)
+			child_cells[uid] = cell
 	
 			result = load_single_sprite(cell, state)
 			
 		ActorTypes.CompoundSprite:
 			result = load_compound_sprite(sprite)
-			initial_states.push_back(ActorState.new(null, actor))
-			child_cells.push_back(null)
+			while initial_states.size() <= uid + 1:
+				initial_states.push_back(null)
+			initial_states[uid] = ActorState.new(null, actor)
+			while child_cells.size() <= uid + 1:
+				child_cells.push_back(null)
+			child_cells[uid] = null
 			
 	
 	result.name = String.num_int64(uid)
@@ -287,8 +281,7 @@ func _ready():
 			).is_empty():
 				continue
 			
-			var index: int = child_uids.find(uid)
-			var cell: Variant = child_cells[index] #TODO: CELL WAS CELL ENTRY NOT VARIANT
+			var cell: Variant = child_cells[uid]
 			stages.push_back(ActorState.new(cell, stage_json))
 			
 		var node: Node2D = null
@@ -303,13 +296,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if animating:
-		var visible = not timeline.tick(delta)
+		timeline.tick(delta)
 		for child in get_children(false):
-			child.visible = visible;
 			var uid: int = child.name.to_int()
 			var state: ActorState = timeline.get_state_for_uid(uid)
 			if state == null:
-				var index = child_uids.find(uid)
-				state = initial_states[index]
+				state = initial_states[uid]
 				assert(state != null)
 			state.apply(child)
