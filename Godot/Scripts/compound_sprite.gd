@@ -110,6 +110,7 @@ class TimelineInterpolator:
 	var nodes: Array[Node2D] = []
 	var states: Array[Variant] = [] # Array[Array[ActorState]] can't be done so array variant
 	var current_states: Array[ActorState] = []
+	var initial_states: Array[ActorState] = []
 	
 	func _init(length: float):
 		self.length = length
@@ -135,6 +136,11 @@ class TimelineInterpolator:
 			self.current_states.push_back(null)
 		self.current_states[uid] = states.front()
 		
+	func set_initial_state(uid: int, state: ActorState):
+		while self.initial_states.size() <= uid + 1:
+			self.initial_states.push_back(null)
+		initial_states[uid] = state
+	
 	func get_state_for_uid(uid: int) -> ActorState:
 		if states.is_empty():
 			return null
@@ -144,11 +150,11 @@ class TimelineInterpolator:
 
 		var actor_states: Array[ActorState] = self.states[uid]
 
-		var previous = actor_states.front()
-		var next = null
+		var previous: ActorState = initial_states[uid]
+		var next: ActorState = null
 
 		# Find the indices of the previous and next states
-		for i in range(0, actor_states.size()):
+		for i in range(actor_states.size()):
 			if actor_states[i].time <= time:
 				previous = actor_states[i]
 			else:
@@ -222,7 +228,6 @@ func load_actor(actor: Variant) -> Node2D:
 			while child_cells.size() <= uid + 1:
 				child_cells.push_back(null)
 			child_cells[uid] = null
-			
 	
 	result.name = String.num_int64(uid)
 	return result
@@ -291,6 +296,7 @@ func _ready():
 		assert(node != null)
 		
 		timeline.add_timeline(uid, node, stages)
+		timeline.set_initial_state(uid, initial_states[uid])
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
