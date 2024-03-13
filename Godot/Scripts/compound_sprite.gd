@@ -87,22 +87,21 @@ class ActorState:
 		node.scale.x *= -1.0 if self.flip == FlipValues.Horizontal || self.flip == FlipValues.Both else 1.0
 		node.scale.y *= -1.0 if self.flip == FlipValues.Vertical || self.flip == FlipValues.Both else 1.0
 		
-	func interpolate(other: ActorState, delta: float) -> ActorState:
-		if self.cell == null || other.cell == null:
-			assert(self.cell == other.cell)
+	func interpolate(from: ActorState, to: ActorState, delta: float):
+		if from.cell == null || to.cell == null:
+			assert(from.cell == to.cell)
 		else:
-			assert(self.cell.name == other.cell.name)
-		var result: ActorState = ActorState.new(self.cell)
-		result.alignment = self.alignment
-		result.alpha = lerpf(self.alpha, other.alpha, delta)
-		result.angle = lerpf(self.angle, other.angle, delta)
-		result.color = lerp(self.color, other.color, delta)
-		result.flip = self.flip
-		result.position = lerp(self.position, other.position, delta)
-		result.scale = lerp(self.scale, other.scale, delta)
-		result.shown = self.shown# if delta < 0.5 else other.shown
-		result.time = lerpf(self.time, other.time, delta)
-		return result
+			assert(from.cell.name == to.cell.name)
+			
+		self.alignment = from.alignment
+		self.alpha = lerpf(from.alpha, to.alpha, delta)
+		self.angle = lerpf(from.angle, to.angle, delta)
+		self.color = lerp(from.color, to.color, delta)
+		self.flip = from.flip
+		self.position = lerp(from.position, to.position, delta)
+		self.scale = lerp(from.scale, to.scale, delta)
+		self.shown = from.shown# if delta < 0.5 else other.shown
+		self.time = lerpf(from.time, to.time, delta)
 
 class TimelineInterpolator:
 	var time: float = 0.0
@@ -170,7 +169,8 @@ class TimelineInterpolator:
 
 		# Interpolate between the previous and next states
 		var lerp_factor = (time - previous.time) / (next.time - previous.time)
-		return previous.interpolate(next, lerp_factor)
+		current_states[uid].interpolate(previous, next, lerp_factor)
+		return current_states[uid]
 
 func load_compound_sprite(sprite: String) -> Node2D:
 	var compound_sprite = Node2D.new()
