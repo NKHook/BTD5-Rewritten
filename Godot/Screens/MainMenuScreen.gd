@@ -40,6 +40,7 @@ func _ready():
 		area.shape = CircleShape2D.new()
 		area.shape.radius = 250.0
 		collider.add_child(area)
+		collider.input_event.connect(_building_input_event.bind(building))
 		collider.mouse_entered.connect(_building_mouse_entered.bind(building))
 		collider.mouse_exited.connect(_building_mouse_exited.bind(building))
 		building.add_child(collider)
@@ -56,13 +57,12 @@ func _process(delta):
 		
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		time_passed = intro_duration
-		
-		for building in buildings:
-			if building.hovered:
-				print(building.screen)
-				var popup_screen = load("res://Godot/Screens/" + building.screen + ".tscn")
-				screen_manager.add_child(popup_screen.instantiate())
-				
+
+func _building_input_event(viewport: Viewport, event: InputEvent, shap_idx: int, building: Building):
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+		var popup_screen = load("res://Godot/Screens/" + building.screen + ".tscn")
+		if not screen_manager.find_child(building.screen):
+			screen_manager.add_child(popup_screen.instantiate())
 
 func _building_mouse_entered(building: Building):
 	building.hovered = true

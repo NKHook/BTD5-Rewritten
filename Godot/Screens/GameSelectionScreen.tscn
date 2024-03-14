@@ -1,9 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dp87mcew0l2hn"]
+[gd_scene load_steps=3 format=3 uid="uid://l1ucj3ea32sg"]
 
 [ext_resource type="Script" path="res://Godot/Screens/GameSelectionScreen.gd" id="1_xht2g"]
 [ext_resource type="PackedScene" uid="uid://cc3ei4bes1nnk" path="res://Godot/Screens/PopupScreenBase.tscn" id="2_px5bc"]
 
-[node name="GameSelectionScreen" type="Node2D"]
+[node name="GameSelectionScreen" instance=ExtResource("2_px5bc")]
 script = ExtResource("1_xht2g")
-
-[node name="PopupScreenBase" parent="." instance=ExtResource("2_px5bc")]

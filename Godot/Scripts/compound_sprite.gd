@@ -267,7 +267,7 @@ func initialize():
 	
 	assert(sprite_definition_res != "")
 	var sprite_definition_json: Variant = JetFileImporter.GetJsonEntry(sprite_definition_res)
-		
+	
 	var stage_options = sprite_definition_json["stageOptions"]
 	used_cells = load_sprite_info(stage_options)
 	timeline = load_stage_options(stage_options)
