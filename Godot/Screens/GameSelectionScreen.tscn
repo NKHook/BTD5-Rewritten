@@ -8,11 +8,17 @@
 [node name="GameSelectionScreen" instance=ExtResource("2_px5bc")]
 script = ExtResource("1_xht2g")
 
+[node name="close_button" parent="popup_layer" index="1"]
+offset_left = 225.0
+offset_top = 100.0
+offset_right = 275.0
+offset_bottom = 150.0
+
 [node name="new_game" parent="popup_layer" index="2" instance=ExtResource("3_liev7")]
-offset_left = 250.0
-offset_top = 150.0
-offset_right = 400.0
-offset_bottom = 300.0
+offset_left = 225.0
+offset_top = 175.0
+offset_right = 375.0
+offset_bottom = 325.0
 sprite_name = "newshared_button"
 texture_name = "newshared"
 
