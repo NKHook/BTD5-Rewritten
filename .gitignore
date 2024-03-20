@@ -3,3 +3,6 @@
 
 # Rider ignores
 .idea/
+
+# Temporary files
+*.tmp
