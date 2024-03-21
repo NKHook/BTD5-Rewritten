@@ -11,7 +11,6 @@ public partial class MainMenuScreen : Node2D
 {
     [Export] private float _introDuration = 10.0f;
 
-    private Node2D _screenManager = null;
     private float _timePassed = 0.0f;
     private List<Building> _buildings = new();
 
@@ -41,8 +40,8 @@ public partial class MainMenuScreen : Node2D
                 var buildingObj = new Building();
                 buildingObj.SpriteDefinitionRes =
                     "Assets/JSON/Tablet/UILayout/" + building.GetProperty("SpriteFile").GetString();
-                buildingObj.Screen = building.GetProperty("Screen").GetString();
-                buildingObj.LocName = building.GetProperty("Name").GetString();
+                buildingObj.Screen = building.GetProperty("Screen").GetString() ?? "";
+                buildingObj.LocName = building.GetProperty("Name").GetString() ?? "";
                 buildingObj.Initialize();
 
                 buildingObj.Name = name;
@@ -59,7 +58,6 @@ public partial class MainMenuScreen : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _screenManager = FindParent("screen_manager") as Node2D;
         var buildingsJson = JetFileImporter.Instance()
             .GetJsonParsed("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json");
         _buildings = GetBuildingSprites(buildingsJson.GetProperty("Buildings"));
@@ -106,9 +104,7 @@ public partial class MainMenuScreen : Node2D
         var buttonEvent = @event as InputEventMouseButton;
         if ((!(buttonEvent?.IsPressed() ?? false)) || buttonEvent.ButtonIndex != MouseButton.Left) return;
 
-        var popupScreen = GD.Load<PackedScene>("res://Godot/Screens/" + building.Screen + ".tscn");
-        if (_screenManager.FindChild(building.Screen) == null)
-            _screenManager.AddChild(popupScreen.Instantiate());
+        ScreenManager.Instance().OpenPopup(building.Screen);
     }
 
     private void BuildingMouseExited(Building building)

@@ -5,11 +5,15 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>BloonsTD5Rewritten</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.16.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Godot\NewFramework\Scripts\Assets\" />
+    <Compile Remove="Godot\Scripts\Loading\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Godot\Scripts\Loading\**" />
   </ItemGroup>
 </Project>

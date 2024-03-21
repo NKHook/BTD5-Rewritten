@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://g5lef6l43ast"]
 
-[ext_resource type="Script" path="res://Godot/Scripts/sprite.gd" id="1_sv8o7"]
+[ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Sprites/Sprite.cs" id="1_mwmyd"]
 
 [node name="Sprite" type="Sprite2D"]
-script = ExtResource("1_sv8o7")
+script = ExtResource("1_mwmyd")
