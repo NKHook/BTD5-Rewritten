@@ -55,8 +55,8 @@ public partial class SpriteInfo : Node
         //GD.Print("Loading sprite info: " + Path);
         parser.Open(Path);
         SpriteInfo currentInfo = null;
-        Assets.FrameInfo currentFrame = null;
-        Assets.AnimationEntry currentAnimation = null;
+        FrameInfo currentFrame = null;
+        AnimationEntry currentAnimation = null;
 
         var frameLoadTasks = new List<Action>();
         while (parser.Read() != Error.FileEof)
@@ -101,7 +101,7 @@ public partial class SpriteInfo : Node
                         case "Animation":
                         {
                             var animationName = attributesDict["name"].AsString();
-                            currentAnimation = new Assets.AnimationEntry(currentFrame, _texturesDirPath, this.Path,
+                            currentAnimation = new AnimationEntry(currentFrame, _texturesDirPath, this.Path,
                                 _quality, animationName);
                             break;
                         }

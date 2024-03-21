@@ -6,10 +6,10 @@ namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class JpngLoader : Node
 {
-	private static readonly byte[] PNG_SIGNATURE = { 0x89, 0x50, 0x4E, 0x47 };
-	private const int JPNG_JFIF_PTR = 0x1C;
-	private const int JPNG_PNG_PTR = 0x10;
-	private const int JFIF_SIZE_OFFSET = 2;
+	private static readonly byte[] PngSignature = { 0x89, 0x50, 0x4E, 0x47 };
+	private const int JpngJfifPtr = 0x1C;
+	private const int JpngPngPtr = 0x10;
+	private const int JfifSizeOffset = 2;
 	
 	public static Image LoadJpngTexture(string path, int width, int height)
 	{
@@ -18,18 +18,18 @@ public partial class JpngLoader : Node
 		var length = file.GetLength();
 		var buffer = file.GetBuffer((long)length);
 
-		if (length >= 4 && buffer.Take(4).Equals(PNG_SIGNATURE))
+		if (length >= 4 && buffer.Take(4).Equals(PngSignature))
 		{
 			GD.PrintErr("Tried to read a JPNG image from a PNG file! (" + path + ")");
 			return null;
 		}
 		
-		var jfifOffset = BitConverter.ToInt32(buffer, (int)(length - JPNG_JFIF_PTR));
-		var pngOffset = BitConverter.ToInt32(buffer, (int)(length - JPNG_PNG_PTR));
+		var jfifOffset = BitConverter.ToInt32(buffer, (int)(length - JpngJfifPtr));
+		var pngOffset = BitConverter.ToInt32(buffer, (int)(length - JpngPngPtr));
 
 		//All this just to read big endian jfif size
 		var jfifSize = pngOffset;
-		var pngSize = (int)length - pngOffset - JPNG_PNG_PTR;
+		var pngSize = (int)length - pngOffset - JpngPngPtr;
 		
 		var jfifData = new ArraySegment<byte>(buffer, jfifOffset, jfifSize).ToArray();
 		var pngData = new ArraySegment<byte>(buffer, pngOffset, pngSize).ToArray();
