@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
-using Godot.Collections;
-using Array = Godot.Collections.Array;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 

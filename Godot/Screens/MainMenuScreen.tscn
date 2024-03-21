@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bdcrc2sg0ndu5"]
 
-[ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.gd" id="1_r7733"]
+[ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.cs" id="1_xyq0l"]
 [ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
 [ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="4_6i2dy"]
 [ext_resource type="Script" path="res://Godot/Scripts/Intro/fade_in.gd" id="4_hndw2"]
@@ -16,7 +16,7 @@ _data = {
 point_count = 2
 
 [node name="MainMenuScreen" type="Node2D"]
-script = ExtResource("1_r7733")
+script = ExtResource("1_xyq0l")
 
 [node name="sky" type="Node2D" parent="."]
 script = ExtResource("4_6i2dy")
