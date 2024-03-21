@@ -7,9 +7,9 @@ namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 
 public class TimelineInterpolator
 {
-    private float _time = 0.0f;
-    private readonly float _length = 0.0f;
-    private const bool Loop = true;
+    public float Time = 0.0f;
+    public readonly float Length = 0.0f;
+    public bool Loop = true;
     private readonly SparseList<Node2D> _nodes = new();
     private readonly SparseList<List<ActorState>> _states = new();
     private readonly SparseList<ActorState> _currentStates = new();
@@ -17,15 +17,15 @@ public class TimelineInterpolator
 
     public TimelineInterpolator(float length)
     {
-        _length = length;
+        Length = length;
     }
 
     public void Tick(float delta)
     {
-        _time += delta;
-        if (_time >= _length && Loop)
+        Time += delta;
+        if (Time >= Length && Loop)
         {
-            _time -= _time;
+            Time -= Time;
         }
     }
 
@@ -60,7 +60,7 @@ public class TimelineInterpolator
         
         foreach (var i in Enumerable.Range(0, actorStates?.Count ?? 0))
         {
-            if (actorStates?[i].Time <= _time)
+            if (actorStates?[i].Time <= Time)
             {
                 previousIdx = i;
             }
@@ -71,17 +71,17 @@ public class TimelineInterpolator
             }
         }
 
-        var previous = actorStates?[previousIdx].Time > _time ? _initialStates[uid] : actorStates?[previousIdx];
+        var previous = actorStates?[previousIdx].Time > Time ? _initialStates[uid] : actorStates?[previousIdx];
 
         if (next is null)
             return previous;
         if (next.Time < previous?.Time)
             return actorStates?.LastOrDefault();
-        if (_time >= next.Time)
+        if (Time >= next.Time)
             return next;
         
         //Interpolate between the previous and next states
-        var lerpFactor = (_time - previous?.Time) / (next.Time - previous?.Time) ?? 0.0f;
+        var lerpFactor = (Time - previous?.Time) / (next.Time - previous?.Time) ?? 0.0f;
         _currentStates[uid]?.Interpolate(previous, next, lerpFactor);
         return _currentStates[uid];
     }

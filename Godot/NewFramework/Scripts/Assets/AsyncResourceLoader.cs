@@ -10,7 +10,7 @@ public partial class AsyncResourceLoader : Node
     private static AsyncResourceLoader _instance = null;
     public static AsyncResourceLoader Instance() => _instance;
 
-    private readonly Dictionary<string, IResourcePromise> _promises = new();
+    private readonly Dictionary<string, IAsyncPromise> _promises = new();
     
     public override void _Ready()
     {
@@ -37,11 +37,11 @@ public partial class AsyncResourceLoader : Node
         }
     }
 
-    public ResourcePromise<T> Load<T>(string path) where T : class
+    public AsyncPromise<T> Load<T>(string path) where T : class
     {
         Debug.Assert(Error.Ok == ResourceLoader.LoadThreadedRequest(path));
-        _promises[path] = new ResourcePromise<T>();
-        return _promises[path] as ResourcePromise<T>;
+        _promises[path] = new AsyncPromise<T>();
+        return _promises[path] as AsyncPromise<T>;
     }
-    public ResourcePromise<Resource> Load(string path) => Load<Resource>(path);
+    public AsyncPromise<Resource> Load(string path) => Load<Resource>(path);
 }

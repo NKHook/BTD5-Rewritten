@@ -3,10 +3,14 @@
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="1_nqikj"]
 [ext_resource type="Script" path="res://Godot/Screens/LoadingScreen.cs" id="1_voue1"]
 
-[node name="LoadingScreen" type="Node2D"]
+[node name="LoadingScreen" type="Node2D" node_paths=PackedStringArray("LoadingSprite")]
 script = ExtResource("1_voue1")
+LoadingSprite = NodePath("loading_overlay/loading_sprite")
 
 [node name="loading_overlay" type="CanvasLayer" parent="."]
+offset = Vector2(640, 360)
+scale = Vector2(0.5, 0.5)
+transform = Transform2D(0.5, 0, 0, 0.5, 640, 360)
 
 [node name="loading_sprite" parent="loading_overlay" instance=ExtResource("1_nqikj")]
 SpriteDefinitionRes = "Assets/JSON/UILayout/loading_screen.json"

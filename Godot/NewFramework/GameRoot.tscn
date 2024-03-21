@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://6l6x63tp4vbi"]
+[gd_scene load_steps=3 format=3 uid="uid://6l6x63tp4vbi"]
 
 [ext_resource type="Script" path="res://Godot/Scripts/ScreenManager.cs" id="2_kfyl1"]
 [ext_resource type="PackedScene" uid="uid://b2c7lcjokten3" path="res://Godot/NewFramework/DebugOverlay.tscn" id="3_cv8am"]
-[ext_resource type="PackedScene" uid="uid://chymuxsvrvl3f" path="res://Godot/Screens/DGSplashScreen.tscn" id="4_585ef"]
 
 [node name="game_root" type="Node2D"]
 
@@ -10,6 +9,3 @@
 
 [node name="screen_manager" type="Node2D" parent="."]
 script = ExtResource("2_kfyl1")
-
-[node name="DgSplashScreen" parent="screen_manager" node_paths=PackedStringArray("screen_manager") instance=ExtResource("4_585ef")]
-screen_manager = NodePath("..")

@@ -7,12 +7,9 @@ public partial class GameSelectionScreen : PopupScreenBase
 {
     public override void _Ready()
     {
-        var loadingScreenScene = GD.Load<PackedScene>("res://Godot/Screens/LoadingScreen.tscn");
-        var loadingScreenInst = loadingScreenScene.Instantiate<LoadingScreen>();
-        loadingScreenInst.ScreenToLoad = "MapSelectScreen";
+        base._Ready();
         
-        var screenManager = GetParent<Node2D>();
         var newGameButton = GetNode<SpriteButton>("popup_layer/new_game");
-        newGameButton.Pressed += () => screenManager.AddChild(loadingScreenInst);
+        newGameButton.Pressed += () => ScreenManager.Instance().SetScreen("MapSelectScreen", true);
     }
 }

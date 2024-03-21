@@ -11,7 +11,7 @@ shader_parameter/color = Color(1, 1, 1, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_aj36y"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1440)
+"points": PackedVector2Array(0, 0, 0, 0, 0, -1440, 0, 0, 0, 0, 0, 0)
 }
 point_count = 2
 
@@ -19,16 +19,17 @@ point_count = 2
 script = ExtResource("1_xyq0l")
 
 [node name="sky" type="Node2D" parent="."]
+position = Vector2(0, -1440)
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/UILayout/main_menu_sky.json"
 
 [node name="intro" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_dwk6t")
+position = Vector2(0, -1440)
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/UILayout/intro_hd.json"
 
 [node name="menu" type="Node2D" parent="."]
-position = Vector2(0, 1440)
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/Tablet/UILayout/main_menu.json"
 
@@ -41,6 +42,7 @@ script = ExtResource("4_hndw2")
 curve = SubResource("Curve2D_aj36y")
 
 [node name="camera_follow" type="PathFollow2D" parent="camera_path"]
+position = Vector2(0, -1440)
 rotation = 1.5708
 loop = false
 

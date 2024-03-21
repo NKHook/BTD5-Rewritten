@@ -20,6 +20,26 @@ public partial class CompoundSprite : Node2D
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
 
+    public float Time
+    {
+        get => _timeline?.Time ?? 0.0f;
+        set
+        {
+            if (_timeline != null) _timeline.Time = value;
+        }
+    }
+
+    public bool Loop
+    {
+        get => _timeline?.Loop ?? true;
+        set
+        {
+            if (_timeline != null) _timeline.Loop = value;
+        }
+    }
+
+    public float Duration => _timeline?.Length ?? 0.0f;
+
     public Node2D LoadCompoundSprite(string sprite)
     {
         var compoundSprite = new CompoundSprite();

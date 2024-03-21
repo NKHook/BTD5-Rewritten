@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://boycfyf2ikyx1"]
+
+[ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="1_7hok7"]
+
+[node name="MapSelectScreen" type="Node2D"]
+
+[node name="map_select_front" parent="." instance=ExtResource("1_7hok7")]
+SpriteDefinitionRes = "Assets/JSON/UILayout/map_select_front.json"
+
+[node name="main_camera" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)

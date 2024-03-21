@@ -20,7 +20,6 @@ offset_left = 225.0
 offset_top = 175.0
 offset_right = 375.0
 offset_bottom = 325.0
-script = null
 
 [node name="play_icon" parent="popup_layer/new_game" index="0" instance=ExtResource("4_xn6e6")]
 position = Vector2(80, 75)
