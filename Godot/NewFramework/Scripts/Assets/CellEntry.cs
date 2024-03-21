@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
@@ -8,9 +9,8 @@ public partial class CellEntry : Node
     private string _texturesDirPath;
     private string _filePath;
     private TextureQuality _quality;
-    private Image _image = null;
     
-    public object Parent = null;
+    public object Parent;
     public readonly string Name;
     public readonly int X;
     public readonly int Y;
@@ -42,46 +42,21 @@ public partial class CellEntry : Node
 
     public Rect2 GetRegion() => new(X, Y, W, H);
     
-    public ImageTexture GetTexture()
+    public ImageTexture? GetTexture()
     {
         var frame = GetFrame();
-        return frame.GetTexture(); 
-    }
-    
-    public Image GetImage()
-    {
-        if (_image == null)
-            LoadImage();
-
-        return _image;
+        return frame?.GetTexture(); 
     }
 
-    private FrameInfo GetFrame()
+    private FrameInfo? GetFrame()
     {
         var frame = Parent;
-        while (frame is not FrameInfo && frame is Assets.AnimationEntry)
+        while (frame is not FrameInfo && frame is AnimationEntry entry)
         {
-            var entry = frame as Assets.AnimationEntry;
-            frame = entry.Parent;
+            frame = entry?.Parent;
         }
 
         var properFrame = frame as FrameInfo;
         return properFrame;
-    }
-    
-    private void LoadImage()
-    {
-        var frame = Parent;
-        while (frame is not FrameInfo && frame is Assets.AnimationEntry)
-        {
-            var entry = frame as Assets.AnimationEntry;
-            frame = entry.Parent;
-        }
-
-        var properFrame = frame as FrameInfo;
-        var frameImage = properFrame?.GetImage();
-        Debug.Assert(frameImage is not null, "Unable to load cell because frameImage is missing for " + properFrame?.Name);
-
-        _image = frameImage.GetRegion(new Rect2I(X, Y, W, H));
     }
 }

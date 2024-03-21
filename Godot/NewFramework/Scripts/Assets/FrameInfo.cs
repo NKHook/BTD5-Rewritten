@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
@@ -17,8 +18,9 @@ public partial class FrameInfo : Node
     private TextureType _type;
     private readonly List<Assets.AnimationEntry> _animations = new();
     private readonly List<Assets.CellEntry> _cells = new();
-    private Image _frameImage;
-    private ImageTexture _frameTexture;
+    private Image? _frameImage;
+    private ImageTexture? _frameTexture;
+    private Task<Image>? _imageTask;
     
     public string Name;
     
@@ -34,24 +36,25 @@ public partial class FrameInfo : Node
         _type = type;
     }
 
-    public ImageTexture GetTexture()
+    public ImageTexture? GetTexture()
     {
-        if (_frameTexture != null) return _frameTexture;
+        if (_frameTexture != null)
+            return _frameTexture;
         
-        var image = GetImage();
-        _frameTexture = ImageTexture.CreateFromImage(image);
+        _imageTask ??= GetImage();
+        if (_imageTask.IsCompleted)
+        {
+            _frameTexture = ImageTexture.CreateFromImage(_imageTask.Result);
+        }
         return _frameTexture;
     }
     
-    public Image GetImage()
+    public async Task<Image> GetImage()
     {
-        if (_frameImage == null)
-            LoadFrame();
-        
-        return _frameImage;
+        return _frameImage ??= await LoadFrame();
     }
     
-    public void LoadFrame()
+    private async Task<Image> LoadFrame()
     {
         var extension = _type switch
         {
@@ -61,6 +64,7 @@ public partial class FrameInfo : Node
             TextureType.INVALID => throw new ArgumentOutOfRangeException(),
             _ => throw new ArgumentOutOfRangeException()
         };
+        Image? frameImage = null;
         while (true)
         {
             var dir = Path.GetDirectoryName(_filePath);
@@ -71,11 +75,11 @@ public partial class FrameInfo : Node
             {
                 case TextureType.PNG:
                 case TextureType.JPG:
-                    _frameImage = global::Godot.Image.LoadFromFile(file);
+                    frameImage = Image.LoadFromFile(file);
                     break;
                 case TextureType.JPNG:
-                    _frameImage = JpngLoader.LoadJpngTexture(file, _texw, _texh);
-                    if (_frameImage == null)
+                    frameImage = await JpngLoader.LoadJpngTexture(file, _texw, _texh);
+                    if (frameImage == null)
                     {
                         _type = TextureType.PNG;
                         continue;
@@ -89,6 +93,7 @@ public partial class FrameInfo : Node
 
             break;
         }
+        return frameImage;
     }
 
     public void AddAnimation(Assets.AnimationEntry entry)

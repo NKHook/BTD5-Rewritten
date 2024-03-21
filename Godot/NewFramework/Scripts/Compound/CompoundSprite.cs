@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
 
@@ -19,6 +20,9 @@ public partial class CompoundSprite : Node2D
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
+    private bool _fullyLoaded = false;
+
+    public EventHandler? Loaded;
 
     public float Time
     {
@@ -40,7 +44,7 @@ public partial class CompoundSprite : Node2D
 
     public float Duration => _timeline?.Length ?? 0.0f;
 
-    public Node2D LoadCompoundSprite(string sprite)
+    public CompoundSprite LoadCompoundSprite(string sprite)
     {
         var compoundSprite = new CompoundSprite();
         compoundSprite.SpriteDefinitionRes = (Path.GetDirectoryName(SpriteDefinitionRes) + "/" + sprite).Replace("\\", "/");
@@ -185,12 +189,20 @@ public partial class CompoundSprite : Node2D
             return;
         
         _timeline?.Tick((float)delta);
+        var allChildrenLoaded = true;
         foreach (var childNode in GetChildren(false))
         {
             var child = childNode as Node2D;
+            if (!_fullyLoaded && allChildrenLoaded && child is CompoundSprite { _fullyLoaded: false }) allChildrenLoaded = false;
             
             if (!int.TryParse(child?.Name.ToString(), out var uid))
                 continue;
+            
+            if (!_fullyLoaded && allChildrenLoaded && child is Sprite2D sprite)
+            {
+                sprite.Texture = _childCells[uid]?.GetTexture();
+                allChildrenLoaded = sprite.Texture != null;
+            }
 
             var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
             Debug.Assert(state is not null);
@@ -199,5 +211,9 @@ public partial class CompoundSprite : Node2D
                 state?.ApplyColor(child);
             state?.Apply(child);
         }
+
+        if (!allChildrenLoaded || _fullyLoaded) return;
+        Loaded?.Invoke(this, null!);
+        _fullyLoaded = true;
     }
 }

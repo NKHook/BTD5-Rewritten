@@ -11,7 +11,7 @@ public class ActorState
     private static readonly Shader ShaderResource = GD.Load<Shader>("res://Godot/Shaders/compound_sprite.tres");
     
     //Cell instance for retrieving alignment info and such
-    private CellEntry _cellEntry = null;
+    private readonly CellEntry? _cellEntry = null;
 
     //Normal state stuff
     private ActorAlignment[] _alignment = new ActorAlignment[2];
@@ -24,7 +24,7 @@ public class ActorState
     private bool _shown = true;
     public float Time = 0.0f;
 
-    public ActorState(CellEntry cellEntry, JsonElement actor)
+    public ActorState(CellEntry? cellEntry, JsonElement actor)
     {
         _cellEntry = cellEntry;
         if (actor.ValueKind == JsonValueKind.Null)
