@@ -5,45 +5,68 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Screens;
 
-public partial class LoadingScreen : Node2D
+public partial class LoadingScreen : BloonsBaseScreen
 {
 	[Export] public string ScreenToLoad = "";
 	[Export] public CompoundSprite LoadingSprite = null;
 
 	public EventHandler<Node2D> ScreenLoaded = null!;
 	private bool _loadComplete = false;
+	private bool _startedLoading = false;
+	private bool _animationStarted = false;
 	public override void _Ready()
 	{
 		base._Ready();
+		
 		Debug.Assert(ScreenToLoad != "", "Loading screen has no screen to load!");
 		Debug.Assert(LoadingSprite != null, "Loading screen has no loading sprite!");
-		LoadingSprite!.Animating = true;
 		LoadingSprite.Loop = false;
-		
+
+		//Actually start loading the screen once the loading screen itself has loaded
+		Loaded += (sender, args) =>
+		{
+			_animationStarted = true;
+			LoadingSprite!.Time = 0.0f;
+		};
+	}
+
+	private void ActuallyLoadTheScreen()
+	{
 		var screenPromise = AsyncResourceLoader.Instance()
 			.Load<PackedScene>("res://Godot/Screens/" + ScreenToLoad + ".tscn");
 
-		screenPromise.Then += (sender, scene) =>
+		screenPromise.Then += (_, scene) =>
 		{
 			//Add the desired scene
 			var loadedScene = scene.Instantiate() as Node2D;
 			ScreenLoaded?.Invoke(this, loadedScene!);
-			_loadComplete = true;
+			if (loadedScene is BloonsBaseScreen baseScreen)
+			{
+				baseScreen.Loaded += (_, _) => { _loadComplete = true; };
+			}
+			else
+			{
+				_loadComplete = true;
+			}
 		};
-		screenPromise.Error += (sender, exception) =>
-		{
-			_loadComplete = true;
-		};
+		screenPromise.Error += (_, exception) => { _loadComplete = true; };
 	}
-
+	
 	public override void _Process(double delta)
 	{
-		base._Process(delta);
-
+		base._Process(_startedLoading && !_loadComplete ? 0.0f : delta);
+		if (!_animationStarted)
+			return;
+		
 		if (LoadingSprite.Time >= 0.5f && !_loadComplete)
 		{
 			LoadingSprite.Animating = false;
 			LoadingSprite.Time = 0.5f;
+			if (!_startedLoading)
+			{
+				ActuallyLoadTheScreen();
+			}
+			_startedLoading = true;
 		}
 
 		if (_loadComplete)

@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://boycfyf2ikyx1"]
+[gd_scene load_steps=3 format=3 uid="uid://boycfyf2ikyx1"]
 
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="1_7hok7"]
+[ext_resource type="Script" path="res://Godot/Screens/BloonsBaseScreen.cs" id="1_saico"]
 
 [node name="MapSelectScreen" type="Node2D"]
+script = ExtResource("1_saico")
 
 [node name="map_select_front" parent="." instance=ExtResource("1_7hok7")]
 SpriteDefinitionRes = "Assets/JSON/UILayout/map_select_front.json"

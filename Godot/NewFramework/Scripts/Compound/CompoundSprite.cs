@@ -20,9 +20,9 @@ public partial class CompoundSprite : Node2D
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
-    private bool _fullyLoaded = false;
 
-    public EventHandler? Loaded;
+    public EventHandler? Loaded = null;
+    public bool FullyLoaded { get; private set; } = false;
 
     public float Time
     {
@@ -52,17 +52,22 @@ public partial class CompoundSprite : Node2D
         return compoundSprite;
     }
 
-    public Sprite2D LoadSingleSprite(CellEntry cell, ActorState state)
+    private static void SetSpriteCell(Sprite2D sprite, CellEntry? cell)
+    {
+        sprite.Texture = cell?.GetTexture();
+        sprite.RegionEnabled = true;
+        sprite.RegionRect = cell?.GetRegion() ?? new Rect2();
+    }
+
+    private Sprite2D LoadSingleSprite(CellEntry cell, ActorState state)
     {
         var spriteObj = new Sprite2D();
-        spriteObj.Texture = cell.GetTexture();
-        spriteObj.RegionEnabled = true;
-        spriteObj.RegionRect = cell.GetRegion();
+        SetSpriteCell(spriteObj, cell);
         state.ApplyAndAlign(spriteObj);
         return spriteObj;
     }
 
-    public Node2D LoadActor(JsonElement actor)
+    private Node2D LoadActor(JsonElement actor)
     {
         var sprite = actor.GetProperty("sprite").GetString();
         Debug.Assert(sprite != null);
@@ -134,7 +139,8 @@ public partial class CompoundSprite : Node2D
         _timeline = LoadStageOptions(stageOptions);
 
         var actors = spriteDefinitionJson.GetProperty("actors");
-        foreach (var spriteObj in actors.EnumerateArray().Select(LoadActor))
+        var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
+        foreach (var spriteObj in sprites)
         {
             AddChild(spriteObj);
         }
@@ -179,30 +185,51 @@ public partial class CompoundSprite : Node2D
         }
     }
 
+    private void RefreshTextures()
+    {
+        foreach (var child in GetChildren())
+        {
+            if (!int.TryParse(child?.Name.ToString(), out var uid))
+                continue;
+
+            switch (child)
+            {
+                case Sprite2D sprite:
+                    SetSpriteCell(sprite, _childCells[uid]);
+                    break;
+                case CompoundSprite compound:
+                    compound.RefreshTextures();
+                    break;
+            }
+        }
+    }
+    
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() => Initialize();
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+        if (!FullyLoaded)
+        {
+            FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
+            if (FullyLoaded)
+            {
+                RefreshTextures();
+                Loaded?.Invoke(this, null!);
+            }
+        }
+        
         if (!Animating)
             return;
         
         _timeline?.Tick((float)delta);
-        var allChildrenLoaded = true;
         foreach (var childNode in GetChildren(false))
         {
             var child = childNode as Node2D;
-            if (!_fullyLoaded && allChildrenLoaded && child is CompoundSprite { _fullyLoaded: false }) allChildrenLoaded = false;
             
             if (!int.TryParse(child?.Name.ToString(), out var uid))
                 continue;
-            
-            if (!_fullyLoaded && allChildrenLoaded && child is Sprite2D sprite)
-            {
-                sprite.Texture = _childCells[uid]?.GetTexture();
-                allChildrenLoaded = sprite.Texture != null;
-            }
 
             var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
             Debug.Assert(state is not null);
@@ -211,9 +238,5 @@ public partial class CompoundSprite : Node2D
                 state?.ApplyColor(child);
             state?.Apply(child);
         }
-
-        if (!allChildrenLoaded || _fullyLoaded) return;
-        Loaded?.Invoke(this, null!);
-        _fullyLoaded = true;
     }
 }

@@ -26,6 +26,7 @@ public partial class AsyncResourceLoader : Node
                 var resource = ResourceLoader.LoadThreadedGet(data.Key);
                 data.Value.FullfillPromise(resource);
                 _promises.Remove(data.Key);
+                return;
             }
 
             if (ResourceLoader.LoadThreadedGetStatus(data.Key) is not (ResourceLoader.ThreadLoadStatus.Failed
