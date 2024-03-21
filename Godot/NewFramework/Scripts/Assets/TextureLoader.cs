@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using BloonsTD5Custom.Godot.Scripts;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class TextureLoader : Node
 {
@@ -15,7 +14,7 @@ public partial class TextureLoader : Node
 	}
 	private Node _assetImporterConfig = null;
 
-	private List<SpriteInfo> _spritesRoot = null;
+	private List<Assets.SpriteInfo> _spritesRoot = null;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -33,7 +32,7 @@ public partial class TextureLoader : Node
 		_spritesRoot = LoadSpriteInfo(texturesDirAccess);
 	}
 
-	public SpriteInfo GetSpriteInfo(string name)
+	public Assets.SpriteInfo GetSpriteInfo(string name)
 	{
 		return _spritesRoot.FirstOrDefault(info => info.Path.EndsWith(name + ".xml"));
 	}
@@ -44,14 +43,14 @@ public partial class TextureLoader : Node
 	}
 	public Variant FindCell(string name) => FindCell(name, "");
 
-	public FrameInfo FindFrame(string name)
+	public Assets.FrameInfo FindFrame(string name)
 	{
 		return _spritesRoot.Select(info => info.FindFrame(name)).FirstOrDefault(result => result != null);
 	}
 		
-	private static List<SpriteInfo> LoadSpriteInfo(DirAccess texturesDir)
+	private static List<Assets.SpriteInfo> LoadSpriteInfo(DirAccess texturesDir)
 	{
-		List<SpriteInfo> results = new();
+		List<Assets.SpriteInfo> results = new();
 		var dirPath = texturesDir.GetCurrentDir();
 		
 		texturesDir.ListDirBegin();
@@ -60,7 +59,7 @@ public partial class TextureLoader : Node
 		{
 			if (!texturesDir.CurrentIsDir())
 			{
-				results.Add(new SpriteInfo(filename.Replace(".xml", ""), dirPath, dirPath + "/" + filename));
+				results.Add(new Assets.SpriteInfo(filename.Replace(".xml", ""), dirPath, dirPath + "/" + filename));
 			}
 			filename = texturesDir.GetNext();
 		}

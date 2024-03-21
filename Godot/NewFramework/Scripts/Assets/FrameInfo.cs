@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class FrameInfo : Node
 {
@@ -15,8 +15,8 @@ public partial class FrameInfo : Node
     private int _texw;
     private int _texh;
     private TextureType _type;
-    private readonly List<AnimationEntry> _animations = new();
-    private readonly List<CellEntry> _cells = new();
+    private readonly List<Assets.AnimationEntry> _animations = new();
+    private readonly List<Assets.CellEntry> _cells = new();
     private Image _frameImage;
     private ImageTexture _frameTexture;
     
@@ -91,27 +91,27 @@ public partial class FrameInfo : Node
         }
     }
 
-    public void AddAnimation(AnimationEntry entry)
+    public void AddAnimation(Assets.AnimationEntry entry)
     {
         _animations.Add(entry);
     }
 
-    public void AddCell(CellEntry entry)
+    public void AddCell(Assets.CellEntry entry)
     {
         _cells.Add(entry);
     }
 
-    public AnimationEntry GetAnimation(string name)
+    public Assets.AnimationEntry GetAnimation(string name)
     {
         return _animations.Find(entry => entry.Name == name);
     }
 
-    public CellEntry GetCell(string name)
+    public Assets.CellEntry GetCell(string name)
     {
         return _cells.Find(entry => entry.Name == name);
     }
 
-    public CellEntry FindCell(string name)
+    public Assets.CellEntry FindCell(string name)
     {
         foreach (var result in _animations.Select(animation => animation.FindCell(name)).Where(result => result != null))
         {

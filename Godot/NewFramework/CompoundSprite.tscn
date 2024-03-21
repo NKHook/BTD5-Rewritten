@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhfpsgj1w4jo6"]
 
-[ext_resource type="Script" path="res://Godot/Scripts/compound_sprite.gd" id="1_3hxp1"]
+[ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="1_qu4sw"]
 
 [node name="compound_sprite" type="Node2D"]
-script = ExtResource("1_3hxp1")
-sprite_definition_res = "res://Assets/JSON/TowerSprites/DartMonkey.json"
+script = ExtResource("1_qu4sw")

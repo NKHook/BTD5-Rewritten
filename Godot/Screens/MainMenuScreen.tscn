@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.gd" id="1_r7733"]
 [ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
-[ext_resource type="Script" path="res://Godot/Scripts/compound_sprite.gd" id="2_hq2h1"]
+[ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="4_6i2dy"]
 [ext_resource type="Script" path="res://Godot/Scripts/Intro/fade_in.gd" id="4_hndw2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
@@ -19,18 +19,18 @@ point_count = 2
 script = ExtResource("1_r7733")
 
 [node name="sky" type="Node2D" parent="."]
-script = ExtResource("2_hq2h1")
-sprite_definition_res = "Assets/JSON/UILayout/main_menu_sky.json"
+script = ExtResource("4_6i2dy")
+SpriteDefinitionRes = "Assets/JSON/UILayout/main_menu_sky.json"
 
 [node name="intro" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_dwk6t")
-script = ExtResource("2_hq2h1")
-sprite_definition_res = "Assets/JSON/UILayout/intro_hd.json"
+script = ExtResource("4_6i2dy")
+SpriteDefinitionRes = "Assets/JSON/UILayout/intro_hd.json"
 
 [node name="menu" type="Node2D" parent="."]
 position = Vector2(0, 1440)
-script = ExtResource("2_hq2h1")
-sprite_definition_res = "Assets/JSON/Tablet/UILayout/main_menu.json"
+script = ExtResource("4_6i2dy")
+SpriteDefinitionRes = "Assets/JSON/Tablet/UILayout/main_menu.json"
 
 [node name="overlay" type="CanvasLayer" parent="."]
 

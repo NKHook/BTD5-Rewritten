@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloonsTD5Custom.Godot.Scripts;
 using Godot;
 using Godot.Collections;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class SpriteInfo : Node
 {
@@ -14,7 +13,7 @@ public partial class SpriteInfo : Node
     private readonly string _texturesDirPath;
     private readonly TextureQuality _quality;
     private readonly List<SpriteInfo> _children = new();
-    private readonly List<FrameInfo> _frames = new();
+    private readonly List<Assets.FrameInfo> _frames = new();
 
     public readonly string Path;
     
@@ -29,8 +28,8 @@ public partial class SpriteInfo : Node
         Load();
     }
 
-    public CellEntry FindCell(string name) => FindCell(name, "");
-    public CellEntry FindCell(string name, string texture)
+    public Assets.CellEntry FindCell(string name) => FindCell(name, "");
+    public Assets.CellEntry FindCell(string name, string texture)
     {
         foreach (var result in _children.Select(info => info.FindCell(name, texture)).Where(result => result != null))
         {
@@ -40,7 +39,7 @@ public partial class SpriteInfo : Node
         return (from frame in _frames where texture == "" || frame.Name == texture select frame.FindCell(name)).FirstOrDefault(result => result != null);
     }
 
-    public FrameInfo FindFrame(string name)
+    public Assets.FrameInfo FindFrame(string name)
     {
         foreach (var result in _children.Select(info => info.FindFrame(name)).Where(result => result != null))
         {
@@ -56,8 +55,8 @@ public partial class SpriteInfo : Node
         //GD.Print("Loading sprite info: " + Path);
         parser.Open(Path);
         SpriteInfo currentInfo = null;
-        FrameInfo currentFrame = null;
-        AnimationEntry currentAnimation = null;
+        Assets.FrameInfo currentFrame = null;
+        Assets.AnimationEntry currentAnimation = null;
 
         var frameLoadTasks = new List<Action>();
         while (parser.Read() != Error.FileEof)
@@ -102,7 +101,7 @@ public partial class SpriteInfo : Node
                         case "Animation":
                         {
                             var animationName = attributesDict["name"].AsString();
-                            currentAnimation = new AnimationEntry(currentFrame, _texturesDirPath, this.Path,
+                            currentAnimation = new Assets.AnimationEntry(currentFrame, _texturesDirPath, this.Path,
                                 _quality, animationName);
                             break;
                         }
@@ -118,7 +117,7 @@ public partial class SpriteInfo : Node
                             var cellAw = attributesDict["aw"].AsInt32();
                             var cellAh = attributesDict["ah"].AsInt32();
 
-                            var theCell = new CellEntry(null, _texturesDirPath, Path, _quality, cellName,
+                            var theCell = new Assets.CellEntry(null, _texturesDirPath, Path, _quality, cellName,
                                 cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh);
                             if (currentAnimation != null)
                             {
@@ -156,7 +155,7 @@ public partial class SpriteInfo : Node
                             var texH = attributesDict["texh"].AsInt32();
                             var type = attributesDict["type"].AsString();
                             Debug.Assert(Enum.TryParse(type.ToUpper(), out TextureType actualType));
-                            currentFrame = new FrameInfo(this, _texturesDirPath, Path, _quality, frameName, texW, texH, actualType);
+                            currentFrame = new Assets.FrameInfo(this, _texturesDirPath, Path, _quality, frameName, texW, texH, actualType);
                             break;
                         }
                     }

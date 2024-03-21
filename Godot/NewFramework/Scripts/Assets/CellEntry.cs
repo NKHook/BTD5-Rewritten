@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class CellEntry : Node
 {
@@ -40,6 +40,8 @@ public partial class CellEntry : Node
         Name = name;
     }
 
+    public Rect2 GetRegion() => new(X, Y, W, H);
+    
     public ImageTexture GetTexture()
     {
         var frame = GetFrame();
@@ -57,9 +59,9 @@ public partial class CellEntry : Node
     private FrameInfo GetFrame()
     {
         var frame = Parent;
-        while (frame is not FrameInfo && frame is AnimationEntry)
+        while (frame is not FrameInfo && frame is Assets.AnimationEntry)
         {
-            var entry = frame as AnimationEntry;
+            var entry = frame as Assets.AnimationEntry;
             frame = entry.Parent;
         }
 
@@ -70,9 +72,9 @@ public partial class CellEntry : Node
     private void LoadImage()
     {
         var frame = Parent;
-        while (frame is not FrameInfo && frame is AnimationEntry)
+        while (frame is not FrameInfo && frame is Assets.AnimationEntry)
         {
-            var entry = frame as AnimationEntry;
+            var entry = frame as Assets.AnimationEntry;
             frame = entry.Parent;
         }
 

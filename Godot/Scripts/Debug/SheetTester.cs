@@ -1,6 +1,7 @@
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using Godot;
-using TextureLoader = BloonsTD5Rewritten.Godot.NewFramework.Scripts.TextureLoader;
+using CellEntry = BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets.CellEntry;
+using TextureLoader = BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets.TextureLoader;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Debug;
 

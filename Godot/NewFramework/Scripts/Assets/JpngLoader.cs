@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
-using BloonsTD5Custom.Godot.Scripts;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class JpngLoader : Node
 {

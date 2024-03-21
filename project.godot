@@ -19,8 +19,8 @@ config/icon="res://icon.svg"
 
 PathUtil="*res://Godot/Scripts/path_util.gd"
 AssetImporterConfig="*res://Godot/Scripts/asset_importer_config.gd"
-TextureLoader="*res://Godot/NewFramework/Scripts/TextureLoader.cs"
-JetFileImporter="*res://Godot/NewFramework/Scripts/JetFileImporter.cs"
+TextureLoader="*res://Godot/NewFramework/Scripts/Assets/TextureLoader.cs"
+JetFileImporter="*res://Godot/NewFramework/Scripts/Assets/JetFileImporter.cs"
 
 [display]
 

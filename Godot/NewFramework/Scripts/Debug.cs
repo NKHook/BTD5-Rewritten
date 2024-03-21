@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace BloonsTD5Custom.Godot.Scripts;
+namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 internal static class Debug
 {
