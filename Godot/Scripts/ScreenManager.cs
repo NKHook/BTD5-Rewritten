@@ -60,6 +60,14 @@ public partial class ScreenManager : Node2D
 		};
 	}
 
+	public void ClosePopup()
+	{
+		_popups.Pop()?.QueueFree();
+		
+		var top = _popups.FirstOrDefault();
+		if (top != null) top.Visible = true;
+	}
+
 	private void ClearPopups()
 	{
 		foreach (var popup in _popups)

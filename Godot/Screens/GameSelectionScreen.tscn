@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Godot/Screens/GameSelectionScreen.cs" id="2_6t5rx"]
 [ext_resource type="PackedScene" uid="uid://cc3ei4bes1nnk" path="res://Godot/Screens/PopupScreenBase.tscn" id="2_px5bc"]
-[ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Godot/Screens/Components/sprite_button.tscn" id="3_liev7"]
+[ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Godot/Screens/Components/SpriteButton.tscn" id="3_liev7"]
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://Godot/NewFramework/Sprite.tscn" id="4_xn6e6"]
 [ext_resource type="Script" path="res://Godot/NewFramework/Scripts/text_object.gd" id="5_qavjm"]
 

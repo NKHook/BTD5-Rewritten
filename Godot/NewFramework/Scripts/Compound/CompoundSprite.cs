@@ -67,7 +67,7 @@ public partial class CompoundSprite : Node2D
         return spriteObj;
     }
 
-    private Node2D LoadActor(JsonElement actor)
+    private Node2D? LoadActor(JsonElement actor)
     {
         var sprite = actor.GetProperty("sprite").GetString();
         Debug.Assert(sprite != null);
@@ -79,7 +79,8 @@ public partial class CompoundSprite : Node2D
         {
             case ActorTypes.Sprite:
                 var cell = _usedCells.FirstOrDefault(used => used.Name == sprite);
-                Debug.Assert(cell != null);
+                if (cell == null)
+                    return null;
 
                 var state = new ActorState(cell, actor);
                 _initialStates[uid] = state;
@@ -135,8 +136,11 @@ public partial class CompoundSprite : Node2D
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
         var stageOptions = spriteDefinitionJson.GetProperty("stageOptions");
-        _usedCells = LoadSpriteInfo(stageOptions);
-        _timeline = LoadStageOptions(stageOptions);
+        if (stageOptions.ValueKind != JsonValueKind.Null)
+        {
+            _usedCells = LoadSpriteInfo(stageOptions);
+            _timeline = LoadStageOptions(stageOptions);
+        }
 
         var actors = spriteDefinitionJson.GetProperty("actors");
         var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
@@ -145,43 +149,45 @@ public partial class CompoundSprite : Node2D
             AddChild(spriteObj);
         }
 
-        var timelinesJson = spriteDefinitionJson.GetProperty("timelines");
-        foreach (var timelineJson in timelinesJson.EnumerateArray())
+        if (spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson))
         {
-            var uid = timelineJson.GetProperty("spriteuid").GetInt32();
-            var stagesJson = timelineJson.GetProperty("stage");
-            if(stagesJson.ValueKind == JsonValueKind.Null)
-                continue;
-
-            var stages = new List<ActorState>();
-            foreach (var stageJson in stagesJson.EnumerateArray())
+            foreach (var timelineJson in timelinesJson.EnumerateArray())
             {
-                if(stageJson.ValueKind == JsonValueKind.Null)
-                    continue;
-                
-                //Prevent states with the same time overwriting eachother
-                //the game only uses the first one at the same time for some reason
-                var time = stageJson.GetProperty("Time").GetSingle();
-                if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
+                var uid = timelineJson.GetProperty("spriteuid").GetInt32();
+                var stagesJson = timelineJson.GetProperty("stage");
+                if(stagesJson.ValueKind == JsonValueKind.Null)
                     continue;
 
-                var cell = _childCells[uid];
-                stages.Add(new ActorState(cell, stageJson));
-            }
-
-            Node2D? node = null;
-            foreach (var child in GetChildren(false))
-            {
-                if (int.Parse(child.Name) != uid) continue;
+                var stages = new List<ActorState>();
+                foreach (var stageJson in stagesJson.EnumerateArray())
+                {
+                    if(stageJson.ValueKind == JsonValueKind.Null)
+                        continue;
                 
-                node = child as Node2D;
-                if (node != null)
-                    break;
-            }
-            Debug.Assert(node != null);
+                    //Prevent states with the same time overwriting eachother
+                    //the game only uses the first one at the same time for some reason
+                    var time = stageJson.GetProperty("Time").GetSingle();
+                    if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
+                        continue;
+
+                    var cell = _childCells[uid];
+                    stages.Add(new ActorState(cell, stageJson));
+                }
+
+                Node2D? node = null;
+                foreach (var child in GetChildren(false))
+                {
+                    if (int.Parse(child.Name) != uid) continue;
+                
+                    node = child as Node2D;
+                    if (node != null)
+                        break;
+                }
+                Debug.Assert(node != null);
             
-            _timeline?.AddTimeline(uid, node!, stages);
-            _timeline?.SetInitialState(uid, _initialStates[uid]);
+                _timeline?.AddTimeline(uid, node!, stages);
+                _timeline?.SetInitialState(uid, _initialStates[uid]);
+            }
         }
     }
 

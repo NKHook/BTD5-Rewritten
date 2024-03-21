@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx05tlehjg42e"]
+
+[ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="1_32nda"]
+[ext_resource type="Script" path="res://Godot/Screens/Components/TrackThumbnail.cs" id="1_wfpyn"]
+
+[node name="MapSelectThumb" type="Button"]
+offset_right = 500.0
+offset_bottom = 360.0
+icon_alignment = 1
+script = ExtResource("1_wfpyn")
+_trackName = "monkey_lane"
+
+[node name="border" parent="." instance=ExtResource("1_32nda")]
+top_level = true
+SpriteDefinitionRes = "Assets/JSON/UILayout/map_border_compound.json"

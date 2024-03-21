@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dek058dsi6sap"]
+
+[ext_resource type="PackedScene" uid="uid://dx05tlehjg42e" path="res://Godot/Screens/Components/MapSelectButton.tscn" id="1_m4bkn"]
+
+[node name="MapSelectCarousel" type="Node2D"]
+
+[node name="thumb_container" type="GridContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="map_button" parent="thumb_container" instance=ExtResource("1_m4bkn")]
+layout_mode = 2

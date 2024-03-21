@@ -28,8 +28,8 @@ public partial class SpriteInfo : Node
         Load();
     }
 
-    public Assets.CellEntry FindCell(string name) => FindCell(name, "");
-    public Assets.CellEntry FindCell(string name, string texture)
+    public CellEntry FindCell(string name) => FindCell(name, "");
+    public CellEntry FindCell(string name, string texture)
     {
         foreach (var result in _children.Select(info => info.FindCell(name, texture)).Where(result => result != null))
         {
@@ -39,7 +39,7 @@ public partial class SpriteInfo : Node
         return (from frame in _frames where texture == "" || frame.Name == texture select frame.FindCell(name)).FirstOrDefault(result => result != null);
     }
 
-    public Assets.FrameInfo FindFrame(string name)
+    public FrameInfo FindFrame(string name)
     {
         foreach (var result in _children.Select(info => info.FindFrame(name)).Where(result => result != null))
         {

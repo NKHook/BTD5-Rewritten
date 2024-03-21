@@ -9,6 +9,6 @@ public partial class PopupScreenBase : Node2D
 	{
 		var closeButton = GetNode<SpriteButton>("popup_layer/close_button");
 		//Destroy the popup when the close button is pressed
-		closeButton.Pressed += QueueFree;
+		closeButton.Pressed += ScreenManager.Instance().ClosePopup;
 	}
 }

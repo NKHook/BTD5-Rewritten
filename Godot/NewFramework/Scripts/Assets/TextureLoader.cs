@@ -1,20 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class TextureLoader : Node
 {
-	private static TextureLoader _instance = null;
+	private static TextureLoader? _instance;
 
-	public static TextureLoader Instance()
+	public static TextureLoader? Instance()
 	{
 		return _instance;
 	}
-	private Node _assetImporterConfig = null;
+	private Node? _assetImporterConfig;
 
-	private List<Assets.SpriteInfo> _spritesRoot = null;
+	private List<SpriteInfo>? _spritesRoot;
+	private Dictionary<string, Task<ImageTexture>> _thumbLoadTasks = new();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -32,25 +34,45 @@ public partial class TextureLoader : Node
 		_spritesRoot = LoadSpriteInfo(texturesDirAccess);
 	}
 
-	public Assets.SpriteInfo GetSpriteInfo(string name)
+	public ImageTexture? GetTrackThumb(string trackName)
 	{
-		return _spritesRoot.FirstOrDefault(info => info.Path.EndsWith(name + ".xml"));
+		if (_thumbLoadTasks.TryGetValue(trackName, out var task))
+		{
+			return task.IsCompleted ? task.Result : null;
+		}
+
+		_thumbLoadTasks[trackName] = Task.Run(() =>
+		{
+			var assetsDir = _assetImporterConfig?.Get("assets_dir");
+			var texturesDir = assetsDir + "/Textures";
+			var imageFile = texturesDir + "/Ultra/track_thumbs/" + trackName + "_thumb.jpg";
+			var image = Image.LoadFromFile(imageFile);
+			var texture = ImageTexture.CreateFromImage(image);
+			return texture;
+		});
+		//Call again to check if it completed
+		return GetTrackThumb(trackName);
+	}
+	
+	public SpriteInfo GetSpriteInfo(string name)
+	{
+		return _spritesRoot!.FirstOrDefault(info => info.Path.EndsWith(name + ".xml"))!;
 	}
 
 	public Variant FindCell(string name, string texture)
 	{
-		return Variant.From(_spritesRoot.Select(info => info.FindCell(name, texture)).FirstOrDefault(result => result != null));
+		return Variant.From(_spritesRoot!.Select(info => info.FindCell(name, texture)).FirstOrDefault(result => result != null));
 	}
 	public Variant FindCell(string name) => FindCell(name, "");
 
-	public Assets.FrameInfo FindFrame(string name)
+	public FrameInfo FindFrame(string name)
 	{
-		return _spritesRoot.Select(info => info.FindFrame(name)).FirstOrDefault(result => result != null);
+		return _spritesRoot!.Select(info => info.FindFrame(name)).FirstOrDefault(result => result != null);
 	}
 		
-	private static List<Assets.SpriteInfo> LoadSpriteInfo(DirAccess texturesDir)
+	private static List<SpriteInfo>? LoadSpriteInfo(DirAccess texturesDir)
 	{
-		List<Assets.SpriteInfo> results = new();
+		List<SpriteInfo>? results = new();
 		var dirPath = texturesDir.GetCurrentDir();
 		
 		texturesDir.ListDirBegin();
