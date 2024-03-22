@@ -8,6 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
 shader = ExtResource("2_cswtu")
 shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/alpha = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o5pvd"]
 radius = 300.0

@@ -1,4 +1,5 @@
 using BloonsTD5Rewritten.Godot.Screens.Components;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Screens;
 
@@ -35,6 +36,29 @@ public partial class MapSelectScreen : BloonsBaseScreen
 		if (_rightButton!.ButtonPressed)
 		{
 			_carousel!.Scroll -= 50.0f;
+		}
+
+		
+
+		if (_carousel?.Scroll >= 0.0f)
+		{
+			_carousel.Scroll = 0.0f;
+			_leftButton.Disabled = true;
+		}
+		else
+		{
+			_leftButton.Disabled = false;
+		}
+		
+		var width = _carousel?.GetChild<GridContainer>(0).Size.X;
+		if (_carousel?.Scroll <= -width)
+		{
+			_carousel.Scroll = -width ?? 0.0f;
+			_rightButton.Disabled = true;
+		}
+		else
+		{
+			_rightButton.Disabled = false;
 		}
 	}
 }
