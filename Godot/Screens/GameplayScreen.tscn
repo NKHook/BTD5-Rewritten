@@ -9,15 +9,26 @@
 script = ExtResource("1_rt66q")
 
 [node name="map_props" parent="." instance=ExtResource("2_1y4t2")]
+position = Vector2(-133, -128)
 
-[node name="main_camera" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
-script = ExtResource("3_hch6n")
+[node name="in_game_hud" type="CanvasLayer" parent="."]
 
-[node name="pause_button" parent="." instance=ExtResource("3_mdo6x")]
-offset_left = 780.0
-offset_top = 375.0
-offset_right = 880.0
-offset_bottom = 475.0
+[node name="pause_button" parent="in_game_hud" instance=ExtResource("3_mdo6x")]
+offset_left = 1058.0
+offset_top = 610.0
+offset_right = 1118.0
+offset_bottom = 670.0
 SpriteName = "pause_icon"
 TextureName = "in_game_hud"
+
+[node name="play_button" parent="in_game_hud" instance=ExtResource("3_mdo6x")]
+offset_left = 994.0
+offset_top = 610.0
+offset_right = 1054.0
+offset_bottom = 670.0
+SpriteName = "play_icon"
+TextureName = "in_game_hud"
+
+[node name="main_camera" type="Camera2D" parent="."]
+zoom = Vector2(0.47, 0.47)
+script = ExtResource("3_hch6n")

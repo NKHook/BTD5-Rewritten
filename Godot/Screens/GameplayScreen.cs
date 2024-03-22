@@ -18,7 +18,8 @@ public partial class GameplayScreen : BloonsBaseScreen
 		
 		Fabricate?.Invoke(this, null!);
 
-		var pauseButton = GetNode<SpriteButton>("pause_button");
+		var gameHud = GetNode<CanvasLayer>("in_game_hud");
+		var pauseButton = gameHud.GetNode<SpriteButton>("pause_button");
 		pauseButton.Pressed += () => ScreenManager.Instance().OpenPopup("InGamePauseScreen");
 		
 		var props = GetNode<CompoundSprite>("map_props");
