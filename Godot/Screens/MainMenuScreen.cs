@@ -55,6 +55,18 @@ public partial class MainMenuScreen : Node2D
         return result;
     }
 
+    private Area2D? GetTriggerForScreen(string screenName)
+    {
+        var buildingTriggers = GetNode("building_triggers");
+        foreach (var child in buildingTriggers.GetChildren())
+        {
+            if (child is Area2D area && area.Name == screenName)
+                return area;
+        }
+
+        return null;
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -65,17 +77,12 @@ public partial class MainMenuScreen : Node2D
 
         foreach (var building in _buildings)
         {
-            var collider = new Area2D();
-            var area = new CollisionShape2D();
-            area.Name = "interaction_check";
-            var circleShape = new CircleShape2D();
-            circleShape.Radius = 250.0f;
-            area.Shape = circleShape;
-            collider.AddChild(area);
-            collider.InputEvent += (viewport, @event, idx) => BuildingInputEvent(viewport, @event, idx, building);
-            collider.MouseEntered += () => BuildingMouseEntered(building);
-            collider.MouseExited += () => BuildingMouseExited(building);
-            building.AddChild(collider);
+            var trigger = GetTriggerForScreen(building.Screen);
+            if (trigger is null) continue;
+            
+            trigger.InputEvent += (viewport, @event, idx) => BuildingInputEvent(viewport, @event, idx, building);
+            trigger.MouseEntered += () => BuildingMouseEntered(building);
+            trigger.MouseExited += () => BuildingMouseExited(building);
         }
     }
 

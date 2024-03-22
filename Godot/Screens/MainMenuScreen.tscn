@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bdcrc2sg0ndu5"]
+[gd_scene load_steps=17 format=3 uid="uid://bdcrc2sg0ndu5"]
 
 [ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.cs" id="1_xyq0l"]
 [ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
@@ -8,6 +8,36 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
 shader = ExtResource("2_cswtu")
 shader_parameter/color = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o5pvd"]
+radius = 300.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o2mhr"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pt0oc"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q7x0t"]
+radius = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7dynn"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gklkn"]
+radius = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gxpbe"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vf0vf"]
+radius = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8ac0p"]
+radius = 250.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kju27"]
+radius = 200.0
 
 [sub_resource type="Curve2D" id="Curve2D_aj36y"]
 _data = {
@@ -37,6 +67,67 @@ SpriteDefinitionRes = "Assets/JSON/Tablet/UILayout/main_menu.json"
 
 [node name="fade_in" type="Node2D" parent="overlay"]
 script = ExtResource("4_hndw2")
+
+[node name="building_triggers" type="Node2D" parent="."]
+
+[node name="GameSelectionScreen" type="Area2D" parent="building_triggers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/GameSelectionScreen"]
+shape = SubResource("CircleShape2D_o5pvd")
+
+[node name="SpecialAgentScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(-750, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/SpecialAgentScreen"]
+shape = SubResource("CircleShape2D_o2mhr")
+
+[node name="TowerInfoScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(32, 508)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/TowerInfoScreen"]
+shape = SubResource("CircleShape2D_pt0oc")
+
+[node name="UpgradeShop" type="Area2D" parent="building_triggers"]
+position = Vector2(-764, -450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/UpgradeShop"]
+shape = SubResource("CircleShape2D_q7x0t")
+
+[node name="SpecialtiesScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(760, 268)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/SpecialtiesScreen"]
+shape = SubResource("CircleShape2D_7dynn")
+
+[node name="HallOfFameScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(44, -488)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/HallOfFameScreen"]
+shape = SubResource("CircleShape2D_gklkn")
+
+[node name="MonkeyLabScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(-588, -80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/MonkeyLabScreen"]
+shape = SubResource("CircleShape2D_gxpbe")
+
+[node name="SettingsScreen" type="Area2D" parent="building_triggers"]
+position = Vector2(756, -368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/SettingsScreen"]
+shape = SubResource("CircleShape2D_vf0vf")
+
+[node name="MoreGames" type="Area2D" parent="building_triggers"]
+position = Vector2(-760, 700)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/MoreGames"]
+shape = SubResource("CircleShape2D_8ac0p")
+
+[node name="Chest" type="Area2D" parent="building_triggers"]
+position = Vector2(632, 644)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="building_triggers/Chest"]
+shape = SubResource("CircleShape2D_kju27")
 
 [node name="camera_path" type="Path2D" parent="."]
 curve = SubResource("Curve2D_aj36y")
