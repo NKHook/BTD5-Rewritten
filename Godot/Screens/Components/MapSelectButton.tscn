@@ -8,7 +8,6 @@ offset_right = 500.0
 offset_bottom = 360.0
 icon_alignment = 1
 script = ExtResource("1_wfpyn")
-_trackName = "monkey_lane"
 
 [node name="border" parent="." instance=ExtResource("1_32nda")]
 top_level = true

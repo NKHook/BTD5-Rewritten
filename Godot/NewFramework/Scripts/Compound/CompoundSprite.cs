@@ -132,7 +132,8 @@ public partial class CompoundSprite : Node2D
             child.Free();
         }
 
-        Debug.Assert(SpriteDefinitionRes != "");
+        if (SpriteDefinitionRes == "")
+            return;
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
         var stageOptions = spriteDefinitionJson.GetProperty("stageOptions");
