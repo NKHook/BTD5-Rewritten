@@ -4,14 +4,37 @@ namespace BloonsTD5Rewritten.Godot.Screens;
 
 public partial class MapSelectScreen : BloonsBaseScreen
 {
+	private MapSelectCarousel? _carousel;
+	private SpriteButton? _leftButton;
+	private SpriteButton? _rightButton;
 	public override void _Ready()
 	{
 		base._Ready();
 
+		_carousel = GetNode<MapSelectCarousel>("MapSelectCarousel");
+		
 		var backButton = GetNode<SpriteButton>("back_button");
 		backButton.Pressed += () =>
 		{
 			ScreenManager.Instance().SetScreen("MainMenuScreen", true);
 		};
+
+		_leftButton = GetNode<SpriteButton>("left_button");
+		_rightButton = GetNode<SpriteButton>("right_button");
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+
+		if (_leftButton!.ButtonPressed)
+		{
+			_carousel!.Scroll += 50.0f;
+		}
+
+		if (_rightButton!.ButtonPressed)
+		{
+			_carousel!.Scroll -= 50.0f;
+		}
 	}
 }

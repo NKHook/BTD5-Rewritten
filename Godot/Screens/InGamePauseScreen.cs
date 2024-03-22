@@ -1,7 +1,6 @@
-using Godot;
-using System;
-using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Screens.Components;
+
+namespace BloonsTD5Rewritten.Godot.Screens;
 
 public partial class InGamePauseScreen : PopupScreenBase
 {

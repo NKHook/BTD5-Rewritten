@@ -8,6 +8,7 @@ public partial class MapSelectCarousel : Node
 {
 	private PackedScene? _mapButton;
 	private GridContainer? _mapsGrid;
+	public float Scroll = 0.0f;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -28,4 +29,13 @@ public partial class MapSelectCarousel : Node
 		}
 	}
 
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+
+		if (_mapsGrid == null) return;
+		
+		var x = Mathf.Lerp(_mapsGrid.Position.X, Scroll, 0.05f);
+		_mapsGrid.Position = new Vector2(x, -360.0f);
+	}
 }

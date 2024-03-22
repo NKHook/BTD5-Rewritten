@@ -4,11 +4,12 @@
 [ext_resource type="Script" path="res://Godot/Screens/Components/TrackThumbnail.cs" id="1_wfpyn"]
 
 [node name="MapSelectThumb" type="Button"]
-offset_right = 500.0
-offset_bottom = 360.0
+custom_minimum_size = Vector2(500, 360)
+offset_right = 8.0
+offset_bottom = 8.0
 icon_alignment = 1
 script = ExtResource("1_wfpyn")
 
 [node name="border" parent="." instance=ExtResource("1_32nda")]
-top_level = true
+position = Vector2(500, 360)
 SpriteDefinitionRes = "Assets/JSON/UILayout/map_border_compound.json"
