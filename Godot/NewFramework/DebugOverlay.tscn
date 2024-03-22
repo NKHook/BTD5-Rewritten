@@ -7,6 +7,7 @@
 [node name="DebugOverlay" type="Node2D"]
 
 [node name="overlay" type="CanvasLayer" parent="."]
+layer = 10
 
 [node name="fps_display" type="Label" parent="overlay"]
 offset_right = 40.0

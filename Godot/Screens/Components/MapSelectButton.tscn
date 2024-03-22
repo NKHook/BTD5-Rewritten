@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dx05tlehjg42e"]
+[gd_scene load_steps=4 format=3 uid="uid://dx05tlehjg42e"]
 
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="1_32nda"]
 [ext_resource type="Script" path="res://Godot/Screens/Components/TrackThumbnail.cs" id="1_wfpyn"]
+[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://Godot/NewFramework/Sprite.tscn" id="3_a47dg"]
 
 [node name="MapSelectThumb" type="Button"]
 custom_minimum_size = Vector2(500, 360)
@@ -13,3 +14,22 @@ script = ExtResource("1_wfpyn")
 [node name="border" parent="." instance=ExtResource("1_32nda")]
 position = Vector2(500, 360)
 SpriteDefinitionRes = "Assets/JSON/UILayout/map_border_compound.json"
+
+[node name="title_plate" parent="." instance=ExtResource("3_a47dg")]
+position = Vector2(250, 0)
+centered = false
+SpriteName = "newshared_button_wide"
+TextureName = "newshared"
+
+[node name="title_label" type="Label" parent="title_plate"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.5
+offset_top = 25.0
+offset_right = 249.5
+offset_bottom = 115.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "MAP TITLE"
+horizontal_alignment = 1

@@ -29,12 +29,29 @@ public partial class MapSelectCarousel : Node
 		}
 	}
 
+	public override void _Input(InputEvent @event)
+	{
+		base._Input(@event);
+
+		if (@event is not InputEventMouseButton button) return;
+		
+		switch (button.ButtonIndex)
+		{
+			case MouseButton.WheelDown:
+				Scroll -= 500.0f;
+				break;
+			case MouseButton.WheelUp:
+				Scroll += 500.0f;
+				break;
+		}
+	}
+
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
 
 		if (_mapsGrid == null) return;
-		
+
 		var x = Mathf.Lerp(_mapsGrid.Position.X, Scroll, 0.05f);
 		_mapsGrid.Position = new Vector2(x, -360.0f);
 	}

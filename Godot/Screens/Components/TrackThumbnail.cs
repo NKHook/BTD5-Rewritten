@@ -24,6 +24,9 @@ public partial class TrackThumbnail : Button
 			
 			ScreenManager.Instance().SetScreen("GameplayScreen", true);
 		};
+
+		var titleLabel = GetNode<Label>("title_plate/title_label");
+		titleLabel.Text = TrackName;
 	}
 
 	public override void _Process(double delta)
