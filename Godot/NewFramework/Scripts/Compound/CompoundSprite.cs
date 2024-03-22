@@ -227,10 +227,9 @@ public partial class CompoundSprite : Node2D
             }
         }
         
-        if (!Animating)
-            return;
+        if (Animating)
+            _timeline?.Tick((float)delta);
         
-        _timeline?.Tick((float)delta);
         foreach (var childNode in GetChildren(false))
         {
             var child = childNode as Node2D;
