@@ -15,3 +15,15 @@ This repository will not have any more modding support than the base game. Once 
 
 ## Will this have bug fixes or performance improvements?
 At the moment, most likely not. I don't think it's feasible to make a faithful re-creation of the game and include fixing bugs or issues with the base game without a team backing this project.
+
+# Build/Setup
+To build BTD5-Rewritten,
+1. Download [Godot](https://godotengine.org/). **Make sure to download the version with .NET/Mono/C# support!**
+2. Clone this project using git
+3. Open Godot and Import the project
+4. Once Godot is open, locate the "FileSystem" window
+5. Find the `asset_importer_config.gd` file, it is insde the `Godot/Scripts/` folder.
+6. Find the `_ready()` function, and edit the string that sets the `game_dir` variable
+7. Replace the string with the path to your own installation of BTD5 ***NOTE: Replace any `\` with a `/`!!***
+8. You can now run the game directly from the Godot editor
+
