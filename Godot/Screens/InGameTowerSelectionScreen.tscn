@@ -26,7 +26,7 @@ scale = Vector2(0.47, 0.47)
 custom_minimum_size = Vector2(277, 0)
 layout_mode = 2
 theme_override_constants/h_separation = 120
-theme_override_constants/v_separation = 120
+theme_override_constants/v_separation = 125
 
 [node name="side_top" parent="." instance=ExtResource("1_khenm")]
 position = Vector2(1056, 63)

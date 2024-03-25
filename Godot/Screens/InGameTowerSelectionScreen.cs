@@ -23,7 +23,7 @@ public partial class InGameTowerSelectionScreen : Node
 
 		var selectionGrid = GetNode<GridContainer>("tower_selection_scroll/tower_selection_grid");
 		var biggest = Math.Max(leftItems.EnumerateArray().Count(), rightItems.EnumerateArray().Count());
-		selectionGrid.CustomMinimumSize = new Vector2(selectionGrid.CustomMinimumSize.X, biggest * 120);
+		selectionGrid.CustomMinimumSize = new Vector2(selectionGrid.CustomMinimumSize.X, biggest * 125);
 
 		for (var i = 0; i < biggest; i++)
 		{
