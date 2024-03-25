@@ -6,7 +6,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Screens;
 
-public partial class GameplayScreen : BloonsBaseScreen
+public partial class GameScreen : BloonsBaseScreen
 {
 	public static EventHandler? Fabricate;
 
@@ -17,10 +17,6 @@ public partial class GameplayScreen : BloonsBaseScreen
 		base._Ready();
 		
 		Fabricate?.Invoke(this, null!);
-
-		var gameHud = GetNode<CanvasLayer>("in_game_hud");
-		var pauseButton = gameHud.GetNode<SpriteButton>("pause_button");
-		pauseButton.Pressed += () => ScreenManager.Instance().OpenPopup("InGamePauseScreen");
 		
 		var props = GetNode<CompoundSprite>("map_props");
 		props.SpriteDefinitionRes = "Assets/JSON/LevelDefinitions/" + MapName + "/" + MapName + ".props";

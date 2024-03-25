@@ -15,14 +15,14 @@ public partial class TrackThumbnail : Button
 		
 		Pressed += () =>
 		{
-			GameplayScreen.Fabricate += (sender, args) =>
+			GameScreen.Fabricate += (sender, args) =>
 			{
-				GameplayScreen.Fabricate = null;
+				GameScreen.Fabricate = null;
 
-				if (sender is GameplayScreen screen) screen.MapName = TrackName;
+				if (sender is GameScreen screen) screen.MapName = TrackName;
 			};
 			
-			ScreenManager.Instance().SetScreen("GameplayScreen", true);
+			ScreenManager.Instance().SetScreen("GameScreen", true);
 		};
 
 		var titleLabel = GetNode<Label>("title_plate/title_label");

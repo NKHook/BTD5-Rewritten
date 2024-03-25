@@ -44,10 +44,6 @@ uniform float alpha : hint_range(0, 1) = 1;
 void fragment() {
 // ColorParameter:3
 	vec4 n_out3p0 = color;
-	float n_out3p1 = n_out3p0.r;
-	float n_out3p2 = n_out3p0.g;
-	float n_out3p3 = n_out3p0.b;
-	float n_out3p4 = n_out3p0.a;
 
 
 // Input:4
@@ -84,7 +80,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-468.9, -101.05)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(580, 100)
