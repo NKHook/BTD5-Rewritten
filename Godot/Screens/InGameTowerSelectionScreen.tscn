@@ -1,31 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://c20j2e72kjj08"]
+[gd_scene load_steps=6 format=3 uid="uid://c20j2e72kjj08"]
 
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://Godot/NewFramework/Sprite.tscn" id="1_khenm"]
 [ext_resource type="Script" path="res://Godot/Screens/InGameTowerSelectionScreen.cs" id="1_lfrst"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Godot/Screens/Components/SpriteButton.tscn" id="2_cbegi"]
 [ext_resource type="PackedScene" uid="uid://i32iqe44ovgj" path="res://Godot/Screens/Components/TowerSelectionButton.tscn" id="2_mmht6"]
+[ext_resource type="PackedScene" uid="uid://c01mpys52ok27" path="res://Godot/Screens/Components/TowerSelectionEntry.tscn" id="3_777p5"]
 
 [node name="InGameTowerSelectionScreen" type="CanvasLayer"]
 script = ExtResource("1_lfrst")
 TowerSelectionButtonScene = ExtResource("2_mmht6")
+TowerSelectionEntryScene = ExtResource("3_777p5")
 
 [node name="tower_selection_scroll" type="ScrollContainer" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 360.0
+offset_left = 350.0
 offset_top = 125.0
-offset_right = 630.0
+offset_right = 640.0
 offset_bottom = 865.0
 grow_horizontal = 2
 scale = Vector2(0.47, 0.47)
 
 [node name="tower_selection_grid" type="GridContainer" parent="tower_selection_scroll"]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(277, 0)
 layout_mode = 2
 theme_override_constants/h_separation = 120
-theme_override_constants/v_separation = 116
-columns = 2
+theme_override_constants/v_separation = 120
 
 [node name="side_top" parent="." instance=ExtResource("1_khenm")]
 position = Vector2(1056, 63)
