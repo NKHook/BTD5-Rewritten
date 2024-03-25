@@ -1,10 +1,8 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
 
@@ -21,8 +19,8 @@ public partial class CompoundSprite : Node2D
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
 
-    public EventHandler? Loaded = null;
-    public bool FullyLoaded { get; private set; } = false;
+    public readonly EventHandler? Loaded = null;
+    public bool FullyLoaded { get; private set; }
 
     public float Time
     {
@@ -86,7 +84,7 @@ public partial class CompoundSprite : Node2D
                 _initialStates[uid] = state;
                 _childCells[uid] = cell;
 
-                result = LoadSingleSprite(cell!, state);
+                result = LoadSingleSprite(cell, state);
                 break;
             case ActorTypes.CompoundSprite:
                 result = LoadCompoundSprite(sprite!);
@@ -115,7 +113,7 @@ public partial class CompoundSprite : Node2D
             select cell).ToList();
     }
 
-    public static TimelineInterpolator? LoadStageOptions(JsonElement stageOptions)
+    public static TimelineInterpolator LoadStageOptions(JsonElement stageOptions)
     {
         var duration = stageOptions.GetProperty("StageLength").GetSingle();
         return new TimelineInterpolator(duration);
@@ -150,45 +148,44 @@ public partial class CompoundSprite : Node2D
             AddChild(spriteObj);
         }
 
-        if (spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson))
+        if (!spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson)) return;
+        
+        foreach (var timelineJson in timelinesJson.EnumerateArray())
         {
-            foreach (var timelineJson in timelinesJson.EnumerateArray())
+            var uid = timelineJson.GetProperty("spriteuid").GetInt32();
+            var stagesJson = timelineJson.GetProperty("stage");
+            if(stagesJson.ValueKind == JsonValueKind.Null)
+                continue;
+
+            var stages = new List<ActorState>();
+            foreach (var stageJson in stagesJson.EnumerateArray())
             {
-                var uid = timelineJson.GetProperty("spriteuid").GetInt32();
-                var stagesJson = timelineJson.GetProperty("stage");
-                if(stagesJson.ValueKind == JsonValueKind.Null)
+                if(stageJson.ValueKind == JsonValueKind.Null)
+                    continue;
+            
+                //Prevent states with the same time overwriting eachother
+                //the game only uses the first one at the same time for some reason
+                var time = stageJson.GetProperty("Time").GetSingle();
+                if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
                     continue;
 
-                var stages = new List<ActorState>();
-                foreach (var stageJson in stagesJson.EnumerateArray())
-                {
-                    if(stageJson.ValueKind == JsonValueKind.Null)
-                        continue;
-                
-                    //Prevent states with the same time overwriting eachother
-                    //the game only uses the first one at the same time for some reason
-                    var time = stageJson.GetProperty("Time").GetSingle();
-                    if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
-                        continue;
-
-                    var cell = _childCells[uid];
-                    stages.Add(new ActorState(cell, stageJson));
-                }
-
-                Node2D? node = null;
-                foreach (var child in GetChildren(false))
-                {
-                    if (int.Parse(child.Name) != uid) continue;
-                
-                    node = child as Node2D;
-                    if (node != null)
-                        break;
-                }
-                Debug.Assert(node != null);
-            
-                _timeline?.AddTimeline(uid, node!, stages);
-                _timeline?.SetInitialState(uid, _initialStates[uid]);
+                var cell = _childCells[uid];
+                stages.Add(new ActorState(cell, stageJson));
             }
+
+            Node2D? node = null;
+            foreach (var child in GetChildren())
+            {
+                if (int.Parse(child.Name) != uid) continue;
+            
+                node = child as Node2D;
+                if (node != null)
+                    break;
+            }
+            Debug.Assert(node != null);
+        
+            _timeline?.AddTimeline(uid, node!, stages);
+            _timeline?.SetInitialState(uid, _initialStates[uid]);
         }
     }
 
@@ -230,7 +227,7 @@ public partial class CompoundSprite : Node2D
         if (Animating)
             _timeline?.Tick((float)delta);
         
-        foreach (var childNode in GetChildren(false))
+        foreach (var childNode in GetChildren())
         {
             var child = childNode as Node2D;
             
