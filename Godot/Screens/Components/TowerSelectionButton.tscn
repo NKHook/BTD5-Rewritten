@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://i32iqe44ovgj"]
+
+[ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Godot/Screens/Components/SpriteButton.tscn" id="1_xcy1u"]
+[ext_resource type="Script" path="res://Godot/Screens/Components/TowerSelectionButton.cs" id="2_muojh"]
+
+[node name="TowerSelectionButton" instance=ExtResource("1_xcy1u")]
+offset_right = 113.0
+offset_bottom = 93.0
+script = ExtResource("2_muojh")
+FactoryName = ""
+Icon = ""
+IconTexture = "in_game_hud"
+ButtonSize = Vector2(118, 116)
+SpriteName = "tower_thumbs_box"
+TextureName = "in_game_hud"

@@ -19,7 +19,7 @@ TextureName = "in_game_edges"
 [node name="right_border" parent="." instance=ExtResource("1_4heoq")]
 position = Vector2(1200, 360)
 scale = Vector2(0.47, 0.47)
-SpriteName = "in_game_wood_right"
+SpriteName = "in_game_edge_wood_right"
 TextureName = "in_game_edges"
 
 [node name="right_edge" parent="." instance=ExtResource("1_4heoq")]

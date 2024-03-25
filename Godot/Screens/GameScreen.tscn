@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlxno7msjbnv7"]
+[gd_scene load_steps=7 format=3 uid="uid://dlxno7msjbnv7"]
 
 [ext_resource type="Script" path="res://Godot/Screens/GameScreen.cs" id="1_vs2gu"]
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="2_qs5w1"]
 [ext_resource type="PackedScene" uid="uid://c355drarkwqru" path="res://Godot/Screens/GameHudScreen.tscn" id="3_nafbs"]
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_camera.gd" id="4_o2i7f"]
 [ext_resource type="PackedScene" uid="uid://bas1dl0hire2i" path="res://Godot/Screens/InGameBorders.tscn" id="4_sbag4"]
+[ext_resource type="PackedScene" uid="uid://c20j2e72kjj08" path="res://Godot/Screens/InGameTowerSelectionScreen.tscn" id="5_83km7"]
 
 [node name="GameScreen" type="Node2D"]
 script = ExtResource("1_vs2gu")
@@ -15,6 +16,8 @@ position = Vector2(-133, -128)
 [node name="GameHudScreen" parent="." instance=ExtResource("3_nafbs")]
 
 [node name="InGameBorders" parent="." instance=ExtResource("4_sbag4")]
+
+[node name="InGameTowerSelectionScreen" parent="." instance=ExtResource("5_83km7")]
 
 [node name="main_camera" type="Camera2D" parent="."]
 zoom = Vector2(0.47, 0.47)
