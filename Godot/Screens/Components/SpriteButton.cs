@@ -5,8 +5,8 @@ namespace BloonsTD5Rewritten.Godot.Screens.Components;
 
 public partial class SpriteButton : Button
 {
-	[Export] public string SpriteName;
-	[Export] public string TextureName;
+	[Export] public string? SpriteName;
+	[Export] public string? TextureName;
 	public Sprite? Sprite;
 	private bool _wasDisabled = false;
 	
@@ -14,11 +14,11 @@ public partial class SpriteButton : Button
 	{
 		Sprite = new Sprite();
 		Sprite.Centered = false;
-		Sprite.SpriteName = SpriteName;
-		Sprite.TextureName = TextureName;
+		Sprite.SpriteName = SpriteName!;
+		Sprite.TextureName = TextureName!;
 		Sprite.SpriteReady += (sender, readySprite) =>
 		{
-			var factor = Size / new Vector2(readySprite.Cell.W, readySprite.Cell.H);
+			var factor = Size / new Vector2(readySprite.Cell?.W ?? 0, readySprite.Cell?.H ?? 0);
 			readySprite.Scale = factor;
 		};
 		

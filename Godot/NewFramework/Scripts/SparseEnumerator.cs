@@ -24,7 +24,7 @@ public class SparseEnumerator<T> : IEnumerator
         _cursor = -1;
     }
 
-    public object Current
+    public object? Current
     {
         get
         {

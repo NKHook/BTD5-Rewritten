@@ -40,7 +40,7 @@ public partial class ScreenManager : Node2D
 		else
 		{
 			var promise = AsyncResourceLoader.Instance().Load<PackedScene>("res://Godot/Screens/" + screenName + ".tscn");
-			promise.Then += (sender, scene) => SetScreenNode(scene.Instantiate<Node2D>());
+			if (promise != null) promise.Then += (sender, scene) => SetScreenNode(scene.Instantiate<Node2D>());
 		}
 	}
 
@@ -49,15 +49,16 @@ public partial class ScreenManager : Node2D
 		if (FindChild(popupName) != null) return;
 		
 		var promise = AsyncResourceLoader.Instance().Load<PackedScene>("res://Godot/Screens/" + popupName + ".tscn");
-		promise.Then += (sender, popup) =>
-		{
-			var popupScreen = popup.Instantiate();
-			AddChild(popupScreen);
-			var top = _popups.Count > 0 ? _popups.First() : null;
-			if (top != null) top.Visible = false;
-			
-			_popups.Push(popupScreen as Node2D);
-		};
+		if (promise != null)
+			promise.Then += (sender, popup) =>
+			{
+				var popupScreen = popup.Instantiate();
+				AddChild(popupScreen);
+				var top = _popups.Count > 0 ? _popups.First() : null;
+				if (top != null) top.Visible = false;
+
+				_popups.Push(popupScreen as Node2D);
+			};
 	}
 
 	public void ClosePopup()

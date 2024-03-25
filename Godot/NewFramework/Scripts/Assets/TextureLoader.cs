@@ -16,7 +16,7 @@ public partial class TextureLoader : Node
 	private Node? _assetImporterConfig;
 
 	private List<SpriteInfo>? _spritesRoot;
-	private Dictionary<string?, Task<ImageTexture>> _thumbLoadTasks = new();
+	private readonly Dictionary<string, Task<ImageTexture>> _thumbLoadTasks = new();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -34,7 +34,7 @@ public partial class TextureLoader : Node
 		_spritesRoot = LoadSpriteInfo(texturesDirAccess);
 	}
 
-	public ImageTexture? GetTrackThumb(string? trackName)
+	public ImageTexture? GetTrackThumb(string trackName)
 	{
 		if (_thumbLoadTasks.TryGetValue(trackName, out var task))
 		{

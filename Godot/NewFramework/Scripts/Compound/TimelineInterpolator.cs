@@ -82,7 +82,7 @@ public class TimelineInterpolator
         
         //Interpolate between the previous and next states
         var lerpFactor = (Time - previous?.Time) / (next.Time - previous?.Time) ?? 0.0f;
-        _currentStates[uid]?.Interpolate(previous, next, lerpFactor);
+        _currentStates[uid]?.Interpolate(previous!, next, lerpFactor);
         return _currentStates[uid];
     }
 }

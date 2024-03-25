@@ -8,19 +8,19 @@ namespace BloonsTD5Rewritten.Godot.Screens;
 public partial class LoadingScreen : BloonsBaseScreen
 {
 	[Export] public string ScreenToLoad = "";
-	[Export] public CompoundSprite LoadingSprite = null;
+	[Export] public CompoundSprite? LoadingSprite;
 
 	public EventHandler<Node2D> ScreenLoaded = null!;
-	private bool _loadComplete = false;
-	private bool _startedLoading = false;
-	private bool _animationStarted = false;
+	private bool _loadComplete;
+	private bool _startedLoading;
+	private bool _animationStarted;
 	public override void _Ready()
 	{
 		base._Ready();
 		
 		Debug.Assert(ScreenToLoad != "", "Loading screen has no screen to load!");
 		Debug.Assert(LoadingSprite != null, "Loading screen has no loading sprite!");
-		LoadingSprite.Loop = false;
+		LoadingSprite!.Loop = false;
 
 		//Actually start loading the screen once the loading screen itself has loaded
 		Loaded += (sender, args) =>
@@ -35,6 +35,8 @@ public partial class LoadingScreen : BloonsBaseScreen
 		var screenPromise = AsyncResourceLoader.Instance()
 			.Load<PackedScene>("res://Godot/Screens/" + ScreenToLoad + ".tscn");
 
+		if (screenPromise == null) return;
+		
 		screenPromise.Then += (_, scene) =>
 		{
 			//Add the desired scene
@@ -58,7 +60,7 @@ public partial class LoadingScreen : BloonsBaseScreen
 		if (!_animationStarted)
 			return;
 		
-		if (LoadingSprite.Time >= 0.5f && !_loadComplete)
+		if (LoadingSprite is { Time: >= 0.5f } && !_loadComplete)
 		{
 			LoadingSprite.Animating = false;
 			LoadingSprite.Time = 0.5f;
@@ -71,10 +73,10 @@ public partial class LoadingScreen : BloonsBaseScreen
 
 		if (_loadComplete)
 		{
-			LoadingSprite.Animating = true;
+			LoadingSprite!.Animating = true;
 		}
 		
-		if (LoadingSprite.Time >= LoadingSprite.Duration)
+		if (LoadingSprite!.Time >= LoadingSprite.Duration)
 			QueueFree();
 	}
 }

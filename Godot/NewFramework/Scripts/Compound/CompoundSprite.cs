@@ -78,7 +78,7 @@ public partial class CompoundSprite : Node2D
         switch (type)
         {
             case ActorTypes.Sprite:
-                var cell = _usedCells.FirstOrDefault(used => used.Name == sprite);
+                var cell = _usedCells.FirstOrDefault(used => used.CellName == sprite);
                 if (cell == null)
                     return null;
 

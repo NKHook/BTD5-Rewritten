@@ -10,16 +10,16 @@ public partial class AnimationEntry : Node
     private TextureQuality _quality;
     private readonly List<CellEntry> _cells = new();
 
-    public string Name;
+    public string AnimationName;
     public FrameInfo Parent;
     
-    public AnimationEntry(FrameInfo parent, string texturesDirPath, string filePath, TextureQuality quality, string name)
+    public AnimationEntry(FrameInfo parent, string texturesDirPath, string filePath, TextureQuality quality, string animationName)
     {
         Parent = parent;
         _texturesDirPath = texturesDirPath;
         _filePath = filePath;
         _quality = quality;
-        Name = name;
+        AnimationName = animationName;
     }
 
     public void AddCell(CellEntry entry)
@@ -27,13 +27,13 @@ public partial class AnimationEntry : Node
         _cells.Add(entry);
     }
 
-    public CellEntry GetCell(string name)
+    public CellEntry? GetCell(string name)
     {
-        return _cells.Find(entry => entry.Name == name);
+        return _cells.Find(entry => entry.CellName == name);
     }
 
-    public CellEntry FindCell(string name)
+    public CellEntry? FindCell(string name)
     {
-        return _cells.Find(cell => cell.Name == name);
+        return _cells.Find(cell => cell.CellName == name);
     }
 }

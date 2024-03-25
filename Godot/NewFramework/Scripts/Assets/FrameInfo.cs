@@ -16,21 +16,21 @@ public partial class FrameInfo : Node
     private int _texw;
     private int _texh;
     private TextureType _type;
-    private readonly List<Assets.AnimationEntry> _animations = new();
-    private readonly List<Assets.CellEntry> _cells = new();
+    private readonly List<AnimationEntry> _animations = new();
+    private readonly List<CellEntry> _cells = new();
     private Image? _frameImage;
     private ImageTexture? _frameTexture;
     private Task<Image>? _imageTask;
     
-    public string Name;
+    public string FrameName;
     
-    public FrameInfo(SpriteInfo parent, string texturesDirPath, string filePath, TextureQuality quality, string name, int texw, int texh, TextureType type)
+    public FrameInfo(SpriteInfo parent, string texturesDirPath, string filePath, TextureQuality quality, string frameName, int texw, int texh, TextureType type)
     {
         _parent = parent;
         _texturesDirPath = texturesDirPath;
         _filePath = filePath;
         _quality = quality;
-        Name = name;
+        FrameName = frameName;
         _texw = texw;
         _texh = texh;
         _type = type;
@@ -68,7 +68,7 @@ public partial class FrameInfo : Node
         while (true)
         {
             var dir = Path.GetDirectoryName(_filePath);
-            var file = dir + "/" + Name + extension;
+            var file = dir + "/" + FrameName + extension;
             //GD.Print("Loading frame: " + file);
 
             switch (_type)
@@ -106,23 +106,23 @@ public partial class FrameInfo : Node
         _cells.Add(entry);
     }
 
-    public Assets.AnimationEntry GetAnimation(string name)
+    public AnimationEntry? GetAnimation(string name)
     {
-        return _animations.Find(entry => entry.Name == name);
+        return _animations.Find(entry => entry.AnimationName == name);
     }
 
-    public Assets.CellEntry GetCell(string name)
+    public CellEntry? GetCell(string name)
     {
-        return _cells.Find(entry => entry.Name == name);
+        return _cells.Find(entry => entry.CellName == name);
     }
 
-    public Assets.CellEntry FindCell(string name)
+    public CellEntry? FindCell(string name)
     {
         foreach (var result in _animations.Select(animation => animation.FindCell(name)).Where(result => result != null))
         {
             return result;
         }
 
-        return _cells.Find(cell => cell.Name == name);
+        return _cells.Find(cell => cell.CellName == name);
     }
 }

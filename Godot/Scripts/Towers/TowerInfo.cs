@@ -8,7 +8,7 @@ public class TowerInfo
 {
     public static readonly TowerInfo InvalidTower = new("invalid");
 
-    public string FactoryName;
+    public string FactoryName => TypeName;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("AircraftList")]
@@ -112,7 +112,6 @@ public class TowerInfo
 
     public TowerInfo() : base()
     {
-        FactoryName = "invalid";
         TypeName = "invalid";
         
         AircraftList = Array.Empty<string>();
@@ -130,7 +129,6 @@ public class TowerInfo
 
     public TowerInfo(string factoryName) : base()
     {
-        FactoryName = factoryName;
         TypeName = factoryName;
 
         AircraftList = Array.Empty<string>();

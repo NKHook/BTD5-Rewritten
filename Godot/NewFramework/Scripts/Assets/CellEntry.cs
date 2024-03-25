@@ -10,8 +10,8 @@ public partial class CellEntry : Node
     private string _filePath;
     private TextureQuality _quality;
     
-    public object Parent;
-    public readonly string Name;
+    public object? Parent;
+    public readonly string CellName;
     public readonly int X;
     public readonly int Y;
     public readonly int W;
@@ -21,7 +21,7 @@ public partial class CellEntry : Node
     public readonly int Aw;
     public readonly int Ah;
 
-    public CellEntry(object parent, string texturesDirPath, string filePath, TextureQuality quality, string name, int x,
+    public CellEntry(object? parent, string texturesDirPath, string filePath, TextureQuality quality, string cellName, int x,
         int y, int w, int h, int ax, int ay, int aw, int ah)
     {
         Parent = parent;
@@ -37,7 +37,7 @@ public partial class CellEntry : Node
         Aw = aw;
         Ah = ah;
         
-        Name = name;
+        CellName = cellName;
     }
 
     public Rect2 GetRegion() => new(X, Y, W, H);

@@ -7,8 +7,8 @@ namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class AsyncResourceLoader : Node
 {
-    private static AsyncResourceLoader _instance = null;
-    public static AsyncResourceLoader Instance() => _instance;
+    private static AsyncResourceLoader? _instance;
+    public static AsyncResourceLoader Instance() => _instance!;
 
     private readonly Dictionary<string, IAsyncPromise> _promises = new();
     
@@ -38,11 +38,11 @@ public partial class AsyncResourceLoader : Node
         }
     }
 
-    public AsyncPromise<T> Load<T>(string path) where T : class
+    public AsyncPromise<T>? Load<T>(string path) where T : class
     {
         Debug.Assert(Error.Ok == ResourceLoader.LoadThreadedRequest(path));
         _promises[path] = new AsyncPromise<T>();
         return _promises[path] as AsyncPromise<T>;
     }
-    public AsyncPromise<Resource> Load(string path) => Load<Resource>(path);
+    public AsyncPromise<Resource>? Load(string path) => Load<Resource>(path);
 }

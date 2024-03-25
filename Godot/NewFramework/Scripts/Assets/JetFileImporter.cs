@@ -1,4 +1,3 @@
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -9,11 +8,11 @@ namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 public partial class JetFileImporter : Node
 {
-	private static JetFileImporter instance = null;
-	public static JetFileImporter Instance() => instance;
+	private static JetFileImporter? _instance;
+	public static JetFileImporter Instance() => _instance!;
 	
-	private Node _assetImporterConfig = null;
-	private ZipFile _jetFile = null;
+	private Node? _assetImporterConfig;
+	private ZipFile? _jetFile;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -25,24 +24,17 @@ public partial class JetFileImporter : Node
 		zipFile.Password = "Q%_{6#Px]]";
 		_jetFile = zipFile;
 
-		instance = this;
+		_instance = this;
 	}
 
-	public ZipEntry GetFileEntry(string path)
+	public ZipEntry? GetFileEntry(string path)
 	{
-		return _jetFile.Entries.FirstOrDefault(entry => entry.FileName == path);
+		return _jetFile?.Entries.FirstOrDefault(entry => entry.FileName == path);
 	}
 
 	public string GetFileContent(string path)
 	{
 		var entry = GetFileEntry(path);
-		if (_jetFile.ContainsEntry(path) && entry == null)
-		{
-			foreach (var jetFileEntry in _jetFile.Entries)
-			{
-				GD.Print(jetFileEntry.FileName);
-			}
-		}
 		var stream = new MemoryStream();
 		entry?.Extract(stream);
 

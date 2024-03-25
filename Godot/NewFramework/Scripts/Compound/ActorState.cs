@@ -135,7 +135,7 @@ public class ActorState
         }
         else
         {
-            Debug.Assert(from._cellEntry.Name == to._cellEntry.Name);
+            Debug.Assert(from._cellEntry.CellName == to._cellEntry.CellName);
         }
 
         _alignment = from._alignment;
