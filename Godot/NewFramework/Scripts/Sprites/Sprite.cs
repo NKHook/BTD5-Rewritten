@@ -17,6 +17,8 @@ public partial class Sprite : Sprite2D
 		Texture = Cell.GetTexture();
 		RegionEnabled = true;
 		RegionRect = Cell.GetRegion();
+		Material = new ShaderMaterial();
+		(Material as ShaderMaterial)!.Shader = GD.Load<VisualShader>("res://Godot/Shaders/compound_sprite.tres");
 		SpriteReady?.Invoke(this, this);
 	}
 }

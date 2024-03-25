@@ -7,20 +7,32 @@ public partial class SpriteButton : Button
 {
 	[Export] public string SpriteName;
 	[Export] public string TextureName;
+	public Sprite? Sprite;
+	private bool _wasDisabled = false;
 	
 	public override void _Ready()
 	{
-		var sprite = new Sprite();
-		sprite.Centered = false;
-		sprite.SpriteName = SpriteName;
-		sprite.TextureName = TextureName;
-		sprite.SpriteReady += (sender, readySprite) =>
+		Sprite = new Sprite();
+		Sprite.Centered = false;
+		Sprite.SpriteName = SpriteName;
+		Sprite.TextureName = TextureName;
+		Sprite.SpriteReady += (sender, readySprite) =>
 		{
 			var factor = Size / new Vector2(readySprite.Cell.W, readySprite.Cell.H);
 			readySprite.Scale = factor;
 		};
 		
-		AddChild(sprite);
-		MoveChild(sprite, 0);
+		AddChild(Sprite);
+		MoveChild(Sprite, 0);
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+
+		if (Disabled == _wasDisabled) return;
+		
+		_wasDisabled = Disabled;
+		(Sprite?.Material as ShaderMaterial)?.SetShaderParameter("alpha", Disabled ? 0.5f : 1.0f);
 	}
 }
