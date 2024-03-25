@@ -67,7 +67,7 @@ public partial class InGameTowerSelectionScreen : Node
 		var factoryName = item.GetProperty("FactoryName").GetString();
 		var button = TowerSelectionButtonScene?.Instantiate<TowerSelectionButton>();
 		button!.Name = factoryName + "_button";
-		button.Icon = icon!;
+		button.TowerIcon = icon!;
 		button.FactoryName = factoryName!;
 
 		cell.AddChild(button);

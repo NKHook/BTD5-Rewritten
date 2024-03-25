@@ -6,7 +6,7 @@ namespace BloonsTD5Rewritten.Godot.Screens.Components;
 public partial class TowerSelectionButton : SpriteButton
 {
 	[Export] public string FactoryName;
-	[Export] public string Icon = "";
+	[Export] public string TowerIcon = "";
 	[Export] public string IconTexture = "in_game_hud";
 	[Export] public Vector2 ButtonSize = new Vector2(118, 116);
 
@@ -14,9 +14,9 @@ public partial class TowerSelectionButton : SpriteButton
 	{
 		FactoryName = "invalid";
 	}
-	public TowerSelectionButton(string icon, string factoryName) : base()
+	public TowerSelectionButton(string towerIcon, string factoryName) : base()
 	{
-		Icon = icon;
+		TowerIcon = towerIcon;
 		FactoryName = factoryName;
 	}
 	
@@ -29,7 +29,7 @@ public partial class TowerSelectionButton : SpriteButton
 		
 		var icon = new Sprite();
 		icon.TextureName = IconTexture;
-		icon.SpriteName = Icon;
+		icon.SpriteName = TowerIcon;
 		icon.SpriteReady += (sender, sprite) =>
 		{
 			sprite.Centered = true;

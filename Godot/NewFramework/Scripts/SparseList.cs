@@ -70,7 +70,7 @@ public class SparseList<T> : IDictionary<int, T?>
 
     public bool ContainsKey(int key)
     {
-        return key >= 0 && key < _innerList.Count;
+        return key >= 0 && key < _innerList.Count && _innerList[key] != null;
     }
 
     public bool Remove(int key)
