@@ -13,7 +13,8 @@ func _ready():
 	else:
 		game_dir = "D:/SteamLibrary/steamapps/common/BloonsTD5"
 		#HEY!!! You probably see this isnt working for you!!
-		#CHANGE THE PATH ABOVE to the path of *YOUR OWN BTD5 ASSETS FOLDER*!!!
+		#CHANGE THE PATH ABOVE to the path of *YOUR OWN BTD5 FOLDER*!!!
+		#This is the path where the BTD5 exe file is located
 		#This is done so you can have the godot editor installed anywhere
 		#But the exe is expected to be in the game's install folder
 		#You also may need to replace the \ with / instead
