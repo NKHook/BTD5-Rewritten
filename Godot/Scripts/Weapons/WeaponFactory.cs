@@ -229,7 +229,120 @@ public class WeaponFactory : BaseFactory<WeaponInfo, Weapon>
             "BossWeaken"
         };
         
+        var damageTypes = new[]
+        {
+            "Piercing",
+            "Fire",
+            "Explosive",
+            "Plasma",
+            "Juggernaut",
+            "MOABMauler",
+            "Ice",
+            "Foam"
+        };
+
+        var weaponTasks = new[]
+        {
+            "Projectile",
+            "MultiFire",
+            "Damage",
+            "StatusEffect",
+            "RemoveStatusEffect",
+            "AreaOfEffect",
+            "RandomFire",
+            "TimerFire",
+            "Effect",
+            "TextEffect",
+            "BloonSpawnedEvent",
+            "RayIntersect",
+            "ChainTasks",
+            "Collectable",
+            "LaunchAircraft",
+            "TowerModifier",
+            "Harpoon",
+            "Sacrifice",
+            "AddChildSprite",
+            "ChangeTerrain",
+            "CreateTower",
+            "ResetPopCount",
+            "EnableNextWeaponSlot",
+            "EnableWeaponSlot",
+            "ResetCooldown",
+            "RedeployTower",
+            "ChangeSubtaskEnabled",
+            "CollectCollectables",
+            "RestoreAmmo",
+            "FireTaskAtLocation",
+            "OverclockTask",
+            "RBEProjectile",
+            "TrapBloon",
+            "DamageSpread",
+            "TowerBoost"
+        };
+
+        var collisionTypes = new[]
+        {
+            "Once",
+            "Continual",
+            "None"
+        };
+
+        var taskUpgradeOperations = new[]
+        {
+            "SelectByLocation",
+            "SelectByType",
+            "Adjust",
+            "Replace"
+        };
+
+        var movementTypes = new[]
+        {
+            "Forward",
+            "RotateAroundTower",
+            "GoToTarget",
+            "Target",
+            "MotionCurve",
+            "ReturnToSender",
+            "MoveToTouch",
+            "BeeMovement",
+            "BeeSwarmMovement"
+        };
+
+        var renderLayers = new[]
+        {
+            "UnderTowers",
+            "Ground",
+            "FullScreen",
+            "Text"
+        };
+
+        var maskChangeTypes = new[]
+        {
+            "BlockTower",
+            "PathTower",
+            "Water"
+        };
+
+        var fireModes = new[]
+        {
+            "FireOnApply",
+            "FireOnPop",
+            "FireOnRemove",
+            "FireNormal",
+            "FireOnCommand",
+            "FireOnLastPop",
+            "RemoveOnLastApply"
+        };
+        
         TypeTracker.LoadCategory(Category.WeaponTypes, weaponTypes);
+        TypeTracker.LoadCategory(Category.DamageTypes, damageTypes);
+        TypeTracker.LoadCategory(Category.TaskTypes, weaponTasks);
+        TypeTracker.LoadCategory(Category.CollisionTypes, collisionTypes);
+        TypeTracker.LoadCategory(Category.TaskUpgradeOperations, taskUpgradeOperations);
+        TypeTracker.LoadCategory(Category.MovementTypes, movementTypes);
+        TypeTracker.LoadCategory(Category.RenderLayers, renderLayers);
+        TypeTracker.LoadCategory(Category.MaskChangeTypes, maskChangeTypes);
+        TypeTracker.LoadCategory(Category.FireModes, fireModes);
     }
 
     protected override string ToFileName(string factoryName)
