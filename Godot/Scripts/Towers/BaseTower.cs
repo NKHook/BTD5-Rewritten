@@ -1,18 +1,35 @@
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public partial class BaseTower : Node2D
 {
-	public TowerInfo? Definition = null;
+	private readonly TowerInfo _definition;
+	private readonly TowerUpgradeSprites _sprites;
+
+	private int leftUpgrade = 0;
+	private int rightUpgrade = 0;
+
+	public BaseTower(TowerInfo definition) : base()
+	{
+		_definition = definition;
+		_sprites = definition.GetSprites();
+	}
 	
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		UpdateSprite();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	private void UpdateSprite()
 	{
+		var sprite = GetNode<CompoundSprite>("tower_sprite");
+		sprite?.Free();
+
+		var newSprite = _sprites.GetSpriteAtUpgrade(leftUpgrade, rightUpgrade);
+		newSprite.Name = "tower_sprite";
+		AddChild(newSprite);
 	}
 }

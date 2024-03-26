@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
@@ -110,6 +111,8 @@ public class TowerInfo
     [JsonPropertyName("SpriteUpgradeDefinition")]
     public string SpriteUpgradeDefinition { get; set; }
 
+    private TowerUpgradeSprites? _towerSprites;
+
     public TowerInfo() : base()
     {
         TypeName = "invalid";
@@ -142,6 +145,18 @@ public class TowerInfo
         UpgradeIcons = Array.Empty<string[]>();
         UpgradeAvatars = Array.Empty<string[]>();
         SpriteUpgradeDefinition = string.Empty;
+    }
+
+    public TowerUpgradeSprites GetSprites()
+    {
+        if (_towerSprites != null) return _towerSprites;
+        
+        const string definitions = "Assets/JSON/TowerSpriteUpgradeDefinitions/";
+        var definitionPath = definitions + SpriteUpgradeDefinition;
+        var jsonElem = JetFileImporter.Instance().GetJsonParsed(definitionPath);
+        _towerSprites = TowerUpgradeSprites.FromJson(jsonElem);
+
+        return _towerSprites;
     }
 
     public static TowerInfo FromJson(JsonElement element) => element.Deserialize<TowerInfo>() ?? InvalidTower;

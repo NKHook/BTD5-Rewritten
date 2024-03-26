@@ -5,6 +5,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public partial class TowerFactory : BaseFactory<TowerInfo, BaseTower>
 {
+    public static TowerFactory Instance = null!;
     enum Category
     {
         TowerFactoryNames = 0,
@@ -17,6 +18,7 @@ public partial class TowerFactory : BaseFactory<TowerInfo, BaseTower>
 
     public TowerFactory() : base(TowerInfo.InvalidTower)
     {
+        Instance = this;
         DefinitionsDir = "Assets/JSON/TowerDefinitions/";
 
         var towerNames = new[]

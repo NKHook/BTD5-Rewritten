@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Screens.Components;
+using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Screens;
@@ -11,6 +12,7 @@ public partial class InGameTowerSelectionScreen : Node
 {
 	[Export] public PackedScene? TowerSelectionButtonScene;
 	[Export] public PackedScene? TowerSelectionEntryScene;
+	
 	public override void _Ready()
 	{
 		var rightOrder = JetFileImporter.Instance()
@@ -34,7 +36,7 @@ public partial class InGameTowerSelectionScreen : Node
 			selectionGrid.AddChild(entry);
 		}
 	}
-
+	
 	private Control? CreateEntry(JsonElement left, JsonElement right)
 	{
 		var leftButton = CreateButton(left);
@@ -69,6 +71,15 @@ public partial class InGameTowerSelectionScreen : Node
 		button!.Name = factoryName + "_button";
 		button.TowerIcon = icon!;
 		button.FactoryName = factoryName!;
+		button.CustomMinimumSize = Vector2.One * 120;
+
+		button.Pressed += () =>
+		{
+			var floatingTower = TowerFactory.Instance.Instantiate(button.FactoryName);
+			var currentScreen = ScreenManager.Instance().CurrentScreen;
+			var towerManager = currentScreen?.GetNode<TowerManager>("TowerManager");
+			towerManager?.SetFloating(floatingTower);
+		};
 
 		cell.AddChild(button);
 		return cell;

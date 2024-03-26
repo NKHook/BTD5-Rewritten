@@ -14,7 +14,8 @@ public partial class ScreenManager : Node2D
 
 	[Export] private string _startingScreen = "DGSplashScreen";
 	private PackedScene? _loadingScreenScene;
-	private Node2D? _currentScreen;
+	public Node2D? CurrentScreen { get; private set; }
+
 	private readonly Stack<Node2D?> _popups = new();
 	public override void _Ready()
 	{
@@ -80,11 +81,11 @@ public partial class ScreenManager : Node2D
 
 	private void SetScreenNode(Node2D screen)
 	{
-		if (_currentScreen != null)
-			CallDeferred("remove_child", _currentScreen);
-		_currentScreen?.QueueFree();
+		if (CurrentScreen != null)
+			CallDeferred("remove_child", CurrentScreen);
+		CurrentScreen?.QueueFree();
 		
 		CallDeferred("add_child", screen);
-		_currentScreen = screen;
+		CurrentScreen = screen;
 	}
 }

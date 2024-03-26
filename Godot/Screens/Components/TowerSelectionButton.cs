@@ -8,7 +8,7 @@ public partial class TowerSelectionButton : SpriteButton
 	[Export] public string FactoryName;
 	[Export] public string TowerIcon = "";
 	[Export] public string IconTexture = "in_game_hud";
-	[Export] public Vector2 ButtonSize = new Vector2(118, 116);
+	[Export] public Vector2 ButtonSize = new(118, 116);
 
 	public TowerSelectionButton() : base()
 	{
@@ -34,6 +34,7 @@ public partial class TowerSelectionButton : SpriteButton
 		{
 			sprite.Centered = true;
 			sprite.Position = ButtonSize * 0.5f;
+			boxSprite.Scale = Vector2.One;
 		};
 		
 		AddChild(icon);
