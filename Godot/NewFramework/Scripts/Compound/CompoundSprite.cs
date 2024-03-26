@@ -145,7 +145,8 @@ public partial class CompoundSprite : Node2D
         var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
         foreach (var spriteObj in sprites)
         {
-            AddChild(spriteObj);
+            if (spriteObj != null)
+                AddChild(spriteObj);
         }
 
         if (!spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson)) return;
