@@ -4,6 +4,64 @@ A rewrite of the entire Bloons TD 5 game using the Godot game engine
 # Goal
 The main priority on this repository is to create a mostly faithful re-creation of Bloons TD 5
 
+## Roadmap
+This section will serve as a list of things that need to be done before the project is completed. If anything is missing, please add it in a pull request!
+
+- ✅️ Completed
+- ☑️ Completed, but may require more work
+- 🔄 In progress
+- ❌️ Incomplete
+
+```
+🔄 Asset Loading
+    ✅️ Jet file importing
+    ✅️ Sprite Sheet parsing
+    ✅️ Texture Loading
+        ✅️ JPNG file support
+        ✅️ Track Thumbnail loading
+    ✅️ CompoundSprite loading
+    🔄 Factory initialization
+        ☑️ Base Factory implementation
+        🔄 Tower Factory
+            ☑️ Tower Definition loading
+            ☑️ Tower Instantiation
+        ❌️ Bloon Factory
+        ❌️ Other factories
+🔄 Gameplay
+    🔄 Screens and Menus
+        ✅️ BloonsBaseScreen
+        ✅️ DGSplashScreen
+        🔄 MainMenuScreen
+        🔄 PopupScreenBase
+        🔄 GameSelectScreen
+        ❌️ SettingsScreen
+        🔄 MapSelectionScreen
+            🔄 Map list
+            ✅️ Left/Right buttons
+            ❌️ Side panel
+            ❌️ Mastery Icon
+        🔄 GameHudScreen
+            ✅️ Background textures
+            ❌️ Special agent select
+            ❌️ Game mode info
+        🔄 InGameTowerSelectScreen
+            ❌️ Cash display
+            ❌️ Lives display
+            🔄 Tower selection
+                ✅️ Tower icons
+                ☑️ Scroll background
+                🔄 Scroll up/down buttons
+                ❌️ Utility icons (pineapple/spikes)
+        🔄 InGamePauseScreen
+            🔄 Buttons
+                ✅️ Home
+                ❌️ Resume
+                ❌️ Every other button
+            ❌️ Menu title
+            ❌️ Placement options
+```
+
+
 # FAQ
 Below are some questions I think most people would have about this
 
