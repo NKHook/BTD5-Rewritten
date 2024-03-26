@@ -1,3 +1,4 @@
+using System.Collections;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using Godot;
@@ -9,8 +10,10 @@ public partial class BaseTower : Node2D
 	private readonly TowerInfo _definition;
 	private readonly TowerUpgradeSprites _sprites;
 
-	private int leftUpgrade = 0;
-	private int rightUpgrade = 0;
+	private BitArray _activeWeaponSlots = new(64);
+	
+	private int _leftUpgrade = 0;
+	private int _rightUpgrade = 0;
 
 	public BaseTower(TowerInfo definition) : base()
 	{
@@ -28,7 +31,7 @@ public partial class BaseTower : Node2D
 		var sprite = GetNode<CompoundSprite>("tower_sprite");
 		sprite?.Free();
 
-		var newSprite = _sprites.GetSpriteAtUpgrade(leftUpgrade, rightUpgrade);
+		var newSprite = _sprites.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade);
 		newSprite.Name = "tower_sprite";
 		AddChild(newSprite);
 	}

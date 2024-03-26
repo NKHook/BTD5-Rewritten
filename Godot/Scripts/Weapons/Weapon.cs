@@ -2,5 +2,9 @@
 
 public class Weapon
 {
-    
+    private WeaponInfo _definition;
+    public Weapon(WeaponInfo definition)
+    {
+        _definition = definition;
+    }
 }

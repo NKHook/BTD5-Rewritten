@@ -9,7 +9,7 @@ public class WeaponInfo
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("Type")]
-    public string Type { get; set; }
+    public string Type = "invalid";
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("TargetRange")]
