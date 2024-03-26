@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -60,7 +60,12 @@ public partial class SpriteInfo : Node
 
         while (parser.Read() != Error.FileEof)
         {
-            var nodeName = parser.GetNodeName();
+            string? nodeName;
+            if (parser.GetNodeType() != XmlParser.NodeType.Text)
+                nodeName = parser.GetNodeName();
+            else
+                nodeName = "";
+                
             if (parser.GetNodeType() == XmlParser.NodeType.ElementEnd)
             {
                 switch (nodeName)
