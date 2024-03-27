@@ -1,4 +1,6 @@
+using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.Screens;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
@@ -9,14 +11,34 @@ public partial class TowerManager : ObjectManager<BaseTower>
 	private Node2D? _placementLayer;
 	private Camera2D? _camera;
 
+	private bool _trackPlacement;
+	
 	public override void _Ready()
 	{
 		base._Ready();
 
-		_camera = ScreenManager.Instance().CurrentScreen?.GetNode<Camera2D>("main_camera");
+		var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
+		_camera = gameScreen?.GetNode<Camera2D>("main_camera");
+		var mapArea = gameScreen?.GetNode<Area2D>("map_area");
+
+		if (mapArea != null)
+		{
+			mapArea.MouseEntered += () => _trackPlacement = true;
+			mapArea.MouseExited += () =>
+			{
+				if (_trackPlacement && _floatingTower != null)
+				{
+					_floatingTower.QueueFree();
+					_floatingTower = null;
+				}
+
+				_trackPlacement = false;
+			};
+		}
 
 		_placementLayer = new Node2D();
 		_placementLayer.Name = "placement_layer";
+		_placementLayer.ZIndex = 48;
 		AddChild(_placementLayer);
 	}
 
@@ -27,6 +49,13 @@ public partial class TowerManager : ObjectManager<BaseTower>
 		if (_floatingTower == null) return;
 
 		_floatingTower.Position = _camera?.GetLocalMousePosition() ?? Vector2.Zero;
+		if (_floatingTower.Selected) return;
+		
+		foreach (var selected in Objects.Where(obj => obj.Selected))
+		{
+			selected.Unselect();
+		}
+		_floatingTower.Select();
 	}
 
 	public override void _Input(InputEvent @event)

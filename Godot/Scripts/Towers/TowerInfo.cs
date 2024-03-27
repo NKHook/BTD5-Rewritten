@@ -112,9 +112,13 @@ public class TowerInfo
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("SpriteUpgradeDefinition")]
     public string SpriteUpgradeDefinition { get; set; }
+    
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("UseDefaultRangeCircle")]
+    public bool? UseDefaultRangeCircle { get; set; }
 
     private TowerUpgradeSprites? _towerSprites;
-    private List<WeaponInfo> _defaultWeapons = new();
+    private readonly List<WeaponInfo?> _defaultWeapons = new();
 
     public TowerInfo() : base()
     {
@@ -150,7 +154,7 @@ public class TowerInfo
         SpriteUpgradeDefinition = string.Empty;
     }
 
-    public List<WeaponInfo> GetDefaultWeaponInfo()
+    public List<WeaponInfo?> GetDefaultWeaponInfo()
     {
         if (_defaultWeapons.Count != 0) return _defaultWeapons;
 
@@ -158,6 +162,12 @@ public class TowerInfo
         var towerDir = definitions + FactoryName + "/";
         foreach (var weaponFile in DefaultWeapons)
         {
+            if (weaponFile == string.Empty)
+            {
+                _defaultWeapons.Add(null);
+                continue;
+            }
+            
             var file = towerDir + weaponFile;
             var weaponJson = JetFileImporter.Instance().GetJsonParsed(file);
             var info = WeaponInfo.FromJson(weaponJson);

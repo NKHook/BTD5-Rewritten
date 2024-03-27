@@ -7,4 +7,6 @@ public class Weapon
     {
         _definition = definition;
     }
+
+    public float Range => (float)_definition.TargetRange.GetValueOrDefault(0.0);
 }
