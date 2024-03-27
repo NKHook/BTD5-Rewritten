@@ -28,5 +28,9 @@ public partial class GameScreen : BloonsBaseScreen
 		var mask = GetNode<MapMaskNode>("map_mask");
 		mask.MaskFile = mapDir + MapName + ".mask";
 		mask.Initialize();
+
+		var path = GetNode<MapPath>("map_path");
+		path.PathFile = mapDir + MapName + ".path";
+		path.Initialize();
 	}
 }

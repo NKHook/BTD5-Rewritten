@@ -21,4 +21,11 @@ public partial class Sprite : Sprite2D
 		(Material as ShaderMaterial)!.Shader = GD.Load<VisualShader>("res://Godot/Shaders/compound_sprite.tres");
 		SpriteReady?.Invoke(this, this);
 	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+
+		Texture ??= Cell?.GetTexture();
+	}
 }

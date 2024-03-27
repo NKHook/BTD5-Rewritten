@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlxno7msjbnv7"]
+[gd_scene load_steps=11 format=3 uid="uid://dlxno7msjbnv7"]
 
 [ext_resource type="Script" path="res://Godot/Screens/GameScreen.cs" id="1_vs2gu"]
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="2_qs5w1"]
 [ext_resource type="PackedScene" uid="uid://dyhcmtnm3c7js" path="res://Godot/Scripts/Towers/TowerManager.tscn" id="3_1p5tl"]
 [ext_resource type="PackedScene" uid="uid://c355drarkwqru" path="res://Godot/Screens/GameHudScreen.tscn" id="3_nafbs"]
 [ext_resource type="Script" path="res://Godot/Scripts/MapMaskNode.cs" id="3_tt2m0"]
+[ext_resource type="Script" path="res://Godot/Scripts/MapPath.cs" id="4_3h4cp"]
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_camera.gd" id="4_o2i7f"]
 [ext_resource type="PackedScene" uid="uid://bas1dl0hire2i" path="res://Godot/Screens/InGameBorders.tscn" id="4_sbag4"]
 [ext_resource type="PackedScene" uid="uid://c20j2e72kjj08" path="res://Godot/Screens/InGameTowerSelectionScreen.tscn" id="5_83km7"]
@@ -17,14 +18,13 @@ script = ExtResource("1_vs2gu")
 
 [node name="map_props" parent="." instance=ExtResource("2_qs5w1")]
 position = Vector2(-133, -128)
-SpriteDefinitionRes = null
-Animating = null
 
 [node name="map_mask" type="Node2D" parent="."]
 position = Vector2(-133, -128)
 script = ExtResource("3_tt2m0")
-MaskFile = null
-DebugShowMask = null
+
+[node name="map_path" type="Node2D" parent="."]
+script = ExtResource("4_3h4cp")
 
 [node name="map_area" type="Area2D" parent="."]
 position = Vector2(-133, -128)
