@@ -148,6 +148,9 @@ public partial class BaseTower : Node2D, IManagedObject
         if (invalid)
             return invalid;
 
+        if (_owner.FloatingTower != this)
+            return false;
+        
         if (_mapMask?.MaskData == null)
             return false;
 
