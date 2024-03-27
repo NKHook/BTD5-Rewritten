@@ -4,7 +4,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public partial class ObjectManager<T> : Node2D where T : Node
+public partial class ObjectManager<T> : Node2D where T : Node, IManagedObject
 {
 	private Node2D? _container;
 	public IEnumerable<T> Objects => _container?.GetChildren().AsEnumerable().Cast<T>() ?? Enumerable.Empty<T>();
@@ -22,6 +22,7 @@ public partial class ObjectManager<T> : Node2D where T : Node
 
 	public int AddObject(T obj)
 	{
+		obj.OwnedBy(this);
 		obj.Name = nextId.ToString();
 		if (obj.IsInsideTree())
 			obj.Reparent(_container);

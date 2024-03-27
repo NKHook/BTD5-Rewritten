@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
@@ -9,8 +10,9 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
-public partial class BaseTower : Node2D
+public partial class BaseTower : Node2D, IManagedObject
 {
+    private TowerManager? _owner;
     private readonly TowerInfo _definition;
     private readonly TowerUpgradeSprites _sprites;
 
@@ -24,6 +26,7 @@ public partial class BaseTower : Node2D
     private bool _hovered;
 
     public bool Selected => _selected;
+    public Area2D? PlacementArea;
 
     private static PackedScene? _circle2d;
 
@@ -36,15 +39,16 @@ public partial class BaseTower : Node2D
     public override void _Ready()
     {
         _circle2d ??= GD.Load<PackedScene>("res://Godot/NewFramework/Circle2D.tscn");
-        
+
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var mapArea = gameScreen?.GetNode<Area2D>("map_area");
-        
+
         _activeWeaponSlots = new BitArray(_definition.ActiveWeaponSlots);
-        _weaponSlots = _definition.GetDefaultWeaponInfo().Select(info => info == null ? null : new Weapon(info)).ToList();
+        _weaponSlots = _definition.GetDefaultWeaponInfo().Select(info => info == null ? null : new Weapon(info))
+            .ToList();
         UpdateSprite();
 
-        var clickTrigger = new Area2D();
+        PlacementArea = new Area2D();
         var collisionShape = new CollisionShape2D();
         if (_definition.UseRadiusPlacement.GetValueOrDefault(false))
         {
@@ -59,12 +63,13 @@ public partial class BaseTower : Node2D
                 _definition.PlacementH.GetValueOrDefault(0.0f)) * 4.0f;
             collisionShape.Shape = areaShape;
         }
-        clickTrigger.AddChild(collisionShape);
-        AddChild(clickTrigger);
-        
+
+        PlacementArea.AddChild(collisionShape);
+        AddChild(PlacementArea);
+
         mapArea!.InputEvent += MapAreaInput;
-        clickTrigger.MouseEntered += () => _hovered = true;
-        clickTrigger.MouseExited += () => _hovered = false;
+        PlacementArea.MouseEntered += () => _hovered = true;
+        PlacementArea.MouseExited += () => _hovered = false;
 
         ZIndex = 32;
     }
@@ -73,7 +78,7 @@ public partial class BaseTower : Node2D
     {
         var buttonEvent = @event as InputEventMouseButton;
         if (!(buttonEvent?.IsPressed() ?? true) || buttonEvent?.ButtonIndex != MouseButton.Left) return;
-        
+
         if (_hovered)
             Select();
         else
@@ -82,6 +87,8 @@ public partial class BaseTower : Node2D
 
     public void Select()
     {
+        if (_owner!.PlacingTower() && _owner.FloatingTower != this) return;
+        
         _selected = true;
         UpdateSelected();
     }
@@ -92,51 +99,64 @@ public partial class BaseTower : Node2D
         UpdateSelected();
     }
 
-    private void UpdateSelected()
+    private void UpdateSelected() => UpdateRadius();
+
+    public Color GetRadiusColor()
+    {
+        var color = Colors.Black;
+        if (AtInvalidPosition())
+        {
+            color = Colors.Red;
+        }
+        color.A = 0.25f;
+        return color;
+    }
+
+    public void UpdateRadius()
     {
         var selectRadiusNode = GetNodeOrNull<Node2D>("select_radius");
-        switch (_selected)
-        {
-            case true when selectRadiusNode == null:
-            {
-                var range = _definition.UseDefaultRangeCircle.GetValueOrDefault(false) ? 64.0f : GetAttackRange();
-                var selectRadius = _circle2d?.Instantiate();
-                if (selectRadius == null) return;
+        selectRadiusNode?.Free();
 
-                var color = Colors.Black;
-                color.A = 0.25f;
-                selectRadius.Name = "select_radius";
-                selectRadius.Set("radius", range * 2.5f);
-                selectRadius.Set("color", color);
-                AddChild(selectRadius);
-
-                var smallerRadius = _circle2d?.Instantiate();
-                if (smallerRadius == null) return;
-                smallerRadius.Name = "inner_radius";
-                smallerRadius.Set("radius", (range * 2.5f) - 4.0f);
-                smallerRadius.Set("color", color);
-                selectRadius.AddChild(smallerRadius);
-                
-                break;
-            }
-            case false:
-                selectRadiusNode?.QueueFree();
-                break;
-        }
-    }
+        if (!_selected) return;
     
+        var range = _definition.UseDefaultRangeCircle.GetValueOrDefault(false) ? 64.0f : GetAttackRange();
+        var selectRadius = _circle2d?.Instantiate();
+        if (selectRadius == null) return;
+
+        var color = GetRadiusColor();
+        selectRadius.Name = "select_radius";
+        selectRadius.Set("radius", range * 2.5f);
+        selectRadius.Set("color", color);
+        AddChild(selectRadius);
+
+        var smallerRadius = _circle2d?.Instantiate();
+        if (smallerRadius == null) return;
+        smallerRadius.Name = "inner_radius";
+        smallerRadius.Set("radius", range * 2.5f - 4.0f);
+        smallerRadius.Set("color", color);
+        selectRadius.AddChild(smallerRadius);
+    }
+
+    public bool AtInvalidPosition()
+    {
+        return _owner!.Objects.Any(tower => tower.PlacementArea!.OverlapsArea(PlacementArea));
+    }
+
+    public bool AtValidPosition() => !AtInvalidPosition();
+
     private float GetAttackRange()
     {
         if (_weaponSlots.Count == 0)
             return 0.0f;
-        
+
         var active = GetActiveWeapons().ToList();
         return !active.Any() ? 0.0f : active.Select(weapon => weapon?.Range ?? 0.0f).Max();
     }
 
     private IEnumerable<Weapon?> GetActiveWeapons()
     {
-        return _weaponSlots.Where((weapon, slot) => (_activeWeaponSlots.Count <= slot || _activeWeaponSlots[slot]) && weapon != null);
+        return _weaponSlots.Where((weapon, slot) =>
+            (_activeWeaponSlots.Count <= slot || _activeWeaponSlots[slot]) && weapon != null);
     }
 
     private void UpdateSprite()
@@ -148,5 +168,10 @@ public partial class BaseTower : Node2D
         newSprite.Name = "tower_sprite";
         newSprite.Animating = false;
         AddChild(newSprite);
+    }
+
+    public void OwnedBy(object? owner)
+    {
+        _owner = owner as TowerManager;
     }
 }

@@ -23,7 +23,7 @@ Animating = null
 [node name="map_mask" type="Node2D" parent="."]
 position = Vector2(-133, -128)
 script = ExtResource("3_tt2m0")
-_maskFile = null
+MaskFile = null
 DebugShowMask = null
 
 [node name="map_area" type="Area2D" parent="."]

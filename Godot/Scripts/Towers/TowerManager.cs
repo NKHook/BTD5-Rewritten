@@ -7,7 +7,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public partial class TowerManager : ObjectManager<BaseTower>
 {
-	private BaseTower? _floatingTower;
+	public BaseTower? FloatingTower { get; private set; }
 	private Node2D? _placementLayer;
 	private Camera2D? _camera;
 	private Area2D? _mapArea;
@@ -27,10 +27,10 @@ public partial class TowerManager : ObjectManager<BaseTower>
 			_mapArea.MouseEntered += () => _trackPlacement = true;
 			_mapArea.MouseExited += () =>
 			{
-				if (_trackPlacement && _floatingTower != null)
+				if (_trackPlacement && FloatingTower != null)
 				{
-					_floatingTower.QueueFree();
-					_floatingTower = null;
+					FloatingTower.QueueFree();
+					FloatingTower = null;
 				}
 
 				_trackPlacement = false;
@@ -47,16 +47,16 @@ public partial class TowerManager : ObjectManager<BaseTower>
 	{
 		base._Process(delta);
 		
-		if (_floatingTower == null) return;
+		if (FloatingTower == null) return;
 
-		_floatingTower.Position = _camera?.GetLocalMousePosition() ?? Vector2.Zero;
-		if (_floatingTower.Selected) return;
+		FloatingTower.Position = _camera?.GetLocalMousePosition() ?? Vector2.Zero;
+		if (FloatingTower.Selected) return;
 		
 		foreach (var selected in Objects.Where(obj => obj.Selected))
 		{
 			selected.Unselect();
 		}
-		_floatingTower.Select();
+		FloatingTower.Select();
 	}
 
 	public override void _Input(InputEvent @event)
@@ -64,18 +64,26 @@ public partial class TowerManager : ObjectManager<BaseTower>
 		base._Input(@event);
 		
 		if (!_trackPlacement) return;
-		if (_floatingTower == null) return;
+		if (FloatingTower == null) return;
+		if (@event is InputEventMouseMotion)
+		{
+			FloatingTower.UpdateRadius();
+			return;
+		}
 		if (@event is not InputEventMouseButton button) return;
 		if (!button.Pressed) return;
+		if (FloatingTower.AtInvalidPosition()) return;
 		
-		AddObject(_floatingTower);
-		_floatingTower = null;
+		AddObject(FloatingTower);
+		FloatingTower = null;
 	}
 
+	public bool PlacingTower() => FloatingTower != null;
 	
 	public void SetFloating(BaseTower? tower)
 	{
-		_floatingTower = tower;
-		_placementLayer?.AddChild(_floatingTower);
+		FloatingTower = tower;
+		FloatingTower?.OwnedBy(this);
+		_placementLayer?.AddChild(FloatingTower);
 	}
 }
