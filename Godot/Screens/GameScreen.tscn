@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dlxno7msjbnv7"]
+[gd_scene load_steps=9 format=3 uid="uid://dlxno7msjbnv7"]
 
 [ext_resource type="Script" path="res://Godot/Screens/GameScreen.cs" id="1_vs2gu"]
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="2_qs5w1"]
@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://bas1dl0hire2i" path="res://Godot/Screens/InGameBorders.tscn" id="4_sbag4"]
 [ext_resource type="PackedScene" uid="uid://c20j2e72kjj08" path="res://Godot/Screens/InGameTowerSelectionScreen.tscn" id="5_83km7"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t81tj"]
+size = Vector2(3515, 2530)
+
 [node name="GameScreen" type="Node2D"]
 script = ExtResource("1_vs2gu")
 
@@ -15,6 +18,12 @@ script = ExtResource("1_vs2gu")
 position = Vector2(-133, -128)
 SpriteDefinitionRes = null
 Animating = null
+
+[node name="map_area" type="Area2D" parent="."]
+position = Vector2(-1010, -755)
+
+[node name="region_shape" type="CollisionShape2D" parent="map_area"]
+shape = SubResource("RectangleShape2D_t81tj")
 
 [node name="TowerManager" parent="." instance=ExtResource("3_1p5tl")]
 

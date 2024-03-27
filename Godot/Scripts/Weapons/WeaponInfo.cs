@@ -13,15 +13,15 @@ public class WeaponInfo
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("TargetRange")]
-    public long? TargetRange { get; set; }
+    public double? TargetRange { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("CooldownTime")]
-    public long? CooldownTime { get; set; }
+    public double? CooldownTime { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("FireDelayTime")]
-    public long? FireDelayTime { get; set; }
+    public double? FireDelayTime { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("MaxShots")]

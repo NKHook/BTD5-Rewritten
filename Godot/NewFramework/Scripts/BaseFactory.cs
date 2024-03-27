@@ -23,23 +23,17 @@ public abstract partial class BaseFactory<TInfo, TInstance> : Node2D
 
 	protected abstract string ToFileName(string factoryName);
 
-	public TInfo GetInfo(string factoryName) => GetInfo(HashName(0, factoryName));
-	public TInfo GetInfo(uint hash) => _factoryData.GetValueOrDefault(hash, _invalid);
+	public virtual TInfo GetInfo(string factoryName) => GetInfo(HashName(0, factoryName));
+	protected TInfo GetInfo(uint hash) => _factoryData.GetValueOrDefault(hash, _invalid);
+	protected void AddInfo(uint hash, TInfo info) => _factoryData[hash] = info;
 
-	public uint HashName(int category, string factoryName)
-	{
-		return TypeTracker.StringToHash(category, factoryName);
-	}
+	public uint HashName(int category, string factoryName) => TypeTracker.StringToHash(category, factoryName);
+	public string HashToString(int category, uint hash) => TypeTracker.HashToString(category, hash);
 
 	protected abstract TInfo GenerateInfo(JsonElement element);
 
-	public TInstance? Instantiate(string factoryName) => Instantiate(HashName(0, factoryName));
-	public TInstance? Instantiate(uint hash) => Instantiate(GetInfo(hash));
-	public TInstance? Instantiate(TInfo info) => Activator.CreateInstance(typeof(TInstance), info) as TInstance;
-	
-	public override void _Ready()
+	protected virtual void InitializeFactory()
 	{
-		base._Ready();
 		var fileImporter = JetFileImporter.Instance();
 
 		var factoryHashes = TypeTracker
@@ -63,5 +57,15 @@ public abstract partial class BaseFactory<TInfo, TInstance> : Node2D
 		{
 			_factoryData[hash] = info;
 		}
+	}
+
+	public virtual TInstance? Instantiate(string factoryName) => Instantiate(HashName(0, factoryName));
+	public virtual TInstance? Instantiate(uint hash) => Instantiate(GetInfo(hash));
+	public TInstance? Instantiate(TInfo info) => Activator.CreateInstance(typeof(TInstance), info) as TInstance;
+	
+	public override void _Ready()
+	{
+		base._Ready();
+		InitializeFactory();
 	}
 }

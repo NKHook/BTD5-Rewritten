@@ -1,11 +1,16 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
 public partial class WeaponFactory : BaseFactory<WeaponInfo, Weapon>
 {
+    public static WeaponFactory? Instance { get; private set; }
+
     enum Category
     {
         WeaponTypes = 0,
@@ -21,6 +26,8 @@ public partial class WeaponFactory : BaseFactory<WeaponInfo, Weapon>
     
     public WeaponFactory() : base(WeaponInfo.Invalid)
     {
+        Instance = this;
+        
         var weaponTypes = new[]
         {
             "TestWeapon",
@@ -345,6 +352,33 @@ public partial class WeaponFactory : BaseFactory<WeaponInfo, Weapon>
         TypeTracker.LoadCategory(Category.FireModes, fireModes);
     }
 
+    public override WeaponInfo GetInfo(string factoryName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public WeaponInfo GetInfo(string towerName, string weaponName) =>
+        GetInfo(TowerFactory.Instance.HashName(0, towerName), HashName(0, weaponName));
+    public WeaponInfo GetInfo(uint towerHash, uint weaponHash)
+    {
+        var baseInfo = base.GetInfo(towerHash ^ weaponHash);
+        if (baseInfo != WeaponInfo.Invalid) return base.GetInfo(towerHash ^ weaponHash);
+        
+        var combined = towerHash ^ weaponHash;
+        var towerName = TowerFactory.Instance.HashToString(0, towerHash);
+        var weaponName = TowerFactory.Instance.HashToString(0, weaponHash);
+
+        var importer = JetFileImporter.Instance();
+        var document = importer.GetJsonParsed(DefinitionsDir + towerName + "/" + ToFileName(weaponName));
+        var info = GenerateInfo(document);
+        AddInfo(combined, info);
+        return base.GetInfo(towerHash ^ weaponHash);
+    }
+
+    protected override void InitializeFactory()
+    {
+    }
+
     protected override string ToFileName(string factoryName)
     {
         return factoryName + ".weapon";
@@ -353,5 +387,15 @@ public partial class WeaponFactory : BaseFactory<WeaponInfo, Weapon>
     protected override WeaponInfo GenerateInfo(JsonElement element)
     {
         return WeaponInfo.FromJson(element);
+    }
+    
+    
+    public override Weapon? Instantiate(string factoryName)
+    {
+        throw new NotImplementedException();
+    }
+    public override Weapon? Instantiate(uint hash)
+    {
+        throw new NotImplementedException();
     }
 }

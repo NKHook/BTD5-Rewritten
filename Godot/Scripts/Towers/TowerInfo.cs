@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
@@ -112,6 +114,7 @@ public class TowerInfo
     public string SpriteUpgradeDefinition { get; set; }
 
     private TowerUpgradeSprites? _towerSprites;
+    private List<WeaponInfo> _defaultWeapons = new();
 
     public TowerInfo() : base()
     {
@@ -147,6 +150,23 @@ public class TowerInfo
         SpriteUpgradeDefinition = string.Empty;
     }
 
+    public List<WeaponInfo> GetDefaultWeaponInfo()
+    {
+        if (_defaultWeapons.Count != 0) return _defaultWeapons;
+
+        const string definitions = "Assets/JSON/WeaponDefinitions/";
+        var towerDir = definitions + FactoryName + "/";
+        foreach (var weaponFile in DefaultWeapons)
+        {
+            var file = towerDir + weaponFile;
+            var weaponJson = JetFileImporter.Instance().GetJsonParsed(file);
+            var info = WeaponInfo.FromJson(weaponJson);
+            _defaultWeapons.Add(info);
+        }
+
+        return _defaultWeapons;
+    }
+    
     public TowerUpgradeSprites GetSprites()
     {
         if (_towerSprites != null) return _towerSprites;

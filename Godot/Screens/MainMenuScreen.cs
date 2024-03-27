@@ -109,7 +109,7 @@ public partial class MainMenuScreen : Node2D
     private void BuildingInputEvent(Node viewport, InputEvent @event, long shapeidx, Building building)
     {
         var buttonEvent = @event as InputEventMouseButton;
-        if ((!(buttonEvent?.IsPressed() ?? false)) || buttonEvent.ButtonIndex != MouseButton.Left) return;
+        if (!(buttonEvent?.IsPressed() ?? false) || buttonEvent.ButtonIndex != MouseButton.Left) return;
 
         ScreenManager.Instance().OpenPopup(building.Screen);
     }

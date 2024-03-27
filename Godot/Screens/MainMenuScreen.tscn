@@ -48,21 +48,25 @@ point_count = 2
 
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource("1_xyq0l")
+_introDuration = null
 
 [node name="sky" type="Node2D" parent="."]
 position = Vector2(0, -1440)
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/UILayout/main_menu_sky.json"
+Animating = null
 
 [node name="intro" type="Node2D" parent="."]
 material = SubResource("ShaderMaterial_dwk6t")
 position = Vector2(0, -1440)
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/UILayout/intro_hd.json"
+Animating = null
 
 [node name="menu" type="Node2D" parent="."]
 script = ExtResource("4_6i2dy")
 SpriteDefinitionRes = "Assets/JSON/Tablet/UILayout/main_menu.json"
+Animating = null
 
 [node name="overlay" type="CanvasLayer" parent="."]
 
