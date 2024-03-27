@@ -150,7 +150,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
         if (_owner.FloatingTower != this)
             return false;
-        
+
         if (_mapMask?.MaskData == null)
             return false;
 
@@ -163,10 +163,10 @@ public partial class BaseTower : Node2D, IManagedObject
                 var x = Mathf.Sin(t) * radius + maskRelative.X;
                 var y = Mathf.Cos(t) * radius + maskRelative.Y;
 
-                if (!_mapMask?.MaskData?.HasPixel((int)x, (int)y) ?? false)
+                if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
                     continue;
                 
-                var mask = _mapMask?.MaskData?.GetPixel((int)x, (int)y);
+                var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
                 if ((mask & MapMask.MaskBit.Unplacable) != 0)
                 {
                     return true;
@@ -184,10 +184,10 @@ public partial class BaseTower : Node2D, IManagedObject
             {
                 for (var y = min.Y; y < max.Y; y++)
                 {
-                    if (!_mapMask?.MaskData?.HasPixel((int)x, (int)y) ?? false)
+                    if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
                         continue;
                     
-                    var mask = _mapMask?.MaskData?.GetPixel((int)x, (int)y);
+                    var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
                     if ((mask & MapMask.MaskBit.Unplacable) != 0)
                     {
                         return true;
