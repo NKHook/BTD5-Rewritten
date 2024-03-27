@@ -1,3 +1,4 @@
+using BloonsTD5Rewritten.Godot.Screens;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts;
@@ -10,6 +11,8 @@ public partial class MapMaskNode : Node2D
 	private MapMask? _maskData;
 	private Image? _debugImage;
 	private Sprite2D? _debugNode;
+	private Label? _maskDebugLabel;
+	private Camera2D? _camera;
 	
 	public override void _Ready()
 	{
@@ -20,6 +23,11 @@ public partial class MapMaskNode : Node2D
 
 	public void Initialize()
 	{
+		_maskDebugLabel = GetNode<Label>("/root/game_root/debug_overlay/overlay/mask_hover_display");
+		
+		var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
+		_camera = gameScreen?.GetNode<Camera2D>("main_camera");
+		
 		_maskData = MapMask.LoadFromFile(MaskFile);
 		_debugImage = _maskData.CreateImageForMask();
 
@@ -48,5 +56,37 @@ public partial class MapMaskNode : Node2D
 				_debugNode.Hide();
 				break;
 		}
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		base._Input(@event);
+
+		if (@event is not InputEventMouseMotion motion) return;
+		
+		var mousePosMaybe = _camera?.GetLocalMousePosition();
+		var mousePosCam = mousePosMaybe.GetValueOrDefault(Vector2.Zero);
+		var mousePos = mousePosCam + (_maskData?.Size ?? Vector2.Zero) * 0.5f * 4.0f;
+		mousePos -= Position;
+
+		if (_maskDebugLabel == null || !(_maskData?.HasPixelUltra((int)mousePos.X, (int)mousePos.Y) ?? false)) return;
+		
+		var newText = "(" + mousePos.X + "," + mousePos.Y + ") Mask: ";
+		var maskAtLoc = _maskData.GetPixelUltra((int)mousePos.X, (int)mousePos.Y);
+
+		if ((maskAtLoc & MapMask.MaskBit.Unplacable) != 0)
+		{
+			newText += "Unplacable ";
+		}
+		if ((maskAtLoc & MapMask.MaskBit.Path) != 0)
+		{
+			newText += "Path ";
+		}
+		if ((maskAtLoc & MapMask.MaskBit.Water) != 0)
+		{
+			newText += "Water ";
+		}
+
+		_maskDebugLabel.Text = newText;
 	}
 }

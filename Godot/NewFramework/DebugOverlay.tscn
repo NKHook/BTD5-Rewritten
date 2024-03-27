@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2c7lcjokten3"]
+[gd_scene load_steps=5 format=3 uid="uid://b2c7lcjokten3"]
 
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/fps_display.gd" id="1_pl1y1"]
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/node_count_display.gd" id="2_3q0m4"]
 [ext_resource type="Script" path="res://Godot/Scripts/Debug/frame_time_display.gd" id="3_qd5kh"]
+[ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_label.gd" id="4_xea6t"]
 
 [node name="DebugOverlay" type="Node2D"]
 
@@ -27,5 +28,11 @@ offset_top = 25.0
 offset_right = 40.0
 offset_bottom = 48.0
 script = ExtResource("2_3q0m4")
+
+[node name="mask_hover_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Mask: None"
+script = ExtResource("4_xea6t")
 
 [node name="debug_render" type="Node2D" parent="overlay"]
