@@ -13,6 +13,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 public partial class BaseTower : Node2D, IManagedObject
 {
     private TowerManager? _owner;
+    private MapMaskNode? _mapMask;
     private readonly TowerInfo _definition;
     private readonly TowerUpgradeSprites _sprites;
 
@@ -27,6 +28,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
     public bool Selected => _selected;
     public Area2D? PlacementArea;
+    public Shape2D? PlacementShape;
 
     private static PackedScene? _circle2d;
 
@@ -42,6 +44,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var mapArea = gameScreen?.GetNode<Area2D>("map_area");
+        _mapMask = gameScreen?.GetNode<MapMaskNode>("map_mask");
 
         _activeWeaponSlots = new BitArray(_definition.ActiveWeaponSlots);
         _weaponSlots = _definition.GetDefaultWeaponInfo().Select(info => info == null ? null : new Weapon(info))
@@ -55,6 +58,7 @@ public partial class BaseTower : Node2D, IManagedObject
             var radiusShape = new CircleShape2D();
             radiusShape.Radius = _definition.PlacementRadius.GetValueOrDefault(0.0f) * 4.0f;
             collisionShape.Shape = radiusShape;
+            PlacementShape = radiusShape;
         }
         else
         {
@@ -62,6 +66,7 @@ public partial class BaseTower : Node2D, IManagedObject
             areaShape.Size = new Vector2(_definition.PlacementW.GetValueOrDefault(0.0f),
                 _definition.PlacementH.GetValueOrDefault(0.0f)) * 4.0f;
             collisionShape.Shape = areaShape;
+            PlacementShape = areaShape;
         }
 
         PlacementArea.AddChild(collisionShape);
@@ -139,7 +144,56 @@ public partial class BaseTower : Node2D, IManagedObject
 
     public bool AtInvalidPosition()
     {
-        return _owner!.Objects.Any(tower => tower.PlacementArea!.OverlapsArea(PlacementArea));
+        var invalid = _owner!.Objects.Any(tower => tower.PlacementArea!.OverlapsArea(PlacementArea));
+        if (invalid)
+            return invalid;
+
+        if (_mapMask?.MaskData == null)
+            return false;
+
+        var maskRelative = _mapMask.MapToMask(Position) / 4;
+        if (PlacementShape is CircleShape2D circle)
+        {
+            var radius = circle.Radius / 4.0f;
+            for (var t = 0.0f; t < 2.0f * Math.PI; t += 0.1f)
+            {
+                var x = Mathf.Sin(t) * radius + maskRelative.X;
+                var y = Mathf.Cos(t) * radius + maskRelative.Y;
+
+                if (!_mapMask?.MaskData?.HasPixel((int)x, (int)y) ?? false)
+                    continue;
+                
+                var mask = _mapMask?.MaskData?.GetPixel((int)x, (int)y);
+                if ((mask & MapMask.MaskBit.Unplacable) != 0)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (PlacementShape is RectangleShape2D rect)
+        {
+            var size = rect.Size / 4.0f;
+            var min = maskRelative - size * 0.5f;
+            var max = maskRelative + size * 0.5f;
+
+            for (var x = min.X; x < max.X; x++)
+            {
+                for (var y = min.Y; y < max.Y; y++)
+                {
+                    if (!_mapMask?.MaskData?.HasPixel((int)x, (int)y) ?? false)
+                        continue;
+                    
+                    var mask = _mapMask?.MaskData?.GetPixel((int)x, (int)y);
+                    if ((mask & MapMask.MaskBit.Unplacable) != 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public bool AtValidPosition() => !AtInvalidPosition();

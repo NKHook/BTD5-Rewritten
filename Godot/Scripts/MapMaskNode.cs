@@ -8,12 +8,13 @@ public partial class MapMaskNode : Node2D
 	[Export] public string MaskFile = "";
 	[Export] public bool DebugShowMask;
 
-	private MapMask? _maskData;
 	private Image? _debugImage;
 	private Sprite2D? _debugNode;
 	private Label? _maskDebugLabel;
 	private Camera2D? _camera;
-	
+
+	public MapMask? MaskData { get; private set; }
+
 	public override void _Ready()
 	{
 		if (MaskFile == string.Empty) return;
@@ -28,8 +29,8 @@ public partial class MapMaskNode : Node2D
 		var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
 		_camera = gameScreen?.GetNode<Camera2D>("main_camera");
 		
-		_maskData = MapMask.LoadFromFile(MaskFile);
-		_debugImage = _maskData.CreateImageForMask();
+		MaskData = MapMask.LoadFromFile(MaskFile);
+		_debugImage = MaskData.CreateImageForMask();
 
 		var debugTexture = new ImageTexture();
 		debugTexture.SetImage(_debugImage);
@@ -66,13 +67,12 @@ public partial class MapMaskNode : Node2D
 		
 		var mousePosMaybe = _camera?.GetLocalMousePosition();
 		var mousePosCam = mousePosMaybe.GetValueOrDefault(Vector2.Zero);
-		var mousePos = mousePosCam + (_maskData?.Size ?? Vector2.Zero) * 0.5f * 4.0f;
-		mousePos -= Position;
+		var mousePos = MapToMask(mousePosCam);
 
-		if (_maskDebugLabel == null || !(_maskData?.HasPixelUltra((int)mousePos.X, (int)mousePos.Y) ?? false)) return;
+		if (_maskDebugLabel == null || !(MaskData?.HasPixelUltra((int)mousePos.X, (int)mousePos.Y) ?? false)) return;
 		
 		var newText = "(" + mousePos.X + "," + mousePos.Y + ") Mask: ";
-		var maskAtLoc = _maskData.GetPixelUltra((int)mousePos.X, (int)mousePos.Y);
+		var maskAtLoc = MaskData.GetPixelUltra((int)mousePos.X, (int)mousePos.Y);
 
 		if ((maskAtLoc & MapMask.MaskBit.Unplacable) != 0)
 		{
@@ -88,5 +88,12 @@ public partial class MapMaskNode : Node2D
 		}
 
 		_maskDebugLabel.Text = newText;
+	}
+
+	public Vector2 MapToMask(Vector2 mapPos)
+	{
+		var maskPos = mapPos + (MaskData?.Size ?? Vector2.Zero) * 0.5f * 4.0f;
+		maskPos -= Position;
+		return maskPos;
 	}
 }
