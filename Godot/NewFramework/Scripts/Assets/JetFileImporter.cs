@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using Godot;
 using Ionic.Zip;
@@ -32,26 +33,36 @@ public partial class JetFileImporter : Node
 		return _jetFile?.Entries.FirstOrDefault(entry => entry.FileName == path);
 	}
 
-	public string GetFileContent(string path)
+	public MemoryStream GetFileStream(string path)
 	{
 		var entry = GetFileEntry(path);
 		var stream = new MemoryStream();
 		entry?.Extract(stream);
-
 		stream.Seek(0, SeekOrigin.Begin);
-		var reader = new StreamReader(stream);
-		return reader.ReadToEnd();
+		return stream;
+	}
+
+	public byte[] GetFileContent(string path)
+	{
+		var stream = GetFileStream(path);
+		return stream.ToArray();
+	}
+
+	public string GetFileText(string path)
+	{
+		var data = GetFileContent(path);
+		return Encoding.ASCII.GetString(data);
 	}
 	
 	public Variant GetJsonEntry(string path)
 	{
-		var data = GetFileContent(path);
+		var data = GetFileText(path);
 		return Json.ParseString(data);
 	}
 
 	public JsonElement GetJsonParsed(string path)
 	{
-		var data = GetFileContent(path);
+		var data = GetFileText(path);
 		
 		return JsonSerializer.Deserialize<JsonElement>(data);
 	}
