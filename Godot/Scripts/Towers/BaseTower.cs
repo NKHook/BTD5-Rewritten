@@ -25,7 +25,7 @@ public partial class BaseTower : Node2D
 
     public bool Selected => _selected;
 
-    private static PackedScene? circle2d;
+    private static PackedScene? _circle2d;
 
     public BaseTower(TowerInfo definition)
     {
@@ -35,7 +35,7 @@ public partial class BaseTower : Node2D
 
     public override void _Ready()
     {
-        circle2d ??= GD.Load<PackedScene>("res://Godot/NewFramework/Circle2D.tscn");
+        _circle2d ??= GD.Load<PackedScene>("res://Godot/NewFramework/Circle2D.tscn");
         
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var mapArea = gameScreen?.GetNode<Area2D>("map_area");
@@ -100,7 +100,7 @@ public partial class BaseTower : Node2D
             case true when selectRadiusNode == null:
             {
                 var range = _definition.UseDefaultRangeCircle.GetValueOrDefault(false) ? 64.0f : GetAttackRange();
-                var selectRadius = circle2d?.Instantiate();
+                var selectRadius = _circle2d?.Instantiate();
                 if (selectRadius == null) return;
 
                 var color = Colors.Black;
@@ -110,7 +110,7 @@ public partial class BaseTower : Node2D
                 selectRadius.Set("color", color);
                 AddChild(selectRadius);
 
-                var smallerRadius = circle2d?.Instantiate();
+                var smallerRadius = _circle2d?.Instantiate();
                 if (smallerRadius == null) return;
                 smallerRadius.Name = "inner_radius";
                 smallerRadius.Set("radius", (range * 2.5f) - 4.0f);
@@ -141,7 +141,7 @@ public partial class BaseTower : Node2D
 
     private void UpdateSprite()
     {
-        var sprite = GetNode<CompoundSprite>("tower_sprite");
+        var sprite = GetNodeOrNull<CompoundSprite>("tower_sprite");
         sprite?.Free();
 
         var newSprite = _sprites.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade);

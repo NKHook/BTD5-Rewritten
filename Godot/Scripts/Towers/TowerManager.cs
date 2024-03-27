@@ -10,6 +10,7 @@ public partial class TowerManager : ObjectManager<BaseTower>
 	private BaseTower? _floatingTower;
 	private Node2D? _placementLayer;
 	private Camera2D? _camera;
+	private Area2D? _mapArea;
 
 	private bool _trackPlacement;
 	
@@ -19,12 +20,12 @@ public partial class TowerManager : ObjectManager<BaseTower>
 
 		var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
 		_camera = gameScreen?.GetNode<Camera2D>("main_camera");
-		var mapArea = gameScreen?.GetNode<Area2D>("map_area");
+		_mapArea = gameScreen?.GetNode<Area2D>("map_area");
 
-		if (mapArea != null)
+		if (_mapArea != null)
 		{
-			mapArea.MouseEntered += () => _trackPlacement = true;
-			mapArea.MouseExited += () =>
+			_mapArea.MouseEntered += () => _trackPlacement = true;
+			_mapArea.MouseExited += () =>
 			{
 				if (_trackPlacement && _floatingTower != null)
 				{
@@ -62,6 +63,7 @@ public partial class TowerManager : ObjectManager<BaseTower>
 	{
 		base._Input(@event);
 		
+		if (!_trackPlacement) return;
 		if (_floatingTower == null) return;
 		if (@event is not InputEventMouseButton button) return;
 		if (!button.Pressed) return;
