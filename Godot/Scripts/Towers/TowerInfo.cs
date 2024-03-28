@@ -9,7 +9,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public class TowerInfo
 {
-    public static readonly TowerInfo InvalidTower = new("invalid");
+    public static readonly TowerInfo InvalidTower = new("INVALID");
 
     public string FactoryName => TypeName;
 
@@ -122,7 +122,7 @@ public class TowerInfo
 
     public TowerInfo() : base()
     {
-        TypeName = "invalid";
+        TypeName = "INVALID";
         
         AircraftList = Array.Empty<string>();
         DefaultWeapons = Array.Empty<string>();

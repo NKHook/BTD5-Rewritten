@@ -129,6 +129,7 @@ public partial class MapPath : Node2D
         var segments = GenerateSegments(jsonElem);
         var linked = LinkPaths(links, segments);
 
+        var i = 0;
         foreach (var link in linked)
         {
             var path = new Path2D();
@@ -142,15 +143,9 @@ public partial class MapPath : Node2D
                 }
             }
 
-            var pathFollow = new PathFollow2D();
-            var sprite = new Sprite();
-            sprite.SpriteName = "add_symbol_yellow";
-            sprite.TextureName = "in_game_hud";
-            pathFollow.AddChild(sprite);
-            
-            path.AddChild(pathFollow);
-            
+            path.Name = "path_" + i;
             AddChild(path);
+            i++;
         }
     }
 
