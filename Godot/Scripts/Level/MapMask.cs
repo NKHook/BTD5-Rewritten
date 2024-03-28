@@ -3,7 +3,7 @@ using System.IO;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts;
+namespace BloonsTD5Rewritten.Godot.Scripts.Level;
 
 public class MapMask
 {

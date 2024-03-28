@@ -5,6 +5,7 @@ using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens;
+using BloonsTD5Rewritten.Godot.Scripts.Level;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 using Godot;
 
@@ -13,7 +14,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 public partial class BaseTower : Node2D, IManagedObject
 {
     private TowerManager? _owner;
-    private MapMaskNode? _mapMask;
+    private Level.MapMaskNode? _mapMask;
     private readonly TowerInfo _definition;
     private readonly TowerUpgradeSprites _sprites;
 
@@ -44,7 +45,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var mapArea = gameScreen?.GetNode<Area2D>("map_area");
-        _mapMask = gameScreen?.GetNode<MapMaskNode>("map_mask");
+        _mapMask = gameScreen?.GetNode<Level.MapMaskNode>("map_mask");
 
         _activeWeaponSlots = new BitArray(_definition.ActiveWeaponSlots);
         _weaponSlots = _definition.GetDefaultWeaponInfo().Select(info => info == null ? null : new Weapon(info))
