@@ -1,6 +1,6 @@
 ﻿namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
-public enum AirTargetFlags
+public enum FlightMode
 {
     FollowPath = 1 << 1,
     Patrol = 1 << 2,

@@ -52,7 +52,8 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
         var weaponName = FlagToString(weaponFlag);
 
         var importer = JetFileImporter.Instance();
-        var document = importer.GetJsonParsed(DefinitionsDir + towerName + "/" + ToFileName(weaponName));
+        var path = DefinitionsDir + towerName + "/" + ToFileName(weaponName);
+        var document = importer.GetJsonParsed(path);
         var info = GenerateInfo(document);
         AddInfo(towerFlag, weaponFlag, info);
         return _factoryData[towerFlag][weaponFlag];
@@ -69,7 +70,14 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 
     protected override WeaponInfo GenerateInfo(JsonWrapper element)
     {
-        return WeaponInfo.FromJson(element);
+        var info = new WeaponInfo();
+        info.Type = element["Type"]?.GetFlag<WeaponType>() ??
+                    throw new BTD5WouldCrashException("'Type' is not a valid flag");
+        info.TargetRange = element["TargetRange"] ?? 0.0f;
+        info.CooldownTime = element["CooldownTime"] ?? 0.0f;
+        info.FireDelayTime = element["FireDelayTime"] ?? 0.0f;
+        info.MaxShots = element["MaxShots"] ?? 0;
+        return info;
     }
     
     

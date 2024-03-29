@@ -135,13 +135,13 @@ public partial class CompoundSprite : Node2D
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
         var stageOptions = spriteDefinitionJson["stageOptions"];
-        if (stageOptions.ValueKind != JsonType.Null)
+        if (stageOptions != null && stageOptions.ValueKind != JsonType.Null)
         {
             _usedCells = LoadSpriteInfo(stageOptions);
             _timeline = LoadStageOptions(stageOptions);
         }
 
-        var actors = spriteDefinitionJson["actors"];
+        var actors = spriteDefinitionJson["actors"] ?? throw new BTD5WouldCrashException();
         var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
         foreach (var spriteObj in sprites)
         {
@@ -153,9 +153,9 @@ public partial class CompoundSprite : Node2D
         
         foreach (var timelineJson in timelinesJson.EnumerateArray())
         {
-            int uid = timelineJson["spriteuid"];
+            var uid = timelineJson["spriteuid"]?.GetInt32() ?? throw new BTD5WouldCrashException();
             var stagesJson = timelineJson["stage"];
-            if(stagesJson.ValueKind == JsonType.Null)
+            if(stagesJson == null || stagesJson.ValueKind == JsonType.Null)
                 continue;
 
             var stages = new List<ActorState>();
@@ -166,7 +166,7 @@ public partial class CompoundSprite : Node2D
             
                 //Prevent states with the same time overwriting eachother
                 //the game only uses the first one at the same time for some reason
-                float time = stageJson["Time"];
+                var time = stageJson["Time"]?.GetFloat() ?? throw new BTD5WouldCrashException();
                 if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
                     continue;
 

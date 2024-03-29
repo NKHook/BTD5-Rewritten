@@ -7,5 +7,7 @@ namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 /// </summary>
 public class BTD5WouldCrashException : Exception
 {
-    
+    public BTD5WouldCrashException(string? reason = "No reason provided") : base(reason)
+    {
+    }
 }

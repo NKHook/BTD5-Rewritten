@@ -14,7 +14,7 @@ public partial class BloonManager : ObjectManager<Bloon>
         if (!(_time >= 1.0f)) return;
         
         _time -= _time;
-        var bloon = BloonFactory.Instance.Instantiate("Red");
+        var bloon = BloonFactory.Instance.Instantiate(BloonType.Red);
         AddObject(bloon!);
     }
 }

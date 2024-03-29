@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 using Godot;
@@ -17,7 +18,8 @@ public class TowerInfo
     public bool NewTower;
     public bool HideWhenLocked;
     public bool UnlocksInGame;
-    public string TargetingMode;
+    public TargetingMode GroundTargetingMode;
+    public FlightMode AirTargetingMode;
     public bool TargetIsWeaponOrigin;
     public float Duration;
     public int DestroyAfterPops;
@@ -63,10 +65,9 @@ public class TowerInfo
     public bool DrawWeaponsOnTop;
     public bool ConfirmLevel4FirstUpgrade;
     public float InitialAngle;
-    public TowerUpgradeSprites SpriteUpgradeDefinition;
+    public TowerUpgradeSprites? SpriteUpgradeDefinition;
     public string DefaultSprite;
     
-    private TowerUpgradeSprites? _towerSprites;
     private readonly List<WeaponInfo?> _defaultWeapons = new();
 
     public TowerInfo() : base()
@@ -93,25 +94,12 @@ public class TowerInfo
                 continue;
             }
 
-            var weaponFile = WeaponFactory.Instance?.FlagToString(weaponType);
-            var file = towerDir + weaponFile;
-            var weaponJson = JetFileImporter.Instance().GetJsonParsed(file);
-            var info = WeaponInfo.FromJson(weaponJson);
+            var info = WeaponFactory.Instance?.GetInfo(TypeName, weaponType);
             _defaultWeapons.Add(info);
         }
 
         return _defaultWeapons;
     }
     
-    public TowerUpgradeSprites GetSprites()
-    {
-        if (_towerSprites != null) return _towerSprites;
-        
-        const string definitions = "Assets/JSON/TowerSpriteUpgradeDefinitions/";
-        var definitionPath = definitions + SpriteUpgradeDefinition;
-        var jsonElem = JetFileImporter.Instance().GetJsonParsed(definitionPath);
-        _towerSprites = TowerUpgradeSprites.FromJson(jsonElem);
-
-        return _towerSprites;
-    }
+    public TowerUpgradeSprites? GetSprites() => SpriteUpgradeDefinition;
 }

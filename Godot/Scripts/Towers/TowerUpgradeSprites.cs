@@ -11,9 +11,9 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public partial class TowerUpgradeSprites
 {
-    public Dictionary<string, string>? Sprites { get; set; }
+    public Dictionary<string, string> Sprites { get; set; }
     
-    public Dictionary<string, long>? UpgradeLevels { get; set; }
+    public Dictionary<string, long> UpgradeLevels { get; set; }
 
     private readonly Dictionary<string, CompoundSprite> _sprites = new();
 
@@ -22,8 +22,8 @@ public partial class TowerUpgradeSprites
         const string dir = "Assets/JSON/TowerSpriteUpgradeDefinitions/";
         var path = dir + spriteFile;
         var data = JetFileImporter.Instance().GetJsonParsed(path);
-        Sprites = data["Sprites"].DictAs<string, string>();
-        UpgradeLevels = data["UpgradeLevels"].DictAs<string, long>();
+        Sprites = data["Sprites"]?.DictAs<string, string>() ?? throw new BTD5WouldCrashException();
+        UpgradeLevels = data["UpgradeLevels"]?.DictAs<string, long>() ?? throw new BTD5WouldCrashException();
     }
     
     private static string UpgradesAsString(int left, int right) => "" + left + "" + right;

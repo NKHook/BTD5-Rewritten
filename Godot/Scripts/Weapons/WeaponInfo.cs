@@ -9,27 +9,8 @@ public class WeaponInfo
     public static readonly WeaponInfo Invalid = new();
 
     public WeaponType Type = WeaponType.Invalid;
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("TargetRange")]
-    public double? TargetRange { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("CooldownTime")]
-    public double? CooldownTime { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("FireDelayTime")]
-    public double? FireDelayTime { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("MaxShots")]
-    public long? MaxShots { get; set; }
-
-    public static WeaponInfo FromJson(JsonWrapper element)
-    {
-        /*var weaponInfo = element.Deserialize<WeaponInfo>() ?? Invalid;
-        return weaponInfo;*/
-        return Invalid;
-    }
+    public float TargetRange { get; set; }
+    public float CooldownTime { get; set; }
+    public float FireDelayTime { get; set; }
+    public int MaxShots { get; set; }
 }

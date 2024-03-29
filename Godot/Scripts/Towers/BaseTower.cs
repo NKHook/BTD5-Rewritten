@@ -16,7 +16,6 @@ public partial class BaseTower : Node2D, IManagedObject
     private TowerManager? _owner;
     private MapMaskNode? _mapMask;
     private readonly TowerInfo _definition;
-    private readonly TowerUpgradeSprites _sprites;
 
     private List<Weapon?> _weaponSlots = new();
     private BitArray _activeWeaponSlots = new(64);
@@ -36,7 +35,6 @@ public partial class BaseTower : Node2D, IManagedObject
     public BaseTower(TowerInfo definition)
     {
         _definition = definition;
-        _sprites = definition.GetSprites();
     }
 
     public override void _Ready()
@@ -222,7 +220,8 @@ public partial class BaseTower : Node2D, IManagedObject
         var sprite = GetNodeOrNull<CompoundSprite>("tower_sprite");
         sprite?.Free();
 
-        var newSprite = _sprites.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade);
+        var newSprite = _definition.GetSprites()?.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade) ??
+                        throw new BTD5WouldCrashException("Trying to update a sprite that has not been defined");
         newSprite.Name = "tower_sprite";
         newSprite.Animating = false;
         AddChild(newSprite);

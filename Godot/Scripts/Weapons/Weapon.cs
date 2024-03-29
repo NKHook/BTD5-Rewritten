@@ -2,11 +2,11 @@
 
 public class Weapon
 {
-    private WeaponInfo _definition;
+    private readonly WeaponInfo _definition;
     public Weapon(WeaponInfo definition)
     {
         _definition = definition;
     }
 
-    public float Range => (float)_definition.TargetRange.GetValueOrDefault(0.0);
+    public float Range => _definition.TargetRange;
 }

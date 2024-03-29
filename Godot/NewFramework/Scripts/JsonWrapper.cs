@@ -2,14 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Godot;
 using Godot.Collections;
+using Array = System.Array;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonWrapper>
 {
     private Variant _data;
+
+    public JsonWrapper()
+    {
+        _data = new Variant();
+    }
 
     public JsonWrapper(Variant data)
     {
@@ -47,12 +54,78 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
     public Vector2 GetVector2() => new(this[0], this[1]);
     public JsonWrapper[] GetArray() => EnumerateArray().ToArray();
 
+    public T ValueAs<T>()
+    {
+        if (typeof(T) == typeof(bool))
+        {
+            return (T)(object)GetBool();
+        }
+
+        if (typeof(T) == typeof(short))
+        {
+            return (T)(object)GetInt16();
+        }
+
+        if (typeof(T) == typeof(ushort))
+        {
+            return (T)(object)GetUInt16();
+        }
+
+        if (typeof(T) == typeof(int))
+        {
+            return (T)(object)GetInt32();
+        }
+
+        if (typeof(T) == typeof(uint))
+        {
+            return (T)(object)GetUInt32();
+        }
+
+        if (typeof(T) == typeof(long))
+        {
+            return (T)(object)GetInt64();
+        }
+
+        if (typeof(T) == typeof(ulong))
+        {
+            return (T)(object)GetUInt64();
+        }
+
+        if (typeof(T) == typeof(float))
+        {
+            return (T)(object)GetFloat();
+        }
+
+        if (typeof(T) == typeof(double))
+        {
+            return (T)(object)GetDouble();
+        }
+
+        if (typeof(T) == typeof(string))
+        {
+            return (T)(object)GetString();
+        }
+
+        if (typeof(T) == typeof(Vector2))
+        {
+            return (T)(object)GetVector2();
+        }
+
+        if (typeof(T) == typeof(JsonWrapper[]))
+        {
+            return (T)(object)GetArray();
+        }
+
+        throw new InvalidCastException("No available conversion");
+    }
+
     public TFlag GetFlag<TFlag>() where TFlag : struct, Enum
     {
         if (ValueKind == JsonType.String)
         {
             return EnumName<TFlag>();
         }
+
         if (ValueKind == JsonType.Array && typeof(TFlag).GetEnumUnderlyingType() == typeof(ulong))
         {
             return (TFlag)(object)ArrayAs<string>().Select(text => Enum.Parse<TFlag>(text))
@@ -62,10 +135,22 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
         throw new InvalidOperationException();
     }
 
-    public T[] ArrayAs<T>() => EnumerateArray().Cast<T>().ToArray();
+    public T[] ArrayAs<T>()
+    {
+        if (typeof(T).IsArray)
+        {
+            var thisMethod = typeof(JsonWrapper).GetMethod("ArrayAs");
+            var compiled = thisMethod!.MakeGenericMethod(typeof(T).GetElementType()!);
+            return EnumerateArray().Select(entry => compiled.Invoke(entry, null)).Cast<T>().ToArray();
+        }
+        else
+        {
+            return EnumerateArray().Select(entry => entry.ValueAs<T>()).ToArray();
+        }
+    }
 
     public System.Collections.Generic.Dictionary<TK, TV> DictAs<TK, TV>() => EnumerateProperties()
-        .ToDictionary(pair => (TK)(object)pair.Item1, pair => (TV)(object)pair.Item2);
+        .ToDictionary(pair => (TK)(object)pair.Item1, pair => pair.Item2.ValueAs<TV>());
 
     public int ArrayLen() => _data.AsGodotArray().Count;
 
@@ -137,9 +222,17 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
     public bool TryGetProperty(string propertyName, out JsonWrapper data)
     {
         var dataDict = _data.AsGodotDictionary();
-        if (dataDict?.TryGetValue(propertyName, out var result) ?? false)
+        if (dataDict.TryGetValue(propertyName, out var result))
         {
             data = new JsonWrapper(result);
+            return true;
+        }
+
+        var dataObj = _data.AsGodotObject();
+        var propData = dataObj?.Get(propertyName);
+        if (propData != null && propData.Value.VariantType != Variant.Type.Nil)
+        {
+            data = new JsonWrapper(propData.Value);
             return true;
         }
 
@@ -159,7 +252,7 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
     /// Retrieves the property of an object
     /// </summary>
     /// <param name="property">The name of the property to retrieve</param>
-    public JsonWrapper this[string property] => new(_data.AsGodotDictionary()[property]);
+    public JsonWrapper? this[string property] => TryGetProperty(property, out var data) ? data : null;
 
     /// <summary>
     /// Retrieve the underlying JSON element

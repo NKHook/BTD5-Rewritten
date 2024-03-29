@@ -3,7 +3,7 @@
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 [Flags]
-public enum GroundTargetFlag
+public enum TargetingMode
 {
     First = 1 << 0,
     Last = 1 << 1,
