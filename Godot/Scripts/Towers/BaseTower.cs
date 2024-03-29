@@ -54,18 +54,18 @@ public partial class BaseTower : Node2D, IManagedObject
 
         PlacementArea = new Area2D();
         var collisionShape = new CollisionShape2D();
-        if (_definition.UseRadiusPlacement.GetValueOrDefault(false))
+        if (_definition.UseRadiusPlacement)
         {
             var radiusShape = new CircleShape2D();
-            radiusShape.Radius = _definition.PlacementRadius.GetValueOrDefault(0.0f) * 4.0f;
+            radiusShape.Radius = _definition.PlacementRadius * 4.0f;
             collisionShape.Shape = radiusShape;
             PlacementShape = radiusShape;
         }
         else
         {
             var areaShape = new RectangleShape2D();
-            areaShape.Size = new Vector2(_definition.PlacementW.GetValueOrDefault(0.0f),
-                _definition.PlacementH.GetValueOrDefault(0.0f)) * 4.0f;
+            areaShape.Size = new Vector2(_definition.PlacementW,
+                _definition.PlacementH) * 4.0f;
             collisionShape.Shape = areaShape;
             PlacementShape = areaShape;
         }
@@ -125,7 +125,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
         if (!_selected) return;
     
-        var range = _definition.UseDefaultRangeCircle.GetValueOrDefault(false) ? 64.0f : GetAttackRange();
+        var range = _definition.UseDefaultRangeCircle ? 64.0f : GetAttackRange();
         var selectRadius = _circle2d?.Instantiate();
         if (selectRadius == null) return;
 
@@ -168,7 +168,7 @@ public partial class BaseTower : Node2D, IManagedObject
                     continue;
                 
                 var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
-                if ((mask & MapMask.MaskBit.Unplacable) != 0)
+                if ((mask & MaskBit.BlockTower) != 0)
                 {
                     return true;
                 }
@@ -189,7 +189,7 @@ public partial class BaseTower : Node2D, IManagedObject
                         continue;
                     
                     var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
-                    if ((mask & MapMask.MaskBit.Unplacable) != 0)
+                    if ((mask & MaskBit.BlockTower) != 0)
                     {
                         return true;
                     }

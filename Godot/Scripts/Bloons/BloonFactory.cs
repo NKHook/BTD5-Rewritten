@@ -1,110 +1,28 @@
+using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
 
-public partial class BloonFactory : BaseFactory<BloonInfo, Bloon>
+public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
 {
     public static BloonFactory Instance = null!;
-    enum Category
-    {
-        BloonTypes = 0,
-        StatusTypes = 1,
-        PropertyNames = 2,
-        DrawLayers = 3,
-        Abilities = 4,
-    }
     
     public BloonFactory() : base(BloonInfo.Invalid)
     {
         Instance = this;
         DefinitionsDir = "Assets/JSON/BloonDefinitions/";
 
-        var bloonTypes = new[]
-        {
-            "TestBloon",
-            "Red",
-            "Blue",
-            "Green",
-            "Yellow",
-            "Pink",
-            "Black",
-            "White",
-            "Lead",
-            "Zebra",
-            "Rainbow",
-            "Ceramic",
-            "Golden",
-            "MOAB",
-            "BFB",
-            "ZOMG",
-            "Bloonarius",
-            "Blastapopoulos",
-            "Vortex",
-            "Dreadbloon"
-        };
-
-        var statusTypes = new[]
-        {
-            "Ice",
-            "Glue",
-            "GlueOnTrack",
-            "Napalm",
-            "MoveToPath",
-            "Stun",
-            "CrippleMOAB",
-            "ViralFrost",
-            "IceShards",
-            "Regen",
-            "Camo",
-            "MultiLayerDamage",
-            "Permafrost",
-            "Slow",
-            "Sabotage",
-            "SignalFlare",
-            "BeeTarget",
-            "BeeSting",
-            "AbsoluteZero",
-            "AbsoluteZeroPermafrost",
-            "Foam",
-            "ShredBloon",
-            "MoveOnCurve",
-            "DazeEffect",
-            "VacStatus",
-            "Freeplay",
-            "BloonChipperSuck",
-            "DamageOverTime",
-            "DamageMultiplier"
-        };
-
-        var factoryKeys = new[]
+        var flagpProperties = new[]
         {
             "Type",
             "StatusEffect",
             "StatusImmunity",
             "DamageImmunity"
         };
-
-        var drawLayers = new[]
-        {
-            "Ground",
-            "OverMidlay",
-            "Air"
-        };
-
-        var abilities = new[]
-        {
-            "BloonariusAbility",
-            "StunTowersAbility",
-            "SlowTowersAbility",
-            "ShieldAbility"
-        };
         
-        TypeTracker.LoadCategory(Category.BloonTypes, bloonTypes);
-        TypeTracker.LoadCategory(Category.StatusTypes, statusTypes);
-        TypeTracker.LoadCategory(Category.PropertyNames, factoryKeys);
-        TypeTracker.LoadCategory(Category.DrawLayers, drawLayers);
-        TypeTracker.LoadCategory(Category.Abilities, abilities);
     }
 
     protected override string ToFileName(string factoryName)
@@ -112,5 +30,30 @@ public partial class BloonFactory : BaseFactory<BloonInfo, Bloon>
         return factoryName + ".bloon";
     }
 
-    protected override BloonInfo GenerateInfo(JsonElement element) => BloonInfo.FromJson(element);
+    protected override BloonInfo GenerateInfo(JsonWrapper element)
+    {
+        var info = new BloonInfo();
+        info.Type = element["Type"].GetFlag<BloonType>();
+        info.DrawLayer = element["DrawLayer"].GetFlag<BloonDrawLayer>();
+        info.InitialHealth = element["InitialHealth"];
+        info.SpriteFile = element["SpriteFile"];
+        info.BaseSpeed = element["BaseSpeed"];
+        info.SpeedMultiplier = element["SpeedMultiplier"];
+        info.Rbe = element["RBE"];
+        info.ChildBloons = element["ChildBloons"].ArrayAs<string>()
+            .Select(file => JetFileImporter.Instance().GetJsonParsed(file)).Select(GenerateInfo).ToArray();
+        info.StatusImmunity = element["StatusImmunity"].GetFlag<StatusFlag>();
+        info.DamageImmunity = element["DamageImmunity"].GetFlag<DamageType>();
+        info.CanGoUnderground = element["CanGoUnderground"];
+        info.RotateToPathDirection = element["RotateToPathDirection"];
+        info.Scale = element["Scale"];
+        info.Radius = element["Radius"];
+        info.HitAddon = element["HitAddon"];
+        info.BloonAbility = element["BloonAbility"].GetFlag<BloonAbilityFlag>();
+        return info;
+    }
+    protected override void InitializeFactory()
+    {
+        
+    }
 }

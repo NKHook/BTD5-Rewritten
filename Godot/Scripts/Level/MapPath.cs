@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
@@ -48,37 +49,36 @@ public partial class MapPath : Node2D
 
     class PathLink
     {
-        [JsonPropertyName("Start")]
         public int Start { get; set; }
-
-        [JsonPropertyName("End")]
         public int End { get; set; }
-
-        [JsonPropertyName("Flags")]
         public int Flags { get; set; }
 
-        public static PathLink FromJson(JsonElement elem) => elem.Deserialize<PathLink>() ?? new PathLink();
+        public static PathLink FromJson(JsonWrapper elem)
+        {
+            var result = new PathLink();
+            result.Start = elem["Start"];
+            result.End = elem["End"];
+            result.Flags = elem["Flags"];
+            return result;
+        }
     }
 
-    private static PathSegment GeneratePathSegment(int index, JsonElement nodeJson)
+    private static PathSegment GeneratePathSegment(int index, JsonWrapper nodeJson)
     {
-        var flags = (SegmentFlags)nodeJson.GetProperty("Flags").GetInt32();
-        var points = (from point in nodeJson.GetProperty("Points").EnumerateArray()
-            let x = point[0].GetSingle()
-            let y = point[1].GetSingle()
-            select new Vector2(x, y) * 4.0f).ToList();
+        var flags = nodeJson["Flags"].EnumValue<SegmentFlags>();
+        var points = nodeJson["Points"].EnumerateArray().Select(pointJson => pointJson.GetVector2() * 4.0f).ToList();
         return new PathSegment(index, flags, points);
     }
 
-    private static List<PathSegment> GenerateSegments(JsonElement document)
+    private static List<PathSegment> GenerateSegments(JsonWrapper document)
     {
-        return document.GetProperty("Nodes").EnumerateArray()
+        return document["Nodes"].EnumerateArray()
             .Select((segmentJson, i) => GeneratePathSegment(i, segmentJson)).ToList();
     }
 
-    private static List<PathLink> GenerateLinks(JsonElement document)
+    private static List<PathLink> GenerateLinks(JsonWrapper document)
     {
-        return document.GetProperty("Links").EnumerateArray().Select(linkJson => PathLink.FromJson(linkJson)).ToList();
+        return document["Links"].EnumerateArray().Select(linkJson => PathLink.FromJson(linkJson)).ToList();
     }
 
     private static List<List<PathSegment>> LinkPaths(List<PathLink> links, List<PathSegment> segmentTable)
@@ -93,7 +93,7 @@ public partial class MapPath : Node2D
 
             if ((startSegment.Flags & SegmentFlags.Entrance) != 0)
             {
-                linkedPaths.Add(new List<PathSegment>{ startSegment });
+                linkedPaths.Add(new List<PathSegment> { startSegment });
             }
         }
 

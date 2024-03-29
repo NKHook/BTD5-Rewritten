@@ -60,10 +60,11 @@ public partial class JetFileImporter : Node
 		return Json.ParseString(data);
 	}
 
-	public JsonElement GetJsonParsed(string path)
+	public JsonWrapper GetJsonParsed(string path)
 	{
-		var data = GetFileText(path);
-		
-		return JsonSerializer.Deserialize<JsonElement>(data);
+		return new JsonWrapper(GetJsonEntry(path));
+		/*var data = GetFileText(path);
+
+		return new JsonWrapper(JsonSerializer.Deserialize<JsonElement>(data));*/
 	}
 }

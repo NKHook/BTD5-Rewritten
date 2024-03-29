@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Scripts.MainMenu;
@@ -19,7 +20,7 @@ public partial class MainMenuScreen : Node2D
 
     private static readonly Script BuildingScript = GD.Load<Script>("res://Godot/Scripts/MainMenu/Building.cs");
 
-    private List<Building> GetBuildingSprites(JsonElement buildingJson)
+    private List<Building> GetBuildingSprites(JsonWrapper buildingJson)
     {
         var result = new List<Building>();
         var menuNode = FindChild("menu");
@@ -30,7 +31,7 @@ public partial class MainMenuScreen : Node2D
             foreach (var building in buildingJson.EnumerateArray())
             {
                 if (child is not CompoundSprite sprite ||
-                    !sprite.SpriteDefinitionRes.EndsWith(building.GetProperty("SpriteFile").GetString() ?? ""))
+                    !sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
                     continue;
 
                 var name = sprite.Name;
@@ -39,9 +40,9 @@ public partial class MainMenuScreen : Node2D
 
                 var buildingObj = new Building();
                 buildingObj.SpriteDefinitionRes =
-                    "Assets/JSON/Tablet/UILayout/" + building.GetProperty("SpriteFile").GetString();
-                buildingObj.Screen = building.GetProperty("Screen").GetString() ?? "";
-                buildingObj.LocName = building.GetProperty("Name").GetString() ?? "";
+                    "Assets/JSON/Tablet/UILayout/" + building["SpriteFile"];
+                buildingObj.Screen = building["Screen"];
+                buildingObj.LocName = building["Name"];
                 buildingObj.Initialize();
 
                 buildingObj.Name = name;
@@ -72,7 +73,7 @@ public partial class MainMenuScreen : Node2D
     {
         var buildingsJson = JetFileImporter.Instance()
             .GetJsonParsed("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json");
-        _buildings = GetBuildingSprites(buildingsJson.GetProperty("Buildings"));
+        _buildings = GetBuildingSprites(buildingsJson["Buildings"]);
         Debug.Assert(_buildings.Count > 0);
 
         foreach (var building in _buildings)

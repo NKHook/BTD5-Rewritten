@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
@@ -7,9 +8,7 @@ public class WeaponInfo
 {
     public static readonly WeaponInfo Invalid = new();
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("Type")]
-    public string Type = "invalid";
+    public WeaponType Type = WeaponType.Invalid;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("TargetRange")]
@@ -27,9 +26,10 @@ public class WeaponInfo
     [JsonPropertyName("MaxShots")]
     public long? MaxShots { get; set; }
 
-    public static WeaponInfo FromJson(JsonElement element)
+    public static WeaponInfo FromJson(JsonWrapper element)
     {
-        var weaponInfo = element.Deserialize<WeaponInfo>() ?? Invalid;
-        return weaponInfo;
+        /*var weaponInfo = element.Deserialize<WeaponInfo>() ?? Invalid;
+        return weaponInfo;*/
+        return Invalid;
     }
 }

@@ -24,19 +24,19 @@ public class ActorState
     private bool _shown = true;
     public float Time = 0.0f;
 
-    public ActorState(CellEntry? cellEntry, JsonElement actor)
+    public ActorState(CellEntry? cellEntry, JsonWrapper actor)
     {
         _cellEntry = cellEntry;
-        if (actor.ValueKind == JsonValueKind.Null)
+        if (actor.ValueKind == JsonType.Null)
             return;
 
         _alignment = new[]
         {
-            (ActorAlignment)actor.GetProperty("Alignment")[0].GetInt32(),
-            (ActorAlignment)actor.GetProperty("Alignment")[1].GetInt32()
+            actor["Alignment"][0].EnumValue<ActorAlignment>(),
+            actor["Alignment"][1].EnumValue<ActorAlignment>()
         };
-        _alpha = actor.GetProperty("Alpha").GetSingle();
-        _angle = actor.GetProperty("Angle").GetSingle();
+        _alpha = actor["Alpha"];
+        _angle = actor["Angle"];
         if (actor.TryGetProperty("Colour", out var color))
         {
             var bytes = BitConverter.GetBytes(color.GetUInt32());
@@ -46,14 +46,14 @@ public class ActorState
             Color.A = bytes[3] * 0.00390625f;
         }
 
-        _flip = (ActorFlip)actor.GetProperty("Flip").GetInt32();
-        _position = new Vector2(actor.GetProperty("Position")[0].GetSingle(), actor.GetProperty("Position")[1].GetSingle());
-        _scale = new Vector2(actor.GetProperty("Scale")[0].GetSingle(), actor.GetProperty("Scale")[1].GetSingle());
-        _shown = actor.GetProperty("Shown").GetBoolean();
+        _flip = actor["Flip"].EnumValue<ActorFlip>();
+        _position = actor["Position"];
+        _scale = actor["Scale"];
+        _shown = actor["Shown"];
 
         if (actor.TryGetProperty("Time", out var time))
         {
-            Time = time.GetSingle();
+            Time = time.GetFloat();
         }
     }
 

@@ -74,15 +74,15 @@ public partial class MapMaskNode : Node2D
 		var newText = "(" + mousePos.X + "," + mousePos.Y + ") Mask: ";
 		var maskAtLoc = MaskData.GetPixelUltra((int)mousePos.X, (int)mousePos.Y);
 
-		if ((maskAtLoc & MapMask.MaskBit.Unplacable) != 0)
+		if ((maskAtLoc & MaskBit.BlockTower) != 0)
 		{
 			newText += "Unplacable ";
 		}
-		if ((maskAtLoc & MapMask.MaskBit.Path) != 0)
+		if ((maskAtLoc & MaskBit.PathTower) != 0)
 		{
 			newText += "Path ";
 		}
-		if ((maskAtLoc & MapMask.MaskBit.Water) != 0)
+		if ((maskAtLoc & MaskBit.Water) != 0)
 		{
 			newText += "Water ";
 		}

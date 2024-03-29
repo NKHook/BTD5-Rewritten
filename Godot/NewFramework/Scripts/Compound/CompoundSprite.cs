@@ -65,12 +65,12 @@ public partial class CompoundSprite : Node2D
         return spriteObj;
     }
 
-    private Node2D? LoadActor(JsonElement actor)
+    private Node2D? LoadActor(JsonWrapper actor)
     {
-        var sprite = actor.GetProperty("sprite").GetString();
-        Debug.Assert(sprite != null);
-        var type = (ActorTypes)actor.GetProperty("type").GetInt32();
-        var uid = actor.GetProperty("uid").GetInt32();
+        string sprite = actor["sprite"];
+        Debug.Assert(sprite != string.Empty);
+        var type = actor["type"].EnumValue<ActorTypes>();
+        var uid = actor["uid"].GetInt32();
 
         Node2D result;
         switch (type)
@@ -100,22 +100,22 @@ public partial class CompoundSprite : Node2D
         return result;
     }
 
-    public static List<CellEntry> LoadSpriteInfo(JsonElement stageOptions)
+    public static List<CellEntry> LoadSpriteInfo(JsonWrapper stageOptions)
     {
-        var infosJson = stageOptions.GetProperty("SpriteInfo");
+        var infosJson = stageOptions["SpriteInfo"];
 
         return (from info in infosJson.EnumerateArray()
-            let sprite = info.GetProperty("SpriteInfo").GetString()
-            let texture = info.GetProperty("Texture").GetString()
+            let sprite = info["SpriteInfo"]
+            let texture = info["Texture"]
             select TextureLoader.Instance().FindCell(sprite, texture).As<CellEntry>()
             into cell
             where cell != null
             select cell).ToList();
     }
 
-    public static TimelineInterpolator LoadStageOptions(JsonElement stageOptions)
+    public static TimelineInterpolator LoadStageOptions(JsonWrapper stageOptions)
     {
-        var duration = stageOptions.GetProperty("StageLength").GetSingle();
+        var duration = stageOptions["StageLength"];
         return new TimelineInterpolator(duration);
     }
 
@@ -134,14 +134,14 @@ public partial class CompoundSprite : Node2D
             return;
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
-        var stageOptions = spriteDefinitionJson.GetProperty("stageOptions");
-        if (stageOptions.ValueKind != JsonValueKind.Null)
+        var stageOptions = spriteDefinitionJson["stageOptions"];
+        if (stageOptions.ValueKind != JsonType.Null)
         {
             _usedCells = LoadSpriteInfo(stageOptions);
             _timeline = LoadStageOptions(stageOptions);
         }
 
-        var actors = spriteDefinitionJson.GetProperty("actors");
+        var actors = spriteDefinitionJson["actors"];
         var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
         foreach (var spriteObj in sprites)
         {
@@ -153,20 +153,20 @@ public partial class CompoundSprite : Node2D
         
         foreach (var timelineJson in timelinesJson.EnumerateArray())
         {
-            var uid = timelineJson.GetProperty("spriteuid").GetInt32();
-            var stagesJson = timelineJson.GetProperty("stage");
-            if(stagesJson.ValueKind == JsonValueKind.Null)
+            int uid = timelineJson["spriteuid"];
+            var stagesJson = timelineJson["stage"];
+            if(stagesJson.ValueKind == JsonType.Null)
                 continue;
 
             var stages = new List<ActorState>();
             foreach (var stageJson in stagesJson.EnumerateArray())
             {
-                if(stageJson.ValueKind == JsonValueKind.Null)
+                if(stageJson.ValueKind == JsonType.Null)
                     continue;
             
                 //Prevent states with the same time overwriting eachother
                 //the game only uses the first one at the same time for some reason
-                var time = stageJson.GetProperty("Time").GetSingle();
+                float time = stageJson["Time"];
                 if (stages.Where(stage => stage.Time.Equals(time)).ToArray().Length > 0)
                     continue;
 

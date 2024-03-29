@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using Godot;
 
@@ -9,16 +11,21 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public partial class TowerUpgradeSprites
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("Sprites")]
     public Dictionary<string, string>? Sprites { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UpgradeLevels")]
+    
     public Dictionary<string, long>? UpgradeLevels { get; set; }
 
     private readonly Dictionary<string, CompoundSprite> _sprites = new();
 
+    public TowerUpgradeSprites(string spriteFile)
+    {
+        const string dir = "Assets/JSON/TowerSpriteUpgradeDefinitions/";
+        var path = dir + spriteFile;
+        var data = JetFileImporter.Instance().GetJsonParsed(path);
+        Sprites = data["Sprites"].DictAs<string, string>();
+        UpgradeLevels = data["UpgradeLevels"].DictAs<string, long>();
+    }
+    
     private static string UpgradesAsString(int left, int right) => "" + left + "" + right;
 
     private string GetSpriteNameAtUpgrade(int left, int right)
@@ -45,5 +52,5 @@ public partial class TowerUpgradeSprites
         return GetSpriteAtUpgrade(left, right);
     }
     
-    public static TowerUpgradeSprites FromJson(JsonElement element) => element.Deserialize<TowerUpgradeSprites>() ?? new TowerUpgradeSprites();
+    public static TowerUpgradeSprites FromJson(JsonWrapper element) => new(element);
 }

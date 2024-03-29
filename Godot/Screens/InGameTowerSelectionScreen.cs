@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.Json;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Screens.Components;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
@@ -20,8 +21,8 @@ public partial class InGameTowerSelectionScreen : Node
 		var leftOrder = JetFileImporter.Instance()
 			.GetJsonParsed("Assets/JSON/ScreenDefinitions/TowerSelectionScreen/TowerOrderBottom.json");
 
-		var rightItems = rightOrder.GetProperty("Items");
-		var leftItems = leftOrder.GetProperty("Items");
+		var rightItems = rightOrder["Items"];
+		var leftItems = leftOrder["Items"];
 
 		var selectionGrid = GetNode<GridContainer>("tower_selection_scroll/tower_selection_grid");
 		var biggest = Math.Max(leftItems.EnumerateArray().Count(), rightItems.EnumerateArray().Count());
@@ -29,15 +30,15 @@ public partial class InGameTowerSelectionScreen : Node
 
 		for (var i = 0; i < biggest; i++)
 		{
-			var left = leftItems.GetArrayLength() > i ? leftItems[i] : default;
-			var right = rightItems.GetArrayLength() > i ? rightItems[i] : default;
+			var left = leftItems.ArrayLen() > i ? leftItems[i] : default;
+			var right = rightItems.ArrayLen() > i ? rightItems[i] : default;
 
 			var entry = CreateEntry(left, right);
 			selectionGrid.AddChild(entry);
 		}
 	}
 	
-	private Control? CreateEntry(JsonElement left, JsonElement right)
+	private Control? CreateEntry(JsonWrapper left, JsonWrapper right)
 	{
 		var leftButton = CreateButton(left);
 		var rightButton = CreateButton(right);
@@ -56,17 +57,17 @@ public partial class InGameTowerSelectionScreen : Node
 
 	}
 	
-	private CenterContainer? CreateButton(JsonElement item)
+	private CenterContainer? CreateButton(JsonWrapper? item)
 	{
-		if (item.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
+		if (item == null || item.ValueKind is JsonType.Null)
 			return null;
 		
 		var cell = new CenterContainer();
 		cell.CustomMinimumSize = Vector2.One * 120;
 		cell.Size = Vector2.One * 120;
 
-		var icon = item.GetProperty("Icon").GetString();
-		var factoryName = item.GetProperty("FactoryName").GetString();
+		string icon = item["Icon"];
+		string factoryName = item["FactoryName"];
 		var button = TowerSelectionButtonScene?.Instantiate<TowerSelectionButton>();
 		button!.Name = factoryName + "_button";
 		button.TowerIcon = icon!;

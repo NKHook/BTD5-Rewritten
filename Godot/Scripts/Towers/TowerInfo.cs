@@ -4,154 +4,79 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
 public class TowerInfo
 {
-    public static readonly TowerInfo InvalidTower = new("INVALID");
+    public static readonly TowerInfo InvalidTower = new(TowerType.Invalid);
 
-    public string FactoryName => TypeName;
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("AircraftList")]
-    public string[] AircraftList { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("BaseCost")]
-    public long? BaseCost { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("CanBePlacedInWater")]
-    public bool? CanBePlacedInWater { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("CanBePlacedOnLand")]
-    public bool? CanBePlacedOnLand { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("CanBePlacedOnPath")]
-    public bool? CanBePlacedOnPath { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("CanTargetCamo")]
-    public bool? CanTargetCamo { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("DefaultWeapons")]
-    public string[] DefaultWeapons { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("ActiveWeaponSlots")]
-    public bool[] ActiveWeaponSlots { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("Icon")]
-    public string Icon { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("PlacementH")]
-    public float? PlacementH { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("PlacementRadius")]
-    public float? PlacementRadius { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("PlacementW")]
-    public float? PlacementW { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("RankToUnlock")]
-    public long? RankToUnlock { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("RotatesToTarget")]
-    public bool? RotatesToTarget { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("TargetIsWeaponOrigin")]
-    public bool? TargetIsWeaponOrigin { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("TargetingMode")]
-    public string TargetingMode { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("TargetsManually")]
-    public bool? TargetsManually { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("TypeName")]
-    public string TypeName { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("Upgrades")]
-    public string[][] Upgrades { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UpgradeGateway")]
-    public UpgradeGateway[][] UpgradeGateway { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UpgradePrices")]
-    public long[][] UpgradePrices { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UpgradeIcons")]
-    public string[][] UpgradeIcons { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UpgradeAvatars")]
-    public string[][] UpgradeAvatars { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UseRadiusPlacement")]
-    public bool? UseRadiusPlacement { get; set; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("SpriteUpgradeDefinition")]
-    public string SpriteUpgradeDefinition { get; set; }
+    public bool IsAgent;
+    public TowerType TypeName;
+    public bool NewTower;
+    public bool HideWhenLocked;
+    public bool UnlocksInGame;
+    public string TargetingMode;
+    public bool TargetIsWeaponOrigin;
+    public float Duration;
+    public int DestroyAfterPops;
+    public WeaponType[] DefaultWeapons;
+    public int[] SlotsToFireOnBloonEscape;
+    public int[] SlotsToFireEveryNShots;
+    public int[] SlotsToFireOnDestroyAfterPops;
+    public int NumberOfShotsToFire;
+    public bool PlayAllAnimationsOnFire;
+    public bool CanSpotForTowers;
+    public bool[] ActiveWeaponSlots;
+    public Vector2[] WeaponOffsets;
+    public string FE_Avatar;
+    public int BaseCost;
+    public int RankToUnlock;
+    public int PopsToUnlock;
+    public string[][] Upgrades;
+    public int[][] UpgradePrices;
+    public string[][] UpgradeIcons;
+    public string[][] UpgradeAvatars;
+    public UpgradeGateway[][] UpgradeGateway;
+    public TowerInfo[] AircraftList;
+    public bool CanBePlacedInWater;
+    public bool CanBePlacedOnLand;
+    public bool CanBePlacedOnPath;
+    public bool CanBeOverlapped;
+    public bool CanBePlacedMultipleTimes;
+    public bool UseRadiusPlacement;
+    public float PlacementW;
+    public float PlacementH;
+    public float PlacementRadius;
+    public bool CanTargetCamo;
+    public bool RotatesToTarget;
+    public bool FireWeaponAndDestroy;
+    public bool FiresWeaponsInSequence;
+    public int[][] FiringSequence;
+    public int[] PlacementFiringSequence;
+    public bool SkipFirstFrameWhenFiring;
+    public bool UseDefaultRangeCircle;
+    public int DefaultRangeSize;
+    public bool DontResetAnimation;
+    public int AnimationWeaponSlotIndex;
+    public bool DrawWeaponsOnTop;
+    public bool ConfirmLevel4FirstUpgrade;
+    public float InitialAngle;
+    public TowerUpgradeSprites SpriteUpgradeDefinition;
+    public string DefaultSprite;
     
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("UseDefaultRangeCircle")]
-    public bool? UseDefaultRangeCircle { get; set; }
-
     private TowerUpgradeSprites? _towerSprites;
     private readonly List<WeaponInfo?> _defaultWeapons = new();
 
     public TowerInfo() : base()
     {
-        TypeName = "INVALID";
-        
-        AircraftList = Array.Empty<string>();
-        DefaultWeapons = Array.Empty<string>();
-        ActiveWeaponSlots = Array.Empty<bool>();
-        Icon = string.Empty;
-        TargetingMode = string.Empty;
-        Upgrades = Array.Empty<string[]>();
-        UpgradeGateway = Array.Empty<UpgradeGateway[]>();
-        UpgradePrices = Array.Empty<long[]>();
-        UpgradeIcons = Array.Empty<string[]>();
-        UpgradeAvatars = Array.Empty<string[]>();
-        SpriteUpgradeDefinition = string.Empty;
+        TypeName = TowerType.Invalid;
     }
 
-    public TowerInfo(string factoryName) : base()
+    public TowerInfo(TowerType typeFlag) : base()
     {
-        TypeName = factoryName;
-
-        AircraftList = Array.Empty<string>();
-        DefaultWeapons = Array.Empty<string>();
-        ActiveWeaponSlots = Array.Empty<bool>();
-        Icon = string.Empty;
-        TargetingMode = string.Empty;
-        Upgrades = Array.Empty<string[]>();
-        UpgradeGateway = Array.Empty<UpgradeGateway[]>();
-        UpgradePrices = Array.Empty<long[]>();
-        UpgradeIcons = Array.Empty<string[]>();
-        UpgradeAvatars = Array.Empty<string[]>();
-        SpriteUpgradeDefinition = string.Empty;
+        TypeName = typeFlag;
     }
 
     public List<WeaponInfo?> GetDefaultWeaponInfo()
@@ -159,15 +84,16 @@ public class TowerInfo
         if (_defaultWeapons.Count != 0) return _defaultWeapons;
 
         const string definitions = "Assets/JSON/WeaponDefinitions/";
-        var towerDir = definitions + FactoryName + "/";
-        foreach (var weaponFile in DefaultWeapons)
+        var towerDir = definitions + TypeName + "/";
+        foreach (var weaponType in DefaultWeapons)
         {
-            if (weaponFile == string.Empty)
+            if (weaponType == WeaponType.Invalid)
             {
                 _defaultWeapons.Add(null);
                 continue;
             }
-            
+
+            var weaponFile = WeaponFactory.Instance?.FlagToString(weaponType);
             var file = towerDir + weaponFile;
             var weaponJson = JetFileImporter.Instance().GetJsonParsed(file);
             var info = WeaponInfo.FromJson(weaponJson);
@@ -188,6 +114,4 @@ public class TowerInfo
 
         return _towerSprites;
     }
-
-    public static TowerInfo FromJson(JsonElement element) => element.Deserialize<TowerInfo>() ?? InvalidTower;
 }

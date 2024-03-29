@@ -49,7 +49,7 @@ public partial class Bloon : Node2D, IManagedObject
         remote.RemotePath = GetPath();
         _pathFollower.AddChild(remote);
         _pathFollower.Loop = false;
-        _pathFollower.Rotates = _definition.RotateToPathDirection ?? false;
+        _pathFollower.Rotates = _definition.RotateToPathDirection;
         
         bloonPath?.AddChild(_pathFollower);
 

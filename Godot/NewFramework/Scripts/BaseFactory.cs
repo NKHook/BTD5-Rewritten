@@ -7,13 +7,14 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 
-public abstract partial class BaseFactory<TInfo, TInstance> : Node2D
+public abstract partial class BaseFactory<TIdentifier, TInfo, TInstance> : Node2D
+	where TIdentifier : struct, Enum
 	where TInfo : class
 	where TInstance : class
 {
 	protected string DefinitionsDir = "Assets/JSON/BaseFactory/";
-	protected readonly HashStringConverter TypeTracker = new();
-	private readonly Dictionary<uint, TInfo> _factoryData = new();
+	protected readonly FlagStringConverter TypeTracker = new();
+	private readonly Dictionary<TIdentifier, TInfo> _factoryData = new();
 	private readonly TInfo _invalid;
 
 	protected BaseFactory(TInfo invalid)
@@ -23,44 +24,25 @@ public abstract partial class BaseFactory<TInfo, TInstance> : Node2D
 
 	protected abstract string ToFileName(string factoryName);
 
-	public virtual TInfo GetInfo(string factoryName) => GetInfo(HashName(0, factoryName));
-	protected TInfo GetInfo(uint hash) => _factoryData.GetValueOrDefault(hash, _invalid);
-	protected void AddInfo(uint hash, TInfo info) => _factoryData[hash] = info;
+	public virtual TInfo GetInfo(string factoryName) => GetInfo(StringToFlag<TIdentifier>(factoryName));
+	protected TInfo GetInfo(TIdentifier flag) => _factoryData.GetValueOrDefault(flag, _invalid);
+	public virtual void AddInfo(TIdentifier id, TInfo info) => _factoryData[id] = info;
 
-	public uint HashName(int category, string factoryName) => TypeTracker.StringToHash(category, factoryName);
-	public string HashToString(int category, uint hash) => TypeTracker.HashToString(category, hash);
+	public TFlag StringToFlag<TFlag>(string text) where TFlag : struct, Enum =>
+		FlagStringConverter.StringToFlag<TFlag>(text);
 
-	protected abstract TInfo GenerateInfo(JsonElement element);
+	public string FlagToString<TFlag>(TFlag flag) where TFlag : struct, Enum =>
+		FlagStringConverter.FlagToString(flag);
 
-	protected virtual void InitializeFactory()
-	{
-		var fileImporter = JetFileImporter.Instance();
+	public bool IsFlagProperty<TFlag>(string flagProperty) where TFlag : struct, Enum =>
+		Enum.TryParse(flagProperty, out TFlag _);
 
-		var factoryHashes = TypeTracker
-			.GetCategory(0)?
-			.Select(pair => pair.Item1)
-			.ToList();
-		var factoryNames = TypeTracker
-			.GetCategory(0)?
-			.Select(pair => pair.Item2)
-			.ToList();
-		var infos = factoryNames?
-			.Select(ToFileName)
-			.Select(name => DefinitionsDir + name)
-			.Select(path => fileImporter.GetJsonParsed(path))
-			.Select(GenerateInfo);
+	protected abstract TInfo GenerateInfo(JsonWrapper element);
 
-		Debug.Assert(factoryNames != null);
-		Debug.Assert(infos != null);
-		
-		foreach (var (hash, info) in factoryHashes!.Zip(infos!))
-		{
-			_factoryData[hash] = info;
-		}
-	}
+	protected abstract void InitializeFactory();
 
-	public virtual TInstance? Instantiate(string factoryName) => Instantiate(HashName(0, factoryName));
-	public virtual TInstance? Instantiate(uint hash) => Instantiate(GetInfo(hash));
+	public virtual TInstance? Instantiate(string factoryName) => Instantiate(StringToFlag<TIdentifier>(factoryName));
+	public virtual TInstance? Instantiate(TIdentifier flag) => Instantiate(GetInfo(flag));
 	public TInstance? Instantiate(TInfo info) => Activator.CreateInstance(typeof(TInstance), info) as TInstance;
 	
 	public override void _Ready()

@@ -17,10 +17,10 @@ public partial class MapSelectCarousel : Node
 		_mapsGrid = GetNode<GridContainer>("thumb_container");
 
 		var tracklist = JetFileImporter.Instance().GetJsonParsed("Assets/JSON/tracklist.json");
-		var tracks = tracklist.GetProperty("Tracks");
+		var tracks = tracklist["Tracks"];
 		foreach (var track in tracks.EnumerateArray())
 		{
-			var trackName = track.EnumerateArray().ElementAt(1).GetString();
+			string trackName = track[1];
 			var button = _mapButton.Instantiate<TrackThumbnail>();
 			button.Name = "button_for_" + trackName;
 			button.TrackName = trackName!;

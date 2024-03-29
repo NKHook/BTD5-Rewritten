@@ -1,114 +1,26 @@
+using System;
+using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 
-public partial class TowerFactory : BaseFactory<TowerInfo, BaseTower>
+public partial class TowerFactory : BaseFactory<TowerType, TowerInfo, BaseTower>
 {
     public static TowerFactory Instance = null!;
-    enum Category
-    {
-        TowerFactoryNames = 0,
-        GroundTargets = 1,
-        PropertyNames = 2,
-        ArialTargets = 3,
-        ProStatuses = 4,
-        TowerTypeNames = 5
-    }
 
     public TowerFactory() : base(TowerInfo.InvalidTower)
     {
         Instance = this;
         DefinitionsDir = "Assets/JSON/TowerDefinitions/";
 
-        var towerNames = new[]
-        {
-            "TestTower",
-            "DartMonkey",
-            "TackTower",
-            "SniperMonkey",
-            "BoomerangThrower",
-            "NinjaMonkey",
-            "BombTower",
-            "IceTower",
-            "GlueGunner",
-            "MonkeyBuccaneer",
-            "MonkeyAce",
-            "SuperMonkey",
-            "MonkeyApprentice",
-            "MonkeyVillage",
-            "BananaFarm",
-            "MortarTower",
-            "DartlingGun",
-            "SpikeFactory",
-            "HeliPilot",
-            "RoadSpikes",
-            "ExplodingPineapple",
-            "MonkeyEngineer",
-            "Bloonchipper",
-            "MonkeySub",
-            "MeerkatSpyPro",
-            "MeerkatSpy",
-            "TribalTurtlePro",
-            "TribalTurtle",
-            "PortableLakePro",
-            "PortableLake",
-            "PontoonPro",
-            "Pontoon",
-            "BloonsdayDevicePro",
-            "BloonsdayDevice",
-            "AngrySquirrelPro",
-            "AngrySquirrel",
-            "SuperMonkeyStormPro",
-            "SuperMonkeyStorm",
-            "BeeKeeperPro",
-            "BeeKeeper",
-            "BloonberryBushPro",
-            "BloonberryBush",
-            "RadadactylPro",
-            "Radadactyl",
-            "BananaFarmerPro",
-            "BananaFarmer",
-            "NinjaKiwiPro",
-            "NinjaKiwi",
-            "WizardLord",
-            "AcePlane",
-            "AircraftCarrier",
-            "PhoenixPlane",
-            "SuperPhoenixPlane",
-            "SupplyDropPlane",
-            "HeliPilotAircraft",
-            "RadadactylPlane",
-            "RadderdactylPlane",
-            "MonkeyEngineerSentry",
-            "MonkeyEngineerSentryTier4",
-            "GameDummy"
-        };
-        var groundTargets = new[]
-        {
-            "First",
-            "Last",
-            "Close",
-            "Strong",
-            "AnyInRange",
-            "Any",
-            "ManualActive",
-            "ManualPassive",
-            "Arc",
-            "None",
-            "Submerge"
-        };
-        var propertyNames = new[]
+        /*var towerNames = Enum.GetNames<TowerType>();
+        var flagProperties = new[]
         {
             "Type"
-        };
-        var arialTargets = new[]
-        {
-            "FollowPath",
-            "Patrol",
-            "FollowPlayer",
-            "LockInPlace",
-            "Pursuit"
         };
         var proStatuses = new[]
         {
@@ -172,14 +84,7 @@ public partial class TowerFactory : BaseFactory<TowerInfo, BaseTower>
             "NA",
             "NA",
             "NA",
-        };
-
-        TypeTracker.LoadCategory(Category.TowerFactoryNames, towerNames);
-        TypeTracker.LoadCategory(Category.GroundTargets, groundTargets);
-        TypeTracker.LoadCategory(Category.PropertyNames, propertyNames);
-        TypeTracker.LoadCategory(Category.ArialTargets, arialTargets);
-        TypeTracker.LoadCategory(Category.ProStatuses, proStatuses);
-        TypeTracker.LoadCategory(Category.TowerTypeNames, towerNames);
+        };*/
     }
 
     protected override string ToFileName(string typeName)
@@ -187,8 +92,95 @@ public partial class TowerFactory : BaseFactory<TowerInfo, BaseTower>
         return typeName + ".tower";
     }
 
-    protected override TowerInfo GenerateInfo(JsonElement element)
+    protected override TowerInfo GenerateInfo(JsonWrapper element)
     {
-        return TowerInfo.FromJson(element);
+        var info = new TowerInfo();
+        if (element["IsAircraft"])
+        {
+        }
+
+        info.IsAgent = element["IsAgent"];
+        info.TypeName = element["TypeName"].GetFlag<TowerType>();
+        info.NewTower = element["NewTower"];
+        info.HideWhenLocked = element["HideWhenLocked"];
+        info.UnlocksInGame = element["UnlocksInGame"];
+        info.TargetingMode = element["TargetingMode"];
+        info.TargetIsWeaponOrigin = element["TargetIsWeaponOrigin"];
+        info.Duration = element["Duration"];
+        info.DestroyAfterPops = element["DestroyAfterPops"];
+        info.DefaultWeapons = element["DefaultWeapons"]
+            .ArrayAs<string>()
+            .Select(file => file[..^5])
+            .Select(name => WeaponFactory.Instance!.StringToFlag<WeaponType>(name))
+            .ToArray();
+        info.SlotsToFireOnBloonEscape = element["SlotsToFireOnBloonEscape"].ArrayAs<int>();
+        info.SlotsToFireEveryNShots = element["SlotsToFireEveryNShots"].ArrayAs<int>();
+        info.SlotsToFireOnDestroyAfterPops = element["SlotsToFireOnDestroyAfterPops"].ArrayAs<int>();
+        info.NumberOfShotsToFire = element["NumberOfShotsToFire"];
+        info.PlayAllAnimationsOnFire = element["PlayAllAnimationsOnFire"];
+        info.CanSpotForTowers = element["CanSpotForTowers"];
+        info.ActiveWeaponSlots = element["ActiveWeaponSlots"].ArrayAs<bool>();
+        info.WeaponOffsets = element["WeaponOffsets"].ArrayAs<Vector2>();
+        info.FE_Avatar = element["FE_Avatar"];
+        info.BaseCost = element["BaseCost"];
+        info.RankToUnlock = element["RankToUnlock"];
+        info.PopsToUnlock = element["PopsToUnlock"];
+        info.Upgrades = element["Upgrades"].ArrayAs<string[]>();
+        info.UpgradePrices = element["UpgradePrices"].ArrayAs<int[]>();
+        info.UpgradeIcons = element["UpgradeIcons"].ArrayAs<string[]>();
+        info.UpgradeAvatars = element["UpgradeAvatars"].ArrayAs<string[]>();
+        info.UpgradeGateway = element["UpgradeGateway"]
+            .EnumerateArray()
+            .Select(arr => arr
+                .EnumerateArray()
+                .Select(
+                    gateway =>
+                    {
+                        var gw = new UpgradeGateway();
+                        gw.Rank = gateway["Rank"];
+                        gw.Xp = gateway["XP"];
+                        return gw;
+                    }).ToArray()
+            ).ToArray();
+        info.AircraftList = element["AircraftList"]
+            .ArrayAs<string>()
+            .Select(file => JetFileImporter.Instance().GetJsonParsed(DefinitionsDir + file))
+            .Select(GenerateInfo)
+            .ToArray();
+        info.CanBePlacedInWater = element["CanBePlacedInWater"];
+        info.CanBePlacedOnLand = element["CanBePlacedOnLand"];
+        info.CanBePlacedOnPath = element["CanBePlacedOnPath"];
+        info.CanBeOverlapped = element["CanBeOverlapped"];
+        info.CanBePlacedMultipleTimes = element["CanBePlacedMultipleTimes"];
+        info.UseRadiusPlacement = element["UseRadiusPlacement"];
+        info.PlacementW = element["PlacementW"];
+        info.PlacementH = element["PlacementH"];
+        info.PlacementRadius = element["PlacementRadius"];
+        info.CanTargetCamo = element["CanTargetCamo"];
+        info.RotatesToTarget = element["RotatesToTarget"];
+        info.FireWeaponAndDestroy = element["FireWeaponAndDestroy"];
+        info.FiresWeaponsInSequence = element["FiresWeaponsInSequence"];
+        info.FiringSequence = element["FiringSequence"].ArrayAs<int[]>();
+        info.PlacementFiringSequence = element["PlacementFiringSequence"].ArrayAs<int>();
+        info.SkipFirstFrameWhenFiring = element["SkipFirstFrameWhenFiring"];
+        info.UseDefaultRangeCircle = element["UseDefaultRangeCircle"];
+        info.DefaultRangeSize = element["DefaultRangeSize"];
+        info.DontResetAnimation = element["DontResetAnimation"];
+        info.AnimationWeaponSlotIndex = element["AnimationWeaponSlotIndex"];
+        info.DrawWeaponsOnTop = element["DrawWeaponsOnTop"];
+        info.ConfirmLevel4FirstUpgrade = element["ConfirmLevel4FirstUpgrade"];
+        info.InitialAngle = element["InitialAngle"];
+        info.SpriteUpgradeDefinition = new TowerUpgradeSprites(element["SpriteUpgradeDefinition"]);
+        info.DefaultSprite = element["DefaultSprite"];
+
+        return info;
+    }
+
+    protected override void InitializeFactory()
+    {
+        foreach (var type in Enum.GetValues<TowerType>())
+        {
+            
+        }
     }
 }

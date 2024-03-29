@@ -7,13 +7,6 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Level;
 
 public class MapMask
 {
-	[Flags]
-	public enum MaskBit : byte
-	{
-		Unplacable = 1 << 0,
-		Path = 1 << 1,
-		Water = 1 << 2
-	}
 	private static byte BITMASK = 0b111;
 	public static MaskBit FromByte(int data)
 	{
@@ -27,12 +20,12 @@ public class MapMask
 
 		if ((bits & 0b010) != 0)
 		{
-			result |= MaskBit.Path;
+			result |= MaskBit.PathTower;
 		}
 
 		if ((bits & 0b001) != 0)
 		{
-			result |= MaskBit.Unplacable;
+			result |= MaskBit.BlockTower;
 		}
 
 		return result;
@@ -86,12 +79,12 @@ public class MapMask
 		foreach (var mask in _maskBuffer)
 		{
 			var color = Colors.Black;
-			if ((mask & MaskBit.Unplacable) != 0)
+			if ((mask & MaskBit.BlockTower) != 0)
 			{
 				color.R = 1.0f;
 			}
 
-			if ((mask & MaskBit.Path) != 0)
+			if ((mask & MaskBit.PathTower) != 0)
 			{
 				color.G = 1.0f;
 			}
