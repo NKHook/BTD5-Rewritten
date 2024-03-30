@@ -44,13 +44,11 @@ public partial class MainMenuScreen : Node2D
                     "Assets/JSON/Tablet/UILayout/" + building["SpriteFile"];
                 buildingObj.Screen = building["Screen"];
                 buildingObj.LocName = building["Name"];
-                
+                buildingObj.Initialize();
+
                 buildingObj.Name = name;
                 animNode.AddChild(buildingObj);
                 animNode.MoveChild(buildingObj, index);
-                
-                buildingObj.Initialize();
-
 
                 result.Add(buildingObj);
             }

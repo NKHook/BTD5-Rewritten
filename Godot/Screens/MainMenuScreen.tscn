@@ -1,10 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://bdcrc2sg0ndu5"]
+[gd_scene load_steps=17 format=3 uid="uid://bdcrc2sg0ndu5"]
 
 [ext_resource type="Script" path="res://Godot/Screens/MainMenuScreen.cs" id="1_xyq0l"]
 [ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Godot/Shaders/compound_sprite.tres" id="2_cswtu"]
 [ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="4_6i2dy"]
 [ext_resource type="Script" path="res://Godot/Scripts/Intro/fade_in.gd" id="4_hndw2"]
-[ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_camera.gd" id="5_104hi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dwk6t"]
 shader = ExtResource("2_cswtu")
@@ -141,4 +140,3 @@ loop = false
 
 [node name="main_camera" type="Camera2D" parent="camera_path/camera_follow"]
 zoom = Vector2(0.5, 0.5)
-script = ExtResource("5_104hi")
