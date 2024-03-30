@@ -3,7 +3,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.MainMenu;
 
-public partial class Building : Node
+public partial class Building : CompoundSprite
 {
 	[Export] public string Screen = "";
 	[Export] public string LocName = "";

@@ -14,6 +14,12 @@ public partial class MainMenuScreen : Node2D
 
     private float _timePassed = 0.0f;
     private List<Building> _buildings = new();
+
+    private static readonly Script CompoundSpriteScript =
+        GD.Load<Script>("res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs");
+
+    private static readonly Script BuildingScript = GD.Load<Script>("res://Godot/Scripts/MainMenu/Building.cs");
+
     private List<Building> GetBuildingSprites(JsonWrapper buildingJson)
     {
         var result = new List<Building>();
@@ -21,19 +27,30 @@ public partial class MainMenuScreen : Node2D
         var animNode = menuNode!.GetNode<AnimationPlayer>("player");
         foreach (var child in menuNode!.GetActors())
         {
-            if (child is not CompoundSprite sprite) continue;
+            if (child.GetScript().As<Script>() != CompoundSpriteScript) continue;
 
             foreach (var building in buildingJson.EnumerateArray())
             {
-                if (!sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
+                if (child is not CompoundSprite sprite ||
+                    !sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
                     continue;
 
+                var name = sprite.Name;
+                var index = sprite.GetIndex();
+                sprite.Free();
+
                 var buildingObj = new Building();
+                buildingObj.SpriteDefinitionRes =
+                    "Assets/JSON/Tablet/UILayout/" + building["SpriteFile"];
                 buildingObj.Screen = building["Screen"];
                 buildingObj.LocName = building["Name"];
                 
-                buildingObj.Name = buildingObj.LocName;
-                sprite.AddChild(buildingObj);
+                buildingObj.Name = name;
+                animNode.AddChild(buildingObj);
+                animNode.MoveChild(buildingObj, index);
+                
+                buildingObj.Initialize();
+
 
                 result.Add(buildingObj);
             }

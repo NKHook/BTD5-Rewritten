@@ -131,9 +131,7 @@ public partial class CompoundSprite : Node2D
         
         var totalStates = new List<ActorState>();
         if (initial != null) totalStates.Add(initial);
-        states.Sort((a, b) => a.Time < b.Time ? -1 : a.Time > b.Time ? 1 : 0);
         totalStates.AddRange(states);
-        
         //Add the final state at the end time point so godot doesnt interpolate the last
         //and first states together
         var finalState = states.Last();
@@ -216,7 +214,7 @@ public partial class CompoundSprite : Node2D
         }
     }
 
-    public Array<Node> GetActors() => GetChildren();
+    public Array<Node> GetActors() => _animationPlayer?.GetChildren() ?? new Array<Node>();
     
     public void Initialize()
     {
@@ -255,7 +253,7 @@ public partial class CompoundSprite : Node2D
         foreach (var spriteObj in sprites)
         {
             if (spriteObj != null)
-                AddChild(spriteObj);
+                _animationPlayer.AddChild(spriteObj);
         }
 
         if (!spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson)) return;
@@ -286,7 +284,6 @@ public partial class CompoundSprite : Node2D
             Node2D? node = null;
             foreach (var child in GetActors())
             {
-                if (child is not Node2D) continue;
                 if (int.Parse(child.Name) != uid) continue;
             
                 node = child as Node2D;
