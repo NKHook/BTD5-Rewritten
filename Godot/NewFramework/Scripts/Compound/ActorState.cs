@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
 using Godot.Collections;
 
@@ -105,15 +106,10 @@ public class ActorState
         }
         Apply(node);
     }
-    public void ApplyColor(Node2D node)
+    public void ApplyColor(Sprite sprite)
     {
-        if (node.Material == null)
-        {
-            var material = new ShaderMaterial();
-            material.Shader = ShaderResource;
-            node.Material = material;
-        }
-        (node.Material as ShaderMaterial)?.SetShaderParameter("color", Color);
+        sprite.Color = Color;
+        sprite.Alpha = _alpha;
     }
     public void Apply(Node2D node)
     {

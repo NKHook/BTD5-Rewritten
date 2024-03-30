@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
@@ -57,11 +58,12 @@ public partial class CompoundSprite : Node2D
         sprite.RegionRect = cell?.GetRegion() ?? new Rect2();
     }
 
-    private Sprite2D LoadSingleSprite(CellEntry cell, ActorState state)
+    private Sprite LoadSingleSprite(CellEntry cell, ActorState state)
     {
-        var spriteObj = new Sprite2D();
+        var spriteObj = new Sprite();
         SetSpriteCell(spriteObj, cell);
         state.ApplyAndAlign(spriteObj);
+        state.ApplyColor(spriteObj);
         return spriteObj;
     }
 
@@ -200,7 +202,7 @@ public partial class CompoundSprite : Node2D
 
             switch (child)
             {
-                case Sprite2D sprite:
+                case Sprite sprite:
                     SetSpriteCell(sprite, _childCells[uid]);
                     break;
                 case CompoundSprite compound:
@@ -239,8 +241,8 @@ public partial class CompoundSprite : Node2D
             var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
             Debug.Assert(state is not null);
             
-            if (state?.Color != Colors.White && state?.Color.A != 0)
-                state?.ApplyColor(child);
+            if (child is Sprite sprite && state?.Color != Colors.White && state?.Color.A != 0)
+                state?.ApplyColor(sprite);
             state?.Apply(child);
         }
     }

@@ -8,6 +8,31 @@ public partial class Sprite : Sprite2D
 {
 	[Export] public string SpriteName = "";
 	[Export] public string TextureName = "";
+
+	private Color _color = Colors.White;
+	[Export] public Color Color
+	{
+		get => _color;
+		set
+		{
+			var mat = Material as ShaderMaterial;
+			mat?.SetShaderParameter("color", value);
+			_color = value;
+		}
+	}
+
+	private float _alpha = 1.0f;
+	[Export] public float Alpha
+	{
+		get => _alpha;
+		set
+		{
+			var mat = Material as ShaderMaterial;
+			mat?.SetShaderParameter("alpha", value);
+			_alpha = value;
+		}
+	}
+	
 	public CellEntry? Cell;
 	public EventHandler<Sprite>? SpriteReady;
 	
