@@ -1,16 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl3llw5sc4u3t"]
+[gd_scene load_steps=2 format=3 uid="uid://blan7yme5iao"]
 
-[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://Godot/NewFramework/Sprite.tscn" id="1_t8hel"]
+[ext_resource type="Script" path="res://Godot/Scripts/Debug/SheetTester.cs" id="1_bsbvm"]
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_phqcf"]
+[node name="test_root" type="Node2D"]
 
-[node name="TestRoot" type="Node2D"]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_phqcf")
-}
-
-[node name="Sprite" parent="AnimationPlayer" instance=ExtResource("1_t8hel")]
-SpriteName = "nk_logo"
-TextureName = "kiwi_splash"
+[node name="SheetTester" type="Sprite2D" parent="."]
+position = Vector2(642, 355)
+script = ExtResource("1_bsbvm")

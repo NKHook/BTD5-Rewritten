@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
-using Godot.Collections;
-using Array = Godot.Collections.Array;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 
@@ -15,8 +14,7 @@ public partial class CompoundSprite : Node2D
     [Export] public string SpriteDefinitionRes = "";
     [Export] public bool Animating = true;
 
-    private AnimationPlayer? _animationPlayer;
-    private Animation? _animation;
+    private TimelineInterpolator? _timeline;
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
@@ -26,21 +24,23 @@ public partial class CompoundSprite : Node2D
 
     public float Time
     {
-        get => (float)(_animationPlayer?.CurrentAnimationPosition ?? 0.0);
-        set => _animationPlayer?.Seek(value);
+        get => _timeline?.Time ?? 0.0f;
+        set
+        {
+            if (_timeline != null) _timeline.Time = value;
+        }
     }
 
     public bool Loop
     {
-        get => _animation?.LoopMode is Animation.LoopModeEnum.Linear or Animation.LoopModeEnum.Pingpong;
+        get => _timeline?.Loop ?? true;
         set
         {
-            if (_animation != null)
-                _animation.LoopMode = value ? Animation.LoopModeEnum.Linear : Animation.LoopModeEnum.None;
+            if (_timeline != null) _timeline.Loop = value;
         }
     }
 
-    public float Duration => _animation?.Length ?? 0.0f;
+    public float Duration => _timeline?.Length ?? 0.0f;
 
     public CompoundSprite LoadCompoundSprite(string sprite)
     {
@@ -113,131 +113,32 @@ public partial class CompoundSprite : Node2D
             select cell).ToList();
     }
 
-    public static Animation LoadStageOptions(JsonWrapper stageOptions)
+    public static TimelineInterpolator LoadStageOptions(JsonWrapper stageOptions)
     {
-        var result = new Animation();
         var duration = stageOptions["StageLength"];
-        result.Length = duration ?? 0.0f;
-        result.LoopMode = Animation.LoopModeEnum.Linear;
-        return result;
+        return new TimelineInterpolator(duration);
     }
 
-    public void AddTrack(Animation anim, int uid, Node2D node, List<ActorState> states, ActorState? initial)
-    {
-        Debug.Assert(_animationPlayer != null);
-        if (_animationPlayer == null) return;
-        
-        var totalStates = new List<ActorState>();
-        if (initial != null) totalStates.Add(initial);
-        totalStates.AddRange(states);
-        
-        var centeredTrack = anim.AddTrack(Animation.TrackType.Value);
-        var alignmentTrack = anim.AddTrack(Animation.TrackType.Value);
-        var alphaTrack = anim.AddTrack(Animation.TrackType.Value);
-        var angleTrack = anim.AddTrack(Animation.TrackType.Value);
-        var colorTrack = anim.AddTrack(Animation.TrackType.Value);
-        var posTrack = anim.AddTrack(Animation.TrackType.Value);
-        var scaleTrack = anim.AddTrack(Animation.TrackType.Value);
-        var shownTrack = anim.AddTrack(Animation.TrackType.Value);
-        
-        anim.TrackSetPath(centeredTrack, _animationPlayer.GetPathTo(node) + ":centered");
-        anim.TrackSetPath(alignmentTrack, _animationPlayer.GetPathTo(node) + ":offset");
-        anim.TrackSetPath(alphaTrack, _animationPlayer.GetPathTo(node) + ":Alpha");
-        anim.TrackSetPath(angleTrack, _animationPlayer.GetPathTo(node) + ":rotation");
-        anim.TrackSetPath(colorTrack, _animationPlayer.GetPathTo(node) + ":Color");
-        anim.TrackSetPath(posTrack, _animationPlayer.GetPathTo(node) + ":position");
-        anim.TrackSetPath(scaleTrack, _animationPlayer.GetPathTo(node) + ":scale");
-        anim.TrackSetPath(shownTrack, _animationPlayer.GetPathTo(node) + ":visible");
-        
-        foreach (var state in totalStates)
-        {
-            var cell = state.Cell;
-            var centerPoint = new Vector2(cell?.Aw ?? 0.0f, cell?.Ah ?? 0.0f) * 0.5f;
-            var offset = Vector2.Zero;
-            switch (state.Alignment[0])
-            {
-                case ActorAlignment.Default:
-                    offset = new Vector2(cell?.Ax ?? 0.0f, offset.Y);
-                    break;
-                case ActorAlignment.MinX:
-                    offset = new Vector2(cell?.Ax + (cell?.Aw * 0.5f) ?? 0.0f, offset.Y);
-                    break;
-                case ActorAlignment.MaxX:
-                    offset = new Vector2(cell?.Ax - (cell?.Aw * 0.5f) ?? 0.0f, offset.Y);
-                    break;
-                case ActorAlignment.MinY:
-                case ActorAlignment.MaxY:
-                case ActorAlignment.Unknown3:
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            switch (state.Alignment[1])
-            {
-                case ActorAlignment.Default:
-                    offset = new Vector2(offset.X, cell?.Ay ?? 0.0f);
-                    break;
-                case ActorAlignment.MinY:
-                    offset = new Vector2(offset.X, cell?.Ay + (cell?.Ah * 0.5f) ?? 0.0f);
-                    break;
-                case ActorAlignment.MaxY:
-                    offset = new Vector2(offset.X, cell?.Ay - (cell?.Ah * 0.5f) ?? 0.0f);
-                    break;
-                case ActorAlignment.MinX:
-                case ActorAlignment.MaxX:
-                case ActorAlignment.Unknown3:
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            offset -= centerPoint;
-            
-            anim.TrackInsertKey(centeredTrack, state.Time, false);
-            anim.TrackInsertKey(alignmentTrack, state.Time, offset);
-            anim.TrackInsertKey(alphaTrack, state.Time, state.Alpha);
-            anim.TrackInsertKey(angleTrack, state.Time, state.Angle);
-            anim.TrackInsertKey(colorTrack, state.Time, state.Color);
-            anim.TrackInsertKey(posTrack, state.Time, state.Position);
-            
-            var scale = state.Scale;
-            scale.X *= state.Flip is ActorFlip.Horizontal or ActorFlip.Both ? -1.0f : 1.0f;
-            scale.Y *= state.Flip is ActorFlip.Vertical or ActorFlip.Both ? -1.0f : 1.0f;
-            anim.TrackInsertKey(scaleTrack, state.Time, scale);
-            
-            anim.TrackInsertKey(shownTrack, state.Time, scale);
-        }
-    }
-
-    public Array<Node> GetActors() => _animationPlayer?.GetChildren() ?? new Array<Node>();
-    
     public void Initialize()
     {
-        foreach (var child in GetActors())
-        {
-            child.Free();
-        }
-        _animationPlayer?.Free();
-        _animationPlayer = null;
-        _animation = null;
+        _timeline = null;
         _usedCells.Clear();
         _initialStates.Clear();
         _childCells.Clear();
+        foreach (var child in GetChildren())
+        {
+            child.Free();
+        }
 
         if (SpriteDefinitionRes == "")
             return;
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
-        var animName = "Anim" + SpriteDefinitionRes.Replace("/", "_").Replace("_", "")[..^5];
-        animName = new string(animName.ToCharArray().Reverse().ToArray())[..8];
-        
-        _animationPlayer = new AnimationPlayer();
-        AddChild(_animationPlayer);
-        _animationPlayer.Name = "player";
-        
         var stageOptions = spriteDefinitionJson["stageOptions"];
         if (stageOptions != null && stageOptions.ValueKind != JsonType.Null)
         {
             _usedCells = LoadSpriteInfo(stageOptions);
-            _animation = LoadStageOptions(stageOptions);
+            _timeline = LoadStageOptions(stageOptions);
         }
 
         var actors = spriteDefinitionJson["actors"] ??
@@ -246,7 +147,7 @@ public partial class CompoundSprite : Node2D
         foreach (var spriteObj in sprites)
         {
             if (spriteObj != null)
-                _animationPlayer.AddChild(spriteObj);
+                AddChild(spriteObj);
         }
 
         if (!spriteDefinitionJson.TryGetProperty("timelines", out var timelinesJson)) return;
@@ -275,7 +176,7 @@ public partial class CompoundSprite : Node2D
             }
 
             Node2D? node = null;
-            foreach (var child in GetActors())
+            foreach (var child in GetChildren())
             {
                 if (int.Parse(child.Name) != uid) continue;
             
@@ -285,17 +186,14 @@ public partial class CompoundSprite : Node2D
             }
             Debug.Assert(node != null);
         
-            AddTrack(_animation!, uid, node!, stages, _initialStates[uid]);
-            //_timeline?.SetInitialState(uid, _initialStates[uid]);
+            _timeline?.AddTimeline(uid, node!, stages);
+            _timeline?.SetInitialState(uid, _initialStates[uid]);
         }
-
-        _animation!.ResourceName = animName;
-        _animationPlayer.Play(animName);
     }
 
     private void RefreshTextures()
     {
-        foreach (var child in GetActors())
+        foreach (var child in GetChildren())
         {
             if (!int.TryParse(child?.Name.ToString(), out var uid))
                 continue;
@@ -318,11 +216,32 @@ public partial class CompoundSprite : Node2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (FullyLoaded) return;
-        FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
-        if (!FullyLoaded) return;
+        if (!FullyLoaded)
+        {
+            FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
+            if (FullyLoaded)
+            {
+                RefreshTextures();
+                Loaded?.Invoke(this, null!);
+            }
+        }
         
-        RefreshTextures();
-        Loaded?.Invoke(this, null!);
+        if (Animating)
+            _timeline?.Tick((float)delta);
+        
+        foreach (var childNode in GetChildren())
+        {
+            var child = childNode as Node2D;
+            
+            if (!int.TryParse(child?.Name.ToString(), out var uid))
+                continue;
+
+            var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
+            Debug.Assert(state is not null);
+            
+            if (state?.Color != Colors.White && state?.Color.A != 0)
+                state?.ApplyColor(child);
+            state?.Apply(child);
+        }
     }
 }
