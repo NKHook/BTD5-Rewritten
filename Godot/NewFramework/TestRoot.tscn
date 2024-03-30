@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://blan7yme5iao"]
-
-[ext_resource type="Script" path="res://Godot/Scripts/Debug/SheetTester.cs" id="1_bsbvm"]
-
-[node name="test_root" type="Node2D"]
-
-[node name="SheetTester" type="Sprite2D" parent="."]
-position = Vector2(642, 355)
-script = ExtResource("1_bsbvm")
