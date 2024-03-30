@@ -39,7 +39,7 @@ public partial class Bloon : Node2D, IManagedObject
             var spriteFile = spriteDir + sprite + ".json";
             var compound = new CompoundSprite();
             compound.SpriteDefinitionRes = spriteFile;
-            compound.PauseAnimation();
+            compound.Animating = false;
             AddChild(compound);
         }
         

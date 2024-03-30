@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
 using Godot.Collections;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 
-public partial class ActorState
+public partial class ActorState : Node
 {
     private static readonly Shader ShaderResource = GD.Load<Shader>("res://Godot/Shaders/compound_sprite.tres");
     
@@ -26,19 +25,6 @@ public partial class ActorState
     public bool Shown = true;
     public float Time = 0.0f;
 
-    public ActorState(ActorState other)
-    {
-        _cellEntry = other._cellEntry;
-        Alignment = other.Alignment;
-        Alpha = other.Alpha;
-        Angle = other.Angle;
-        Color = other.Color;
-        Flip = other.Flip;
-        Position = other.Position;
-        Scale = other.Scale;
-        Shown = other.Shown;
-        Time = other.Time;
-    }
     public ActorState(CellEntry? cellEntry, JsonWrapper actor)
     {
         _cellEntry = cellEntry;
@@ -55,10 +41,10 @@ public partial class ActorState
         if (actor.TryGetProperty("Colour", out var color))
         {
             var bytes = BitConverter.GetBytes(color.GetUInt32());
-            Color.R = bytes[0] / 255.0f;
-            Color.G = bytes[1] / 255.0f;
-            Color.B = bytes[2] / 255.0f;
-            Color.A = bytes[3] / 255.0f;
+            Color.R = bytes[0] * 0.00390625f;
+            Color.G = bytes[1] * 0.00390625f;
+            Color.B = bytes[2] * 0.00390625f;
+            Color.A = bytes[3] * 0.00390625f;
         }
 
         Flip = actor["Flip"].EnumValue<ActorFlip>();
@@ -72,6 +58,7 @@ public partial class ActorState
         }
     }
 
+    [Obsolete("Godot's animation system is being used now.")]
     public void Align(Node2D node)
     {
         if (node is not Sprite2D sprite) return;
@@ -117,6 +104,7 @@ public partial class ActorState
         sprite.Offset -= centerPoint;
     }
     
+    [Obsolete("Godot's animation system is being used now.")]
     public void ApplyAndAlign(Node2D node)
     {
         Align(node);
@@ -124,11 +112,15 @@ public partial class ActorState
     }
     public void ApplyColor(Node2D node)
     {
-        if (node is not Sprite sprite) return;
-        
-        sprite.Color = Color;
-        sprite.Alpha = Alpha;
+        if (node.Material == null)
+        {
+            var material = new ShaderMaterial();
+            material.Shader = ShaderResource;
+            node.Material = material;
+        }
+        (node.Material as ShaderMaterial)?.SetShaderParameter("color", Color);
     }
+    [Obsolete("Godot's animation system is being used now. You should never call this.")]
     public void Apply(Node2D node)
     {
         var scale = Scale;

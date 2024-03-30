@@ -223,7 +223,7 @@ public partial class BaseTower : Node2D, IManagedObject
         var newSprite = _definition.GetSprites()?.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade) ??
                         throw new BTD5WouldCrashException("Trying to update a sprite that has not been defined");
         newSprite.Name = "tower_sprite";
-        newSprite.PauseAnimation();
+        newSprite.Animating = false;
         AddChild(newSprite);
     }
 

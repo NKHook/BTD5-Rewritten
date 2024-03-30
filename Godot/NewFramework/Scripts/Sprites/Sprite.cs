@@ -10,35 +10,21 @@ public partial class Sprite : Sprite2D
 	[Export] public string TextureName = "";
 	[Export] public Color Color
 	{
-		get => _color;
-		set
-		{
-			_colorChanged = true;
-			_color = value;
-		}
+		get => (Material as ShaderMaterial)?.Shader.Get("color").AsColor() ?? Colors.White;
+		set => (Material as ShaderMaterial)?.Shader.Set("color", value);
 	}
-
-	[Export]
-	public float Alpha
+	[Export] public float Alpha
 	{
-		get => _alpha;
-		set
-		{
-			_alphaChanged = true;
-			_alpha = value;
-		}
+		get => (Material as ShaderMaterial)?.Shader.Get("alpha").AsSingle() ?? 1.0f;
+		set => (Material as ShaderMaterial)?.Shader.Set("alpha", value);
 	}
 	
 	public CellEntry? Cell;
 	public EventHandler<Sprite>? SpriteReady;
-	private Color _color;
-	private bool _colorChanged;
-	private float _alpha;
-	private bool _alphaChanged;
 	
 	public override void _Ready()
 	{
-		Cell ??= TextureLoader.Instance()?.FindCell(SpriteName, TextureName).As<CellEntry>();
+		Cell = TextureLoader.Instance()?.FindCell(SpriteName, TextureName).As<CellEntry>();
 		Texture = Cell?.GetTexture();
 		RegionEnabled = true;
 		RegionRect = Cell?.GetRegion() ?? new Rect2();
@@ -51,14 +37,6 @@ public partial class Sprite : Sprite2D
 	{
 		base._Process(delta);
 
-		if (_colorChanged)
-		{
-			(Material as ShaderMaterial)?.Shader.Set("color", Color);
-			(Material as ShaderMaterial)?.Shader.Set("alpha", Alpha);
-			
-			_colorChanged = false;
-		}
-		
 		Texture ??= Cell?.GetTexture();
 	}
 }

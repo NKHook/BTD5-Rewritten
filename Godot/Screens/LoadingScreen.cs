@@ -62,7 +62,7 @@ public partial class LoadingScreen : BloonsBaseScreen
 		
 		if (LoadingSprite is { Time: >= 0.5f } && !_loadComplete)
 		{
-			LoadingSprite.PauseAnimation();
+			LoadingSprite.Animating = false;
 			LoadingSprite.Time = 0.5f;
 			if (!_startedLoading)
 			{
@@ -71,9 +71,9 @@ public partial class LoadingScreen : BloonsBaseScreen
 			_startedLoading = true;
 		}
 
-		if (!_loadComplete && !LoadingSprite!.Playing)
+		if (_loadComplete)
 		{
-			LoadingSprite!.PlayAnimation();
+			LoadingSprite!.Animating = true;
 		}
 		
 		if (LoadingSprite!.Time >= LoadingSprite.Duration)
