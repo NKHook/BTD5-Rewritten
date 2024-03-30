@@ -44,6 +44,11 @@ public partial class Sprite : Sprite2D
 		RegionRect = Cell?.GetRegion() ?? new Rect2();
 		Material = new ShaderMaterial();
 		(Material as ShaderMaterial)!.Shader = GD.Load<VisualShader>("res://Godot/Shaders/compound_sprite.tres");
+
+		//Update the color in the shader in case it wasn't set up yet
+		Color = _color;
+		Alpha = _alpha;
+		
 		SpriteReady?.Invoke(this, this);
 	}
 
