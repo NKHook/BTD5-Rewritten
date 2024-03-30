@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
 using Godot.Collections;
 using Array = Godot.Collections.Array;
@@ -13,10 +14,10 @@ public partial class CompoundSprite : Node2D
 {
     [ExportCategory("Compound Sprite")]
     [Export] public string SpriteDefinitionRes = "";
-    [Export] public bool Animating = true;
 
     private AnimationPlayer? _animationPlayer;
     private Animation? _animation;
+    private bool _animating = true;
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
@@ -48,7 +49,14 @@ public partial class CompoundSprite : Node2D
     {
         var compoundSprite = new CompoundSprite();
         compoundSprite.SpriteDefinitionRes = (Path.GetDirectoryName(SpriteDefinitionRes) + "/" + sprite).Replace("\\", "/");
-        compoundSprite.Animating = Animating;
+        if (Playing)
+        {
+            compoundSprite.PlayAnimation();
+        }
+        else
+        {
+            compoundSprite.PauseAnimation();
+        }
         return compoundSprite;
     }
 
@@ -59,11 +67,12 @@ public partial class CompoundSprite : Node2D
         sprite.RegionRect = cell?.GetRegion() ?? new Rect2();
     }
 
-    private Sprite2D LoadSingleSprite(CellEntry cell, ActorState state)
+    private Sprite LoadSingleSprite(CellEntry cell, ActorState state)
     {
-        var spriteObj = new Sprite2D();
-        SetSpriteCell(spriteObj, cell);
+        var spriteObj = new Sprite();
+        spriteObj.Cell = cell;
         state.ApplyAndAlign(spriteObj);
+        state.ApplyColor(spriteObj);
         return spriteObj;
     }
 
@@ -130,14 +139,20 @@ public partial class CompoundSprite : Node2D
         if (_animationPlayer == null) return;
         
         var totalStates = new List<ActorState>();
-        if (initial != null) totalStates.Add(initial);
+        if (initial != null)
+        {
+            initial.Time = 0.0f;
+            totalStates.Add(initial);
+        }
         states.Sort((a, b) => a.Time < b.Time ? -1 : a.Time > b.Time ? 1 : 0);
         totalStates.AddRange(states);
         
         //Add the final state at the end time point so godot doesnt interpolate the last
         //and first states together
-        var finalState = states.Last();
-        finalState.Time = anim.Length;
+        var finalState = new ActorState(states[^1])
+        {
+            Time = anim.Length
+        };
         totalStates.Add(finalState);
         
         var centeredTrack = anim.AddTrack(Animation.TrackType.Value);
@@ -149,14 +164,14 @@ public partial class CompoundSprite : Node2D
         var scaleTrack = anim.AddTrack(Animation.TrackType.Value);
         var shownTrack = anim.AddTrack(Animation.TrackType.Value);
         
-        anim.TrackSetPath(centeredTrack, node.GetPath() + ":centered");
-        anim.TrackSetPath(alignmentTrack, node.GetPath() + ":offset");
-        anim.TrackSetPath(alphaTrack, node.GetPath() + ":Alpha");
-        anim.TrackSetPath(angleTrack, node.GetPath() + ":rotation");
-        anim.TrackSetPath(colorTrack, node.GetPath() + ":Color");
-        anim.TrackSetPath(posTrack, node.GetPath() + ":position");
-        anim.TrackSetPath(scaleTrack, node.GetPath() + ":scale");
-        anim.TrackSetPath(shownTrack, node.GetPath() + ":visible");
+        anim.TrackSetPath(centeredTrack, GetPathTo(node) + ":centered");
+        anim.TrackSetPath(alignmentTrack, GetPathTo(node) + ":offset");
+        anim.TrackSetPath(alphaTrack, GetPathTo(node) + ":Alpha");
+        anim.TrackSetPath(angleTrack, GetPathTo(node) + ":rotation");
+        anim.TrackSetPath(colorTrack, GetPathTo(node) + ":Color");
+        anim.TrackSetPath(posTrack, GetPathTo(node) + ":position");
+        anim.TrackSetPath(scaleTrack, GetPathTo(node) + ":scale");
+        anim.TrackSetPath(shownTrack, GetPathTo(node) + ":visible");
         
         foreach (var state in totalStates)
         {
@@ -203,7 +218,7 @@ public partial class CompoundSprite : Node2D
             anim.TrackInsertKey(centeredTrack, state.Time, false);
             anim.TrackInsertKey(alignmentTrack, state.Time, offset);
             anim.TrackInsertKey(alphaTrack, state.Time, state.Alpha);
-            anim.TrackInsertKey(angleTrack, state.Time, state.Angle);
+            anim.TrackInsertKey(angleTrack, state.Time, Mathf.DegToRad(state.Angle));
             anim.TrackInsertKey(colorTrack, state.Time, state.Color);
             anim.TrackInsertKey(posTrack, state.Time, state.Position * 4.0f);
             
@@ -240,6 +255,7 @@ public partial class CompoundSprite : Node2D
         
         _animationPlayer = new AnimationPlayer();
         AddChild(_animationPlayer);
+        _animationPlayer.RootNode = GetPath();
         _animationPlayer.Name = "player";
         
         var stageOptions = spriteDefinitionJson["stageOptions"];
@@ -286,12 +302,11 @@ public partial class CompoundSprite : Node2D
             Node2D? node = null;
             foreach (var child in GetActors())
             {
-                if (child is not Node2D) continue;
+                if (child is not Node2D n) continue;
                 if (int.Parse(child.Name) != uid) continue;
             
-                node = child as Node2D;
-                if (node != null)
-                    break;
+                node = n;
+                break;
             }
             Debug.Assert(node != null);
         
@@ -303,12 +318,24 @@ public partial class CompoundSprite : Node2D
         library.AddAnimation(animName, _animation);
         _animationPlayer.AddAnimationLibrary("lib", library);
         Debug.Assert(_animationPlayer.HasAnimation("lib/" + animName));
-        PlayAnimation();
+        if(_animating)
+            PlayAnimation();
+        else
+            PauseAnimation();
     }
 
+    public bool Playing => _animationPlayer?.IsPlaying() ?? false;
     public void PlayAnimation()
     {
         _animationPlayer!.Play("lib/" + _animation!.ResourceName);
+        _animating = true;
+    }
+
+    public void PauseAnimation()
+    {
+        if (_animationPlayer is not null)
+            _animationPlayer!.Pause();
+        _animating = false;
     }
 
     private void RefreshTextures()
