@@ -12,19 +12,19 @@ public class BloonInfo
     
     public BloonType Type { get; set; }
     public BloonDrawLayer DrawLayer { get; set; }
-    public long InitialHealth { get; set; }
+    public int InitialHealth { get; set; }
     public string SpriteFile { get; set; }
-    public double BaseSpeed { get; set; }
-    public double SpeedMultiplier { get; set; }
-    public long Rbe { get; set; }
+    public float BaseSpeed { get; set; }
+    public float SpeedMultiplier { get; set; }
+    public int Rbe { get; set; }
     public BloonInfo[] ChildBloons { get; set; }
     public StatusFlag StatusImmunity { get; set; }
     public DamageType DamageImmunity { get; set; }
     public bool CanGoUnderground { get; set; }
     public bool RotateToPathDirection { get; set; }
-    public double Scale { get; set; }
-    public double Radius { get; set; }
-    public long HitAddon { get; set; }
+    public float Scale { get; set; }
+    public float Radius { get; set; }
+    public int HitAddon { get; set; }
     public BloonAbilityFlag BloonAbility { get; set; }
 
     public BloonInfo()

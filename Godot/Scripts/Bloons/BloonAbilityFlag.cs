@@ -3,7 +3,7 @@
 namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
 
 [Flags]
-public enum BloonAbilityFlag
+public enum BloonAbilityFlag : ulong
 {
     None = 0,
     BloonariusAbility = 1 << 0,

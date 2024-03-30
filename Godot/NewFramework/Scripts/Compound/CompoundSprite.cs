@@ -141,7 +141,8 @@ public partial class CompoundSprite : Node2D
             _timeline = LoadStageOptions(stageOptions);
         }
 
-        var actors = spriteDefinitionJson["actors"] ?? throw new BTD5WouldCrashException();
+        var actors = spriteDefinitionJson["actors"] ??
+                     throw new BTD5WouldCrashException("CompoundSprite file has no actors defined");
         var sprites = actors.EnumerateArray().Select(LoadActor).ToArray();
         foreach (var spriteObj in sprites)
         {

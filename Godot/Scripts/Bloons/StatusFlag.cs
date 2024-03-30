@@ -1,6 +1,6 @@
 ﻿namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
 
-public enum StatusFlag
+public enum StatusFlag : ulong
 {
     None = 0,
     Ice = 1 << 0,

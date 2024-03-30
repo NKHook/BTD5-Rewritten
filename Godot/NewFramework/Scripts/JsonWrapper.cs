@@ -131,7 +131,10 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
             return (TFlag)(object)ArrayAs<string>().Select(text => Enum.Parse<TFlag>(text))
                 .Aggregate<TFlag, ulong>(0, (current, val) => current | (ulong)(object)val);
         }
-
+        if (typeof(TFlag).GetEnumUnderlyingType() != typeof(ulong))
+        {
+            throw new InvalidOperationException("The underlying type of a flag must be a ulong");
+        }
         throw new InvalidOperationException();
     }
 
