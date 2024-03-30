@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://chymuxsvrvl3f"]
+[gd_scene load_steps=4 format=3 uid="uid://chymuxsvrvl3f"]
 
 [ext_resource type="Script" path="res://Godot/Screens/DGSplashScreen.cs" id="1_k56nm"]
 [ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="2_qpsb0"]
+[ext_resource type="Script" path="res://Godot/Scripts/Debug/debug_camera.gd" id="3_ep213"]
 
-[node name="DgSplashScreen" type="Node2D"]
+[node name="DgSplashScreen" type="Node2D" node_paths=PackedStringArray("_splash")]
 script = ExtResource("1_k56nm")
+_splash = NodePath("splash")
 
 [node name="splash" type="Node2D" parent="."]
 script = ExtResource("2_qpsb0")
 SpriteDefinitionRes = "Assets/JSON/ScreenDefinitions/NinjaSplashScreen/ninja_splash.json"
 
-[node name="main_camera" type="Camera2D" parent="."]
+[node name="main_camera" type="Camera2D" parent="." node_paths=PackedStringArray("tracker")]
 zoom = Vector2(0.5, 0.5)
+script = ExtResource("3_ep213")
+tracker = NodePath("../splash")
