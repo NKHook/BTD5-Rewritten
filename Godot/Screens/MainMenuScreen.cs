@@ -23,8 +23,9 @@ public partial class MainMenuScreen : Node2D
     private List<Building> GetBuildingSprites(JsonWrapper buildingJson)
     {
         var result = new List<Building>();
-        var menuNode = FindChild("menu");
-        foreach (var child in menuNode.GetChildren())
+        var menuNode = FindChild("menu") as CompoundSprite;
+        var animNode = menuNode!.GetNode<AnimationPlayer>("player");
+        foreach (var child in menuNode!.GetActors())
         {
             if (child.GetScript().As<Script>() != CompoundSpriteScript) continue;
 
@@ -46,8 +47,8 @@ public partial class MainMenuScreen : Node2D
                 buildingObj.Initialize();
 
                 buildingObj.Name = name;
-                menuNode.AddChild(buildingObj);
-                menuNode.MoveChild(buildingObj, index);
+                animNode.AddChild(buildingObj);
+                animNode.MoveChild(buildingObj, index);
 
                 result.Add(buildingObj);
             }
