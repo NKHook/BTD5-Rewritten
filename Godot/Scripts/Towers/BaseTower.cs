@@ -21,6 +21,8 @@ public partial class BaseTower : Node2D, IManagedObject
     private List<Weapon?> _weaponSlots = new();
     private BitArray _activeWeaponSlots = new(64);
 
+    private CompoundSprite? _sprite;
+    
     private int _leftUpgrade;
     private int _rightUpgrade;
 
@@ -83,11 +85,34 @@ public partial class BaseTower : Node2D, IManagedObject
     {
         base._Process(delta);
 
+        foreach (var weaponSlot in _weaponSlots)
+        {
+            weaponSlot?.Update(delta);
+        }
+        
         var targets = ValidTargets();
         if (targets.Length > 0)
         {
             var target = targets.MaxBy(bloon => bloon.Progress);
             RotateTo(target!);
+
+            for (var i = 0; i < _weaponSlots.Count; i++)
+            {
+                if(!_activeWeaponSlots[i]) continue;
+                
+                var weaponSlot = _weaponSlots[i];
+                if (weaponSlot?.FireReady ?? false)
+                {
+                    var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
+                    weaponSlot.Fire(Position + offset, Vector2.FromAngle(Rotation));
+                    if (_sprite != null)
+                    {
+                        _sprite.Loop = false;
+                        _sprite.Animating = true;
+                        _sprite.Time = 0.0f;
+                    }
+                }
+            }
         }
     }
 
@@ -236,15 +261,21 @@ public partial class BaseTower : Node2D, IManagedObject
 
     private void UpdateSprite()
     {
-        var sprite = GetNodeOrNull<CompoundSprite>("tower_sprite");
-        sprite?.Free();
+        if (_sprite == null)
+        {
+            var sprite = GetNodeOrNull<CompoundSprite>("tower_sprite");
+            sprite?.Free();
+        }
+        _sprite?.Free();
 
         var newSprite = _definition.GetSprites()?.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade) ??
                         throw new BTD5WouldCrashException("Trying to update a sprite that has not been defined");
         newSprite.Name = "tower_sprite";
         newSprite.Animating = false;
+        newSprite.Loop = false;
         newSprite.RotationDegrees = 90;
         AddChild(newSprite);
+        _sprite = newSprite;
     }
 
     private Bloon[] ValidTargets()

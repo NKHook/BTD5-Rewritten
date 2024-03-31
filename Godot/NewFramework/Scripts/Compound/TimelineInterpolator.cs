@@ -54,6 +54,9 @@ public class TimelineInterpolator
         var actorStates = _states[uid];
         if (actorStates is null)
             return _initialStates[uid];
+
+        if (Time >= Length && !Loop)
+            return _initialStates[uid];
         
         var previousIdx = 0;
         ActorState? next = null;

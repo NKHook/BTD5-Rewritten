@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dlxno7msjbnv7"]
+[gd_scene load_steps=13 format=3 uid="uid://dlxno7msjbnv7"]
 
 [ext_resource type="Script" path="res://Godot/Screens/GameScreen.cs" id="1_vs2gu"]
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://Godot/NewFramework/CompoundSprite.tscn" id="2_qs5w1"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bas1dl0hire2i" path="res://Godot/Screens/InGameBorders.tscn" id="4_sbag4"]
 [ext_resource type="PackedScene" uid="uid://c20j2e72kjj08" path="res://Godot/Screens/InGameTowerSelectionScreen.tscn" id="5_83km7"]
 [ext_resource type="Script" path="res://Godot/Scripts/Bloons/BloonManager.cs" id="6_cg6qe"]
+[ext_resource type="Script" path="res://Godot/Scripts/Weapons/TaskObjectManager.cs" id="7_6cv72"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t81tj"]
 size = Vector2(1792, 1280)
@@ -19,14 +20,19 @@ script = ExtResource("1_vs2gu")
 
 [node name="map_props" parent="." instance=ExtResource("2_qs5w1")]
 position = Vector2(-133, -128)
+SpriteDefinitionRes = null
+Animating = null
 
 [node name="map_mask" type="Node2D" parent="."]
 position = Vector2(-133, -128)
 script = ExtResource("3_tt2m0")
+MaskFile = null
+DebugShowMask = null
 
 [node name="map_path" type="Node2D" parent="."]
 position = Vector2(-1093, -766)
 script = ExtResource("4_3h4cp")
+PathFile = null
 
 [node name="map_area" type="Area2D" parent="."]
 position = Vector2(-133, -128)
@@ -38,6 +44,9 @@ shape = SubResource("RectangleShape2D_t81tj")
 
 [node name="BloonManager" type="Node2D" parent="."]
 script = ExtResource("6_cg6qe")
+
+[node name="TaskObjects" type="Node2D" parent="."]
+script = ExtResource("7_6cv72")
 
 [node name="GameHudScreen" parent="." instance=ExtResource("3_nafbs")]
 

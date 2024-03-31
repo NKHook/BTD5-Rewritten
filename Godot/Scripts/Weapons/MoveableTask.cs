@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
@@ -16,5 +17,13 @@ public partial class MoveableTask : WeaponTask
         {
             QueueFree();
         }
+    }
+
+    public override object Clone()
+    {
+        var clone = base.Clone() as MoveableTask;
+        clone!.Movement = Movement;
+        clone.Origin = Origin;
+        return clone;
     }
 }

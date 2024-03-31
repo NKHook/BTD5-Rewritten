@@ -4,7 +4,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
-public partial class Weapon : Node2D
+public partial class Weapon
 {
     private readonly WeaponInfo _definition;
     private readonly WeaponTask[]? _tasks;
@@ -17,21 +17,17 @@ public partial class Weapon : Node2D
 
     public float Range => _definition.TargetRange;
 
-    public bool Cooled;
+    public bool Cooled => CooldownTimer >= _definition.CooldownTime;
     public float CooldownTimer;
-    public bool FireReady;
+    public bool FireReady => FireTimer >= _definition.FireDelayTime;
     public float FireTimer;
 
-    public override void _Process(double delta)
+    public void Update(double delta)
     {
-        base._Process(delta);
         CooldownTimer += (float)delta;
-        Cooled = FireTimer >= _definition.CooldownTime;
-
         if (!Cooled) return;
         
         FireTimer += (float)delta;
-        FireReady = FireTimer >= _definition.FireDelayTime;
     }
 
     public void Fire(Vector2 where, Vector2 direction)
@@ -49,7 +45,7 @@ public partial class Weapon : Node2D
 
         foreach (var task in _tasks)
         {
-            if (task.Duplicate() is not WeaponTask clone) continue;
+            if (task.Clone() is not WeaponTask clone) continue;
             
             clone.Position = where;
             if (clone is MoveableTask { Movement: not null } movable) 
