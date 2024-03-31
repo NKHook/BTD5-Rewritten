@@ -19,6 +19,7 @@ public partial class CompoundSprite : Node2D
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
     private readonly SparseList<CellEntry> _childCells = new();
+    public Dictionary<string, CustomVariable> CustomVariables = new();
 
     public readonly EventHandler? Loaded = null;
     public bool FullyLoaded { get; private set; }
@@ -67,6 +68,34 @@ public partial class CompoundSprite : Node2D
         return spriteObj;
     }
 
+    private Dictionary<string, CustomVariable> LoadCustomVariables(JsonWrapper variables)
+    {
+        var result = new Dictionary<string, CustomVariable>();
+        foreach (var entry in variables.EnumerateArray())
+        {
+            var variable = new CustomVariable();
+            var name = entry["VariableName"]!.GetString();
+            variable.VariableName = name;
+            variable.ValueType = entry["ValueType"]?.EnumValue<CustomVariableType>() ?? CustomVariableType.None;
+            switch (variable.ValueType)
+            {
+                case CustomVariableType.None:
+                    break;
+                case CustomVariableType.FloatArray:
+                    variable.Value = entry["Value"]?.ArrayAs<float>() ?? Array.Empty<float>();
+                    break;
+                case CustomVariableType.IntArray:
+                    variable.Value = entry["Value"]?.ArrayAs<int>() ?? Array.Empty<int>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            result[name] = variable;
+        }
+
+        return result;
+    }
+    
     private Node2D? LoadActor(JsonWrapper actor)
     {
         var sprite = actor["sprite"] ?? "";
@@ -136,6 +165,10 @@ public partial class CompoundSprite : Node2D
             return;
         var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
 
+        var customVarsJson = spriteDefinitionJson["customvariables"];
+        if (customVarsJson != null && customVarsJson.ValueKind != JsonType.Null)
+            CustomVariables = LoadCustomVariables(customVarsJson);
+        
         var stageOptions = spriteDefinitionJson["stageOptions"];
         if (stageOptions != null && stageOptions.ValueKind != JsonType.Null)
         {

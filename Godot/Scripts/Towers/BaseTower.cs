@@ -20,6 +20,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
     private List<Weapon?> _weaponSlots = new();
     private BitArray _activeWeaponSlots = new(64);
+    private Node2D? _firePosNode;
 
     private CompoundSprite? _sprite;
 
@@ -28,6 +29,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
     private bool _selected;
     private bool _hovered;
+    private bool _animStarted = false;
 
     public bool Selected => _selected;
     public Area2D? PlacementArea;
@@ -106,17 +108,20 @@ public partial class BaseTower : Node2D, IManagedObject
 
             var weaponSlot = _weaponSlots[i];
             if (!(weaponSlot?.Cooled ?? false)) continue;
-            _sprite!.Loop = false;
-            _sprite.Animating = true;
-            _sprite.Time = 0.0f;
+            if (!_animStarted)
+            {
+                _sprite!.Loop = false;
+                _sprite.Animating = true;
+                _sprite.Time = 0.0f;
+                _animStarted = true;
+            }
             
             if (!(weaponSlot?.FireReady ?? false)) continue;
-            
+
+            var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
             var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
-            weaponSlot.Fire(Position + offset, Vector2.FromAngle(Rotation));
-            if (_sprite == null) continue;
-            
-            
+            _animStarted = false;
+            weaponSlot.Fire(firePos + offset, Vector2.FromAngle(Rotation));
         }
     }
 
@@ -286,6 +291,17 @@ public partial class BaseTower : Node2D, IManagedObject
         newSprite.RotationDegrees = 90;
         AddChild(newSprite);
         _sprite = newSprite;
+        var firePosArr = newSprite.CustomVariables.ContainsKey("FirePosition")
+            ? newSprite.CustomVariables["FirePosition"].Value as float[]
+            : Array.Empty<float>();
+        if (firePosArr == null) return;
+
+        if (_firePosNode == null)
+        {
+            _firePosNode = new Node2D();
+            AddChild(_firePosNode);
+        }
+        _firePosNode.Position = new Vector2(firePosArr[0], -firePosArr[1]) * 4.0f;
     }
 
     private Bloon[] ValidTargets()

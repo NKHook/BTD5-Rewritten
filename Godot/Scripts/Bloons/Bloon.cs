@@ -18,8 +18,9 @@ public partial class Bloon : Node2D, IManagedObject
 
     private float _speed = 1.0f;
     private float _speedMultiplier = 1.0f;
+    private int _health = 1;
 
-    public Bloon(BloonInfo definition) : base()
+    public Bloon(BloonInfo definition)
     {
         _definition = definition;
     }
@@ -43,6 +44,8 @@ public partial class Bloon : Node2D, IManagedObject
             compound.Animating = false;
             AddChild(compound);
         }
+
+        _health = _definition.InitialHealth;
         
         //Set up the path follower stuff
         _pathFollower = new PathFollow2D();
@@ -54,10 +57,24 @@ public partial class Bloon : Node2D, IManagedObject
         
         bloonPath?.AddChild(_pathFollower);
 
-        _speed = (float)_definition.BaseSpeed!;
-        _speedMultiplier = (float)_definition.SpeedMultiplier!;
+        _speed = _definition.BaseSpeed;
+        _speedMultiplier = _definition.SpeedMultiplier;
     }
 
+    public void Damage(int amount)
+    {
+        _health -= amount;
+        if (_health <= 0)
+        {
+            Pop();
+        }
+    }
+
+    public void Pop()
+    {
+        QueueFree();
+    }
+    
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -75,4 +92,6 @@ public partial class Bloon : Node2D, IManagedObject
     {
         _owner = owner as BloonManager;
     }
+
+    public bool Collided(Node2D obj) => obj.Position.DistanceTo(Position) < _definition.Radius * 2.5f;
 }

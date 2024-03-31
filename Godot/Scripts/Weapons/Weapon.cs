@@ -45,13 +45,7 @@ public partial class Weapon
 
         foreach (var task in _tasks)
         {
-            if (task.Clone() is not WeaponTask clone) continue;
-            
-            clone.Position = where;
-            if (clone is MoveableTask { Movement: not null } movable) 
-                movable.Movement.Direction = direction;
-
-            _taskObjects.AddObject(clone);
+            task.Execute(where, direction, null);
         }
     }
 }
