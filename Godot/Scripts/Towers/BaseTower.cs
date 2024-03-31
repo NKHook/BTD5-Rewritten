@@ -5,6 +5,7 @@ using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens;
+using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using BloonsTD5Rewritten.Godot.Scripts.Level;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 using Godot;
@@ -78,6 +79,23 @@ public partial class BaseTower : Node2D, IManagedObject
         ZIndex = 32;
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        var targets = ValidTargets();
+        if (targets.Length > 0)
+        {
+            var target = targets.MaxBy(bloon => bloon.Progress);
+            RotateTo(target!);
+        }
+    }
+
+    public void RotateTo(Bloon target)
+    {
+        LookAt(target.Position);
+    }
+
     private void MapAreaInput(Node viewport, InputEvent @event, long shapeidx)
     {
         var buttonEvent = @event as InputEventMouseButton;
@@ -123,20 +141,20 @@ public partial class BaseTower : Node2D, IManagedObject
 
         if (!_selected) return;
     
-        var range = _definition.UseDefaultRangeCircle ? 64.0f : GetAttackRange();
+        var range = GetAttackRange();
         var selectRadius = _circle2d?.Instantiate();
         if (selectRadius == null) return;
 
         var color = GetRadiusColor();
         selectRadius.Name = "select_radius";
-        selectRadius.Set("radius", range * 2.5f);
+        selectRadius.Set("radius", range);
         selectRadius.Set("color", color);
         AddChild(selectRadius);
 
         var smallerRadius = _circle2d?.Instantiate();
         if (smallerRadius == null) return;
         smallerRadius.Name = "inner_radius";
-        smallerRadius.Set("radius", range * 2.5f - 4.0f);
+        smallerRadius.Set("radius", range - 4.0f);
         smallerRadius.Set("color", color);
         selectRadius.AddChild(smallerRadius);
     }
@@ -173,24 +191,22 @@ public partial class BaseTower : Node2D, IManagedObject
             }
         }
 
-        if (PlacementShape is RectangleShape2D rect)
-        {
-            var size = rect.Size / 4.0f;
-            var min = maskRelative - size * 0.5f;
-            var max = maskRelative + size * 0.5f;
+        if (PlacementShape is not RectangleShape2D rect) return false;
+        var size = rect.Size / 4.0f;
+        var min = maskRelative - size * 0.5f;
+        var max = maskRelative + size * 0.5f;
 
-            for (var x = min.X; x < max.X; x++)
+        for (var x = min.X; x < max.X; x++)
+        {
+            for (var y = min.Y; y < max.Y; y++)
             {
-                for (var y = min.Y; y < max.Y; y++)
+                if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
+                    continue;
+                
+                var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
+                if ((mask & MaskBit.BlockTower) != 0)
                 {
-                    if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
-                        continue;
-                    
-                    var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
-                    if ((mask & MaskBit.BlockTower) != 0)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -202,11 +218,14 @@ public partial class BaseTower : Node2D, IManagedObject
 
     private float GetAttackRange()
     {
+        if (_definition.UseDefaultRangeCircle)
+            return 64.0f;
+        
         if (_weaponSlots.Count == 0)
             return 0.0f;
 
         var active = GetActiveWeapons().ToList();
-        return !active.Any() ? 0.0f : active.Select(weapon => weapon?.Range ?? 0.0f).Max();
+        return !active.Any() ? 0.0f : active.Select(weapon => weapon?.Range ?? 0.0f).Max() * 2.5f; //2.5 for whatever reason idek
     }
 
     private IEnumerable<Weapon?> GetActiveWeapons()
@@ -224,7 +243,15 @@ public partial class BaseTower : Node2D, IManagedObject
                         throw new BTD5WouldCrashException("Trying to update a sprite that has not been defined");
         newSprite.Name = "tower_sprite";
         newSprite.Animating = false;
+        newSprite.RotationDegrees = 90;
         AddChild(newSprite);
+    }
+
+    private Bloon[] ValidTargets()
+    {
+        var bloons = BloonManager.Instance?.Objects;
+        return bloons?.Where(bloon => bloon.Position.DistanceTo(Position) < GetAttackRange()).ToArray() ??
+               Array.Empty<Bloon>();
     }
 
     public void OwnedBy(object? owner)

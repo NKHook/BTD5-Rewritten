@@ -14,6 +14,7 @@ public partial class Bloon : Node2D, IManagedObject
 
     private PathFollow2D? _pathFollower;
     public int PathOption = 0;
+    public float Progress => _pathFollower?.ProgressRatio ?? 0.0f;
 
     private float _speed = 1.0f;
     private float _speedMultiplier = 1.0f;

@@ -2,6 +2,7 @@
 
 public enum MovementType : ulong
 {
+    None,
     Forward,
     RotateAroundTower,
     GoToTarget,

@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+﻿using System;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
@@ -13,4 +11,6 @@ public class WeaponInfo
     public float CooldownTime { get; set; }
     public float FireDelayTime { get; set; }
     public int MaxShots { get; set; }
+
+    public WeaponTask[] Tasks = Array.Empty<WeaponTask>();
 }

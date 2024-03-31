@@ -20,7 +20,7 @@ public partial class ObjectManager<T> : Node2D where T : Node, IManagedObject
 		AddChild(_container);
 	}
 
-	public int AddObject(T obj)
+	public virtual int AddObject(T obj)
 	{
 		obj.OwnedBy(this);
 		obj.Name = nextId.ToString();

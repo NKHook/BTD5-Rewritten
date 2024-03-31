@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
@@ -77,9 +78,142 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
         info.CooldownTime = element["CooldownTime"] ?? 0.0f;
         info.FireDelayTime = element["FireDelayTime"] ?? 0.0f;
         info.MaxShots = element["MaxShots"] ?? 0;
+        info.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ?? Array.Empty<WeaponTask>();
         return info;
     }
+
+    protected TaskMovement GenerateMovement(JsonWrapper element)
+    {
+        var movement = new TaskMovement();
+        movement.Type = element["Type"]?.GetFlag<MovementType>() ?? MovementType.None;
+        movement.Speed = element["Speed"] ?? 0.0f;
+        movement.CutOffDistance = element["CutOffDistance"] ?? -1;
+        return movement;
+    }
     
+    protected WeaponTask GenerateTask(JsonWrapper element)
+    {
+        var taskType = element["Type"]?.GetFlag<TaskType>() ?? TaskType.Invalid;
+        switch (taskType)
+        {
+            case TaskType.Invalid:
+                throw new BTD5WouldCrashException("Task type is invalid");
+                break;
+            case TaskType.Projectile:
+            {
+                var result = new ProjectileTask();
+                result.Type = taskType;
+                result.GraphicName = element["GraphicName"] ?? "";
+                result.NumPersists = element["NumPersists"] ?? 0;
+                result.TerminateOnZeroPersists = element["TerminateOnZeroPersists"] ?? true;
+                result.CollisionType = element["CollisionType"]?.GetFlag<CollisionType>() ?? CollisionType.None;
+                var movement = element["Movement"];
+                result.Movement = movement != null
+                    ? GenerateMovement(movement)
+                    : throw new BTD5WouldCrashException("Projectile requires movement");
+                result.DisabledTasks = element["DisabledTasks"]?.ArrayAs<int>() ?? Array.Empty<int>();
+                result.TasksToProcessOnCollision =
+                    element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? Array.Empty<int>();
+                result.TasksToProcessOnTerminate =
+                    element["TasksToProcessOnTerminate"]?.ArrayAs<int>() ?? Array.Empty<int>();
+                result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
+                               Array.Empty<WeaponTask>();
+                return result;
+            }
+            case TaskType.MultiFire:
+                break;
+            case TaskType.Damage:
+            {
+                var result = new DamageTask();
+                result.Type = taskType;
+                result.DamageType = element["DamageType"]?.GetFlag<DamageType>() ?? DamageType.None;
+                result.Amount = element["Amount"] ?? 0;
+                return result;
+            }
+            case TaskType.StatusEffect:
+                break;
+            case TaskType.RemoveStatusEffect:
+                break;
+            case TaskType.AreaOfEffect:
+            {
+                var result = new AreaOfEffectTask();
+                result.Type = taskType;
+                result.Range = element["Range"] ?? 0.0f;
+                result.MaxTargets = element["MaxTargets"] ?? 0;
+                result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
+                               Array.Empty<WeaponTask>();
+                return result;
+            }
+            case TaskType.RandomFire:
+                break;
+            case TaskType.TimerFire:
+                break;
+            case TaskType.Effect:
+            {
+                var result = new EffectTask();
+                result.Type = taskType;
+                result.SpriteFile = element["SpriteFile"] ?? "";
+                result.Scale = element["Scale"] ?? 1.0f;
+                return result;
+            }
+            case TaskType.TextEffect:
+                break;
+            case TaskType.BloonSpawnedEvent:
+                break;
+            case TaskType.RayIntersect:
+                break;
+            case TaskType.ChainTasks:
+                break;
+            case TaskType.Collectable:
+                break;
+            case TaskType.LaunchAircraft:
+                break;
+            case TaskType.TowerModifier:
+                break;
+            case TaskType.Harpoon:
+                break;
+            case TaskType.Sacrifice:
+                break;
+            case TaskType.AddChildSprite:
+                break;
+            case TaskType.ChangeTerrain:
+                break;
+            case TaskType.CreateTower:
+                break;
+            case TaskType.ResetPopCount:
+                break;
+            case TaskType.EnableNextWeaponSlot:
+                break;
+            case TaskType.EnableWeaponSlot:
+                break;
+            case TaskType.ResetCooldown:
+                break;
+            case TaskType.RedeployTower:
+                break;
+            case TaskType.ChangeSubtaskEnabled:
+                break;
+            case TaskType.CollectCollectables:
+                break;
+            case TaskType.RestoreAmmo:
+                break;
+            case TaskType.FireTaskAtLocation:
+                break;
+            case TaskType.OverclockTask:
+                break;
+            case TaskType.RBEProjectile:
+                break;
+            case TaskType.TrapBloon:
+                break;
+            case TaskType.DamageSpread:
+                break;
+            case TaskType.TowerBoost:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        throw new NotImplementedException();
+    }
     
     public override Weapon? Instantiate(string factoryName)
     {

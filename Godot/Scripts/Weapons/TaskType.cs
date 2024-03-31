@@ -5,6 +5,7 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 [Flags]
 public enum TaskType : ulong
 {
+    Invalid = 0,
     Projectile = 1UL << 0,
     MultiFire = 1UL << 1,
     Damage = 1UL << 2,
