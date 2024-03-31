@@ -40,6 +40,7 @@ public partial class CellEntry : Node
         CellName = cellName;
     }
 
+    public float GetQualityScale() => GetFrame()?.GetQualityScale() ?? 1.0f;
     public Rect2 GetRegion() => new(X, Y, W, H);
     
     public ImageTexture? GetTexture()

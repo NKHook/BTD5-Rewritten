@@ -22,7 +22,7 @@ public partial class BaseTower : Node2D, IManagedObject
     private BitArray _activeWeaponSlots = new(64);
 
     private CompoundSprite? _sprite;
-    
+
     private int _leftUpgrade;
     private int _rightUpgrade;
 
@@ -85,34 +85,38 @@ public partial class BaseTower : Node2D, IManagedObject
     {
         base._Process(delta);
 
+        if (_sprite is null) return;
+        
         foreach (var weaponSlot in _weaponSlots)
         {
             weaponSlot?.Update(delta);
         }
-        
-        var targets = ValidTargets();
-        if (targets.Length > 0)
-        {
-            var target = targets.MaxBy(bloon => bloon.Progress);
-            RotateTo(target!);
 
-            for (var i = 0; i < _weaponSlots.Count; i++)
-            {
-                if(!_activeWeaponSlots[i]) continue;
-                
-                var weaponSlot = _weaponSlots[i];
-                if (weaponSlot?.FireReady ?? false)
-                {
-                    var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
-                    weaponSlot.Fire(Position + offset, Vector2.FromAngle(Rotation));
-                    if (_sprite != null)
-                    {
-                        _sprite.Loop = false;
-                        _sprite.Animating = true;
-                        _sprite.Time = 0.0f;
-                    }
-                }
-            }
+        if (!AnyWeaponCooled()) return;
+
+        var targets = ValidTargets();
+        if (targets.Length <= 0) return;
+        
+        var target = targets.MaxBy(bloon => bloon.Progress);
+        RotateTo(target!);
+
+        for (var i = 0; i < _weaponSlots.Count; i++)
+        {
+            if (!_activeWeaponSlots[i]) continue;
+
+            var weaponSlot = _weaponSlots[i];
+            if (!(weaponSlot?.Cooled ?? false)) continue;
+            _sprite!.Loop = false;
+            _sprite.Animating = true;
+            _sprite.Time = 0.0f;
+            
+            if (!(weaponSlot?.FireReady ?? false)) continue;
+            
+            var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
+            weaponSlot.Fire(Position + offset, Vector2.FromAngle(Rotation));
+            if (_sprite == null) continue;
+            
+            
         }
     }
 
@@ -135,7 +139,7 @@ public partial class BaseTower : Node2D, IManagedObject
     public void Select()
     {
         if (_owner!.PlacingTower() && _owner.FloatingTower != this) return;
-        
+
         _selected = true;
         UpdateSelected();
     }
@@ -155,6 +159,7 @@ public partial class BaseTower : Node2D, IManagedObject
         {
             color = Colors.Red;
         }
+
         color.A = 0.25f;
         return color;
     }
@@ -165,7 +170,7 @@ public partial class BaseTower : Node2D, IManagedObject
         selectRadiusNode?.Free();
 
         if (!_selected) return;
-    
+
         var range = GetAttackRange();
         var selectRadius = _circle2d?.Instantiate();
         if (selectRadius == null) return;
@@ -207,7 +212,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
                 if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
                     continue;
-                
+
                 var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
                 if ((mask & MaskBit.BlockTower) != 0)
                 {
@@ -227,7 +232,7 @@ public partial class BaseTower : Node2D, IManagedObject
             {
                 if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
                     continue;
-                
+
                 var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
                 if ((mask & MaskBit.BlockTower) != 0)
                 {
@@ -245,13 +250,17 @@ public partial class BaseTower : Node2D, IManagedObject
     {
         if (_definition.UseDefaultRangeCircle)
             return 64.0f;
-        
+
         if (_weaponSlots.Count == 0)
             return 0.0f;
 
         var active = GetActiveWeapons().ToList();
-        return !active.Any() ? 0.0f : active.Select(weapon => weapon?.Range ?? 0.0f).Max() * 2.5f; //2.5 for whatever reason idek
+        return !active.Any()
+            ? 0.0f
+            : active.Select(weapon => weapon?.Range ?? 0.0f).Max() * 2.5f; //2.5 for whatever reason idek
     }
+
+    private bool AnyWeaponCooled() => GetActiveWeapons().Any(weapon => weapon is { Cooled: true });
 
     private IEnumerable<Weapon?> GetActiveWeapons()
     {
@@ -266,6 +275,7 @@ public partial class BaseTower : Node2D, IManagedObject
             var sprite = GetNodeOrNull<CompoundSprite>("tower_sprite");
             sprite?.Free();
         }
+
         _sprite?.Free();
 
         var newSprite = _definition.GetSprites()?.GetSpriteAtUpgrade(_leftUpgrade, _rightUpgrade) ??

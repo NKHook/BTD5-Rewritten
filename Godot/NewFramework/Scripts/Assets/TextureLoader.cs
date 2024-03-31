@@ -61,11 +61,19 @@ public partial class TextureLoader : Node
 
 	public Variant FindCell(string name, string texture)
 	{
-		return Variant.From(_spritesRoot!.Select(info => info.FindCell(name, texture)).FirstOrDefault(result => result != null));
+		var result = _spritesRoot!.Select(info => info.FindCell(name, texture))
+			.FirstOrDefault(result => result != null);
+		if (result != null)
+			return Variant.From(result);
+
+		if (texture != "" && FindFrame(texture) == null)
+			return FindCell("texture_not_found", "error");
+		
+		return FindCell("sprite_not_found", "error");
 	}
 	public Variant FindCell(string name) => FindCell(name, "");
 
-	public FrameInfo FindFrame(string name)
+	public FrameInfo? FindFrame(string name)
 	{
 		return _spritesRoot!.Select(info => info.FindFrame(name)).FirstOrDefault(result => result != null);
 	}
@@ -81,7 +89,7 @@ public partial class TextureLoader : Node
 		{
 			if (!texturesDir.CurrentIsDir())
 			{
-				results.Add(new Assets.SpriteInfo(filename.Replace(".xml", ""), dirPath, dirPath + "/" + filename));
+				results.Add(new SpriteInfo(filename.Replace(".xml", ""), dirPath, dirPath + "/" + filename));
 			}
 			filename = texturesDir.GetNext();
 		}

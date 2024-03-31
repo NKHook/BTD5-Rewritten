@@ -33,11 +33,11 @@ public class ActorState
 
         _alignment = new[]
         {
-            actor["Alignment"][0].EnumValue<ActorAlignment>(),
-            actor["Alignment"][1].EnumValue<ActorAlignment>()
+            actor["Alignment"]?[0].EnumValue<ActorAlignment>() ?? ActorAlignment.Default,
+            actor["Alignment"]?[1].EnumValue<ActorAlignment>() ?? ActorAlignment.Default
         };
-        _alpha = actor["Alpha"];
-        _angle = actor["Angle"];
+        _alpha = actor["Alpha"] ?? 1.0f;
+        _angle = actor["Angle"] ?? 0.0f;
         if (actor.TryGetProperty("Colour", out var color))
         {
             var bytes = BitConverter.GetBytes(color.GetUInt32());
@@ -47,10 +47,10 @@ public class ActorState
             Color.A = bytes[3] * 0.00390625f;
         }
 
-        _flip = actor["Flip"].EnumValue<ActorFlip>();
-        _position = actor["Position"];
-        _scale = actor["Scale"];
-        _shown = actor["Shown"];
+        _flip = actor["Flip"]?.EnumValue<ActorFlip>() ?? ActorFlip.Default;
+        _position = actor["Position"] ?? Vector2.Zero;
+        _scale = actor["Scale"] ?? Vector2.One;
+        _shown = actor["Shown"] ?? true;
 
         if (actor.TryGetProperty("Time", out var time))
         {
@@ -60,7 +60,7 @@ public class ActorState
 
     public void ApplyAndAlign(Node2D node)
     {
-        if (node is Sprite2D sprite)
+        if (node is Sprite sprite)
         {
             if (_cellEntry != null)
             {
@@ -120,7 +120,7 @@ public class ActorState
         
         scale.X *= _flip is ActorFlip.Horizontal or ActorFlip.Both ? -1.0f : 1.0f;
         scale.Y *= _flip is ActorFlip.Vertical or ActorFlip.Both ? -1.0f : 1.0f;
-        node.Scale = scale;
+        node.Scale = scale * (_cellEntry?.GetQualityScale() ?? 1.0f);
     }
 
     public void Interpolate(ActorState from, ActorState to, float delta)

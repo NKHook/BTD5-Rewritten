@@ -48,6 +48,7 @@ public partial class Sprite : Sprite2D
 		//Update the color in the shader in case it wasn't set up yet
 		Color = _color;
 		Alpha = _alpha;
+		Scale *= Cell?.GetQualityScale() ?? 1.0f;
 		
 		SpriteReady?.Invoke(this, this);
 	}

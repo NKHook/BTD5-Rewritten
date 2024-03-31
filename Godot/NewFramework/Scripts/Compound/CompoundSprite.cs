@@ -69,10 +69,10 @@ public partial class CompoundSprite : Node2D
 
     private Node2D? LoadActor(JsonWrapper actor)
     {
-        string sprite = actor["sprite"];
+        var sprite = actor["sprite"] ?? "";
         Debug.Assert(sprite != string.Empty);
-        var type = actor["type"].EnumValue<ActorTypes>();
-        var uid = actor["uid"].GetInt32();
+        var type = actor["type"]?.EnumValue<ActorTypes>() ?? ActorTypes.Invalid;
+        var uid = actor["uid"]?.GetInt32() ?? -1;
 
         Node2D result;
         switch (type)

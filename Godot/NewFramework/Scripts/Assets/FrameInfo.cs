@@ -36,6 +36,19 @@ public partial class FrameInfo : Node
         _type = type;
     }
 
+    public float GetQualityScale()
+    {
+        return _quality switch
+        {
+            TextureQuality.Low => 4.0f,
+            TextureQuality.Mobile => 3.0f,
+            TextureQuality.Tablet => 2.0f,
+            TextureQuality.Ultra => 1.0f,
+            TextureQuality.Invalid => throw new ArgumentOutOfRangeException(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
     public ImageTexture? GetTexture()
     {
         if (_frameTexture != null)

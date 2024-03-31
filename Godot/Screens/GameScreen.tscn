@@ -20,19 +20,14 @@ script = ExtResource("1_vs2gu")
 
 [node name="map_props" parent="." instance=ExtResource("2_qs5w1")]
 position = Vector2(-133, -128)
-SpriteDefinitionRes = null
-Animating = null
 
 [node name="map_mask" type="Node2D" parent="."]
 position = Vector2(-133, -128)
 script = ExtResource("3_tt2m0")
-MaskFile = null
-DebugShowMask = null
 
 [node name="map_path" type="Node2D" parent="."]
 position = Vector2(-1093, -766)
 script = ExtResource("4_3h4cp")
-PathFile = null
 
 [node name="map_area" type="Area2D" parent="."]
 position = Vector2(-133, -128)
