@@ -24,6 +24,18 @@ public partial class Bloon : Node2D, IManagedObject
     {
         _definition = definition;
     }
+
+    private void DisableSpriteProcess(CompoundSprite sprite)
+    {
+        foreach (var actor in sprite.GetActors())
+        {
+            if (actor.Node is CompoundSprite compound)
+                DisableSpriteProcess(compound);
+            
+            actor.SetProcess(false);
+            actor.Node.SetProcess(false);
+        }
+    }
     
     public override void _Ready()
     {
@@ -45,6 +57,7 @@ public partial class Bloon : Node2D, IManagedObject
             compound.Scale = Vector2.One * _definition.Scale;
             compound.SetProcess(false);
             AddChild(compound);
+            compound.Loaded += (sender, args) => DisableSpriteProcess(compound);
         }
 
         _health = _definition.InitialHealth;

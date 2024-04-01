@@ -15,22 +15,17 @@ public partial class MainMenuScreen : Node2D
     private float _timePassed = 0.0f;
     private List<Building> _buildings = new();
 
-    private static readonly Script CompoundSpriteScript =
-        GD.Load<Script>("res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs");
-
-    private static readonly Script BuildingScript = GD.Load<Script>("res://Godot/Scripts/MainMenu/Building.cs");
-
     private List<Building> GetBuildingSprites(JsonWrapper buildingJson)
     {
         var result = new List<Building>();
         var menuNode = FindChild("menu") as CompoundSprite;
-        foreach (var (uid, child) in menuNode!.GetActors())
+        foreach (var actor in menuNode!.GetActors())
         {
-            if (child.GetScript().As<Script>() != CompoundSpriteScript) continue;
+            if (actor.Node is not CompoundSprite) continue;
 
             foreach (var building in buildingJson.EnumerateArray())
             {
-                if (child is not CompoundSprite sprite ||
+                if (actor.Node is not CompoundSprite sprite ||
                     !sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
                     continue;
 

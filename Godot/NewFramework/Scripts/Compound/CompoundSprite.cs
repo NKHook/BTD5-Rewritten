@@ -22,7 +22,7 @@ public partial class CompoundSprite : Node2D
     private readonly SparseList<CellEntry> _childCells = new();
     public Dictionary<string, CustomVariable> CustomVariables = new();
 
-    public readonly EventHandler? Loaded = null;
+    public EventHandler? Loaded = null;
     public bool FullyLoaded { get; private set; }
 
     public float Time
@@ -211,14 +211,7 @@ public partial class CompoundSprite : Node2D
                 stages.Add(new ActorState(cell, stageJson));
             }
 
-            Node2D? node = null;
-            foreach (var (aUid, actor) in GetActors())
-            {
-                if (aUid != uid) continue;
-            
-                node = actor;
-                break;
-            }
+            Node2D? node = GetActors().FirstOrDefault(actor => actor.SpriteUid == uid);
             Debug.Assert(node != null);
         
             _timeline?.AddTimeline(uid, node!, stages);
@@ -228,12 +221,12 @@ public partial class CompoundSprite : Node2D
 
     private void RefreshTextures()
     {
-        foreach (var (uid, actor) in GetActors())
+        foreach (var actor in GetActors())
         {
-            switch (actor)
+            switch (actor.Node)
             {
                 case Sprite sprite:
-                    SetSpriteCell(sprite, _childCells[uid]);
+                    SetSpriteCell(sprite, _childCells[actor.SpriteUid]);
                     break;
                 case CompoundSprite compound:
                     compound.RefreshTextures();
@@ -242,8 +235,7 @@ public partial class CompoundSprite : Node2D
         }
     }
 
-    public IEnumerable<(int SpriteUid, Node2D Node)> GetActors() => GetChildren()
-        .OfType<ActorNode>().Select(actor => (actor.SpriteUid, actor.Node));
+    public IEnumerable<ActorNode> GetActors() => GetChildren().OfType<ActorNode>();
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() => Initialize();
@@ -266,15 +258,15 @@ public partial class CompoundSprite : Node2D
             _timeline?.Tick((float)delta);
         }
         
-        foreach (var (uid, actor) in GetActors())
+        foreach (var actor in GetActors())
         {
-            var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
+            var state = _timeline?.GetStateForUid(actor.SpriteUid) ?? _initialStates[actor.SpriteUid];
             Debug.Assert(state is not null);
             
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (actor is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
+            if (actor.Node is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
                 state?.ApplyColor(sprite);
-            state?.Apply(actor);
+            state?.Apply(actor.Node);
         }
     }
 }
