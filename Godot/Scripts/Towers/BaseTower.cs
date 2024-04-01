@@ -91,7 +91,7 @@ public partial class BaseTower : Node2D, IManagedObject
         
         foreach (var weaponSlot in _weaponSlots)
         {
-            weaponSlot?.Update(delta);
+            weaponSlot?.UpdateCooldown((float)delta);
         }
 
         if (!AnyWeaponCooled()) return;
@@ -101,6 +101,11 @@ public partial class BaseTower : Node2D, IManagedObject
         
         var target = targets.MaxBy(bloon => bloon.Progress);
         RotateTo(target!);
+        
+        foreach (var weaponSlot in _weaponSlots)
+        {
+            weaponSlot?.UpdateFire((float)delta);
+        }
 
         for (var i = 0; i < _weaponSlots.Count; i++)
         {
@@ -127,7 +132,9 @@ public partial class BaseTower : Node2D, IManagedObject
 
     public void RotateTo(Bloon target)
     {
-        LookAt(target.Position);
+        var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
+        var angle = firePos.AngleToPoint(target.GlobalPosition);
+        Rotation = angle;
     }
 
     private void MapAreaInput(Node viewport, InputEvent @event, long shapeidx)

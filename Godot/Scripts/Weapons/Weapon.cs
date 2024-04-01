@@ -22,12 +22,14 @@ public partial class Weapon
     public bool FireReady => FireTimer >= _definition.FireDelayTime;
     public float FireTimer;
 
-    public void Update(double delta)
+    public void UpdateCooldown(float delta)
     {
-        CooldownTimer += (float)delta;
-        if (!Cooled) return;
-        
-        FireTimer += (float)delta;
+        CooldownTimer += delta;
+    }
+
+    public void UpdateFire(float delta)
+    {
+        FireTimer += delta;
     }
 
     public void Fire(Vector2 where, Vector2 direction)
