@@ -3,7 +3,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
-public class TaskMovement
+public class TaskMovement : ICloneable
 {
     //Definition info
     public MovementType Type;
@@ -20,7 +20,7 @@ public class TaskMovement
             case MovementType.None:
                 return;
             case MovementType.Forward:
-                task.Position += delta * Speed * Direction;
+                task.Position += 4.0f * delta * Speed * Direction;
                 break;
             case MovementType.RotateAroundTower:
                 break;
@@ -41,5 +41,16 @@ public class TaskMovement
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    public object Clone()
+    {
+        var clone = new TaskMovement
+        {
+            Type = Type,
+            Speed = Speed,
+            CutOffDistance = CutOffDistance
+        };
+        return clone;
     }
 }

@@ -29,7 +29,8 @@ public partial class BaseTower : Node2D, IManagedObject
 
     private bool _selected;
     private bool _hovered;
-    private bool _animStarted = false;
+    private bool _animStarted;
+    private Vector2? _lastTargetPos;
 
     public bool Selected => _selected;
     public Area2D? PlacementArea;
@@ -95,18 +96,21 @@ public partial class BaseTower : Node2D, IManagedObject
         }
 
         if (!AnyWeaponCooled()) return;
-
-        var targets = ValidTargets();
-        if (targets.Length <= 0) return;
-        
-        var target = targets.MaxBy(bloon => bloon.Progress);
-        RotateTo(target!);
-        
         foreach (var weaponSlot in _weaponSlots)
         {
             weaponSlot?.UpdateFire((float)delta);
         }
 
+        var targets = ValidTargets();
+        if (targets.Length > 0)
+        {
+            var target = targets.MaxBy(bloon => bloon.Progress);
+            _lastTargetPos = target?.GlobalPosition ?? _lastTargetPos;
+        }
+
+        RotateToTarget();
+        if (_lastTargetPos == null) return;
+        
         for (var i = 0; i < _weaponSlots.Count; i++)
         {
             if (!_activeWeaponSlots[i]) continue;
@@ -120,20 +124,23 @@ public partial class BaseTower : Node2D, IManagedObject
                 _sprite.Time = 0.0f;
                 _animStarted = true;
             }
-            
-            if (!(weaponSlot?.FireReady ?? false)) continue;
+
+            if (!weaponSlot.FireReady) continue;
 
             var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
             var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
             _animStarted = false;
             weaponSlot.Fire(firePos + offset, Vector2.FromAngle(Rotation));
+            _lastTargetPos = null;
         }
     }
 
-    public void RotateTo(Bloon target)
+    private void RotateToTarget()
     {
         var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
-        var angle = firePos.AngleToPoint(target.GlobalPosition);
+        if (_lastTargetPos == null) return;
+        
+        var angle = firePos.AngleToPoint(_lastTargetPos.Value);
         Rotation = angle;
     }
 

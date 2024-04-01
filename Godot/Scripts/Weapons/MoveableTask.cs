@@ -22,7 +22,7 @@ public abstract partial class MoveableTask : WeaponTask
     public override object Clone()
     {
         var clone = base.Clone() as MoveableTask;
-        clone!.Movement = Movement;
+        clone!.Movement = Movement?.Clone() as TaskMovement;
         clone.Origin = Origin;
         return clone;
     }
