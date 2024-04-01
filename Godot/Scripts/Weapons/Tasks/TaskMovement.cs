@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 public class TaskMovement : ICloneable
 {
@@ -13,7 +13,7 @@ public class TaskMovement : ICloneable
     //Node info
     public Vector2 Direction = Vector2.Zero;
     
-    public void Move(MoveableTask task, float delta)
+    public void Move(Tasks.MoveableTask task, float delta)
     {
         switch (Type)
         {

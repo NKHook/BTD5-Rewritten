@@ -27,7 +27,7 @@ public partial class BloonManager : ObjectManager<Bloon>
         base._Process(delta);
 
         _time += (float)delta;
-        if (!(_time >= 0.5f)) return;
+        if (!(_time >= 0.1f)) return;
         
         _time -= _time;
         var bloon = BloonFactory.Instance.Instantiate(BloonType.Red);

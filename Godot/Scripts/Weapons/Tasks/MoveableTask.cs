@@ -1,7 +1,6 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 public abstract partial class MoveableTask : WeaponTask
 {

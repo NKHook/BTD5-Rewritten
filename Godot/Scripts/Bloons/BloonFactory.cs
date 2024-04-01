@@ -50,7 +50,7 @@ public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
         info.DamageImmunity = element["DamageImmunity"]?.GetFlag<DamageType>() ?? DamageType.None;
         info.CanGoUnderground = element["CanGoUnderground"] ?? true;
         info.RotateToPathDirection = element["RotateToPathDirection"] ?? false;
-        info.Scale = element["Scale"] ?? 1;
+        info.Scale = element["Scale"] ?? 1.0f;
         info.Radius = element["Radius"] ?? 10;
         info.HitAddon = element["HitAddon"] ?? 0;
         info.BloonAbility = element["BloonAbility"]?.GetFlag<BloonAbilityFlag>() ?? BloonAbilityFlag.None;

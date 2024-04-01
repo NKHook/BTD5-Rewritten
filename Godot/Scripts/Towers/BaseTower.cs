@@ -130,18 +130,15 @@ public partial class BaseTower : Node2D, IManagedObject
             var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
             var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
             _animStarted = false;
-            weaponSlot.Fire(firePos + offset, Vector2.FromAngle(Rotation));
+            weaponSlot.Fire(firePos + offset, Vector2.FromAngle(firePos.AngleToPoint(_lastTargetPos!.Value)));
             _lastTargetPos = null;
         }
     }
 
     private void RotateToTarget()
     {
-        var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
         if (_lastTargetPos == null) return;
-        
-        var angle = firePos.AngleToPoint(_lastTargetPos.Value);
-        Rotation = angle;
+        LookAt(_lastTargetPos.Value);
     }
 
     private void MapAreaInput(Node viewport, InputEvent @event, long shapeidx)

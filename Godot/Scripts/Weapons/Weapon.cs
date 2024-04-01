@@ -1,5 +1,6 @@
 ﻿using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;

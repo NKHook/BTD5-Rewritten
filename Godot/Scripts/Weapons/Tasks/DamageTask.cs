@@ -1,7 +1,7 @@
 ﻿using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 public partial class DamageTask : WeaponTask
 {

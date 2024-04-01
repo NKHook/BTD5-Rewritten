@@ -4,6 +4,7 @@ using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 

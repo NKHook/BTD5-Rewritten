@@ -42,6 +42,7 @@ public partial class Bloon : Node2D, IManagedObject
             var compound = new CompoundSprite();
             compound.SpriteDefinitionRes = spriteFile;
             compound.Animating = false;
+            compound.Scale = Vector2.One * _definition.Scale;
             AddChild(compound);
         }
 

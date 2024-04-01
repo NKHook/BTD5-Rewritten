@@ -3,7 +3,7 @@ using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 public abstract partial class WeaponTask : Node2D, IManagedObject, ICloneable
 {

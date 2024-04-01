@@ -5,9 +5,9 @@ using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
-public partial class ProjectileTask : MoveableTask
+public partial class ProjectileTask : Tasks.MoveableTask
 {
     //Definition info
     public string GraphicName = "";
@@ -38,7 +38,7 @@ public partial class ProjectileTask : MoveableTask
         
         clone.Position = where;
         clone.Rotation = direction.Angle();
-        if (clone is MoveableTask { Movement: not null } movable)
+        if (clone is Tasks.MoveableTask { Movement: not null } movable)
         {
             movable.Movement.Direction = direction;
             movable.Origin = where;
