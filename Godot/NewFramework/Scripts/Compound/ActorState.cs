@@ -16,7 +16,7 @@ public class ActorState
 
     //Normal state stuff
     private ActorAlignment[] _alignment = new ActorAlignment[2];
-    private float _alpha = 1.0f;
+    public float Alpha = 1.0f;
     private float _angle = 0.0f;
     public Color Color = Colors.White;
     private ActorFlip _flip = ActorFlip.Default;
@@ -36,7 +36,7 @@ public class ActorState
             actor["Alignment"]?[0].EnumValue<ActorAlignment>() ?? ActorAlignment.Default,
             actor["Alignment"]?[1].EnumValue<ActorAlignment>() ?? ActorAlignment.Default
         };
-        _alpha = actor["Alpha"] ?? 1.0f;
+        Alpha = actor["Alpha"] ?? 1.0f;
         _angle = actor["Angle"] ?? 0.0f;
         if (actor.TryGetProperty("Colour", out var color))
         {
@@ -109,12 +109,12 @@ public class ActorState
     public void ApplyColor(Sprite sprite)
     {
         sprite.Color = Color;
-        sprite.Alpha = _alpha;
+        sprite.Alpha = Alpha;
     }
     public void Apply(Node2D node)
     {
         var scale = _scale;
-        node.RotationDegrees = _angle;
+        node.Rotation = Mathf.DegToRad(_angle);
         node.Visible = _shown;
         node.Position = _position * 4;
         
@@ -135,7 +135,7 @@ public class ActorState
         }
 
         _alignment = from._alignment;
-        _alpha = Mathf.Lerp(from._alpha, to._alpha, delta);
+        Alpha = Mathf.Lerp(from.Alpha, to.Alpha, delta);
         _angle = Mathf.Lerp(from._angle, to._angle, delta);
         Color = from.Color.Lerp(to.Color, delta);
         _flip = from._flip;

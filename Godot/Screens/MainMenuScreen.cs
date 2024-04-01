@@ -23,8 +23,8 @@ public partial class MainMenuScreen : Node2D
     private List<Building> GetBuildingSprites(JsonWrapper buildingJson)
     {
         var result = new List<Building>();
-        var menuNode = FindChild("menu");
-        foreach (var child in menuNode.GetChildren())
+        var menuNode = FindChild("menu") as CompoundSprite;
+        foreach (var (uid, child) in menuNode!.GetActors())
         {
             if (child.GetScript().As<Script>() != CompoundSpriteScript) continue;
 
@@ -34,20 +34,11 @@ public partial class MainMenuScreen : Node2D
                     !sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
                     continue;
 
-                var name = sprite.Name;
-                var index = sprite.GetIndex();
-                sprite.Free();
-
                 var buildingObj = new Building();
-                buildingObj.SpriteDefinitionRes =
-                    "Assets/JSON/Tablet/UILayout/" + building["SpriteFile"];
                 buildingObj.Screen = building["Screen"];
                 buildingObj.LocName = building["Name"];
-                buildingObj.Initialize();
 
-                buildingObj.Name = name;
-                menuNode.AddChild(buildingObj);
-                menuNode.MoveChild(buildingObj, index);
+                sprite.AddChild(buildingObj);
 
                 result.Add(buildingObj);
             }

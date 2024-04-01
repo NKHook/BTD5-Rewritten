@@ -15,6 +15,7 @@ public partial class CompoundSprite : Node2D
     [Export] public string SpriteDefinitionRes = "";
     [Export] public bool Animating = true;
 
+    private bool _wasAnimating = false;
     private TimelineInterpolator? _timeline;
     private List<CellEntry> _usedCells = new();
     private readonly SparseList<ActorState> _initialStates = new();
@@ -96,7 +97,7 @@ public partial class CompoundSprite : Node2D
         return result;
     }
     
-    private Node2D? LoadActor(JsonWrapper actor)
+    private ActorNode? LoadActor(JsonWrapper actor)
     {
         var sprite = actor["sprite"] ?? "";
         Debug.Assert(sprite != string.Empty);
@@ -128,7 +129,7 @@ public partial class CompoundSprite : Node2D
         }
 
         result.Name = uid.ToString();
-        return result;
+        return new ActorNode(uid, result);
     }
 
     public static List<CellEntry> LoadSpriteInfo(JsonWrapper stageOptions)
@@ -211,13 +212,12 @@ public partial class CompoundSprite : Node2D
             }
 
             Node2D? node = null;
-            foreach (var child in GetChildren())
+            foreach (var (aUid, actor) in GetActors())
             {
-                if (int.Parse(child.Name) != uid) continue;
+                if (aUid != uid) continue;
             
-                node = child as Node2D;
-                if (node != null)
-                    break;
+                node = actor;
+                break;
             }
             Debug.Assert(node != null);
         
@@ -228,12 +228,9 @@ public partial class CompoundSprite : Node2D
 
     private void RefreshTextures()
     {
-        foreach (var child in GetChildren())
+        foreach (var (uid, actor) in GetActors())
         {
-            if (!int.TryParse(child?.Name.ToString(), out var uid))
-                continue;
-
-            switch (child)
+            switch (actor)
             {
                 case Sprite sprite:
                     SetSpriteCell(sprite, _childCells[uid]);
@@ -244,6 +241,9 @@ public partial class CompoundSprite : Node2D
             }
         }
     }
+
+    public IEnumerable<(int SpriteUid, Node2D Node)> GetActors() => GetChildren()
+        .OfType<ActorNode>().Select(actor => (actor.SpriteUid, actor.Node));
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() => Initialize();
@@ -262,21 +262,19 @@ public partial class CompoundSprite : Node2D
         }
         
         if (Animating)
-            _timeline?.Tick((float)delta);
-        
-        foreach (var childNode in GetChildren())
         {
-            var child = childNode as Node2D;
-            
-            if (!int.TryParse(child?.Name.ToString(), out var uid))
-                continue;
-
+            _timeline?.Tick((float)delta);
+        }
+        
+        foreach (var (uid, actor) in GetActors())
+        {
             var state = _timeline?.GetStateForUid(uid) ?? _initialStates[uid];
             Debug.Assert(state is not null);
             
-            if (child is Sprite sprite && state?.Color != Colors.White && state?.Color.A != 0)
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (actor is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
                 state?.ApplyColor(sprite);
-            state?.Apply(child);
+            state?.Apply(actor);
         }
     }
 }
