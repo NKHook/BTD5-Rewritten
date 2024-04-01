@@ -58,5 +58,8 @@ public partial class Sprite : Sprite2D
 		base._Process(delta);
 
 		Texture ??= Cell?.GetTexture();
+		
+		if (Texture != null)
+			SetProcess(false);
 	}
 }

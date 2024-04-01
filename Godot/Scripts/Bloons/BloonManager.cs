@@ -10,10 +10,14 @@ public partial class BloonManager : ObjectManager<Bloon>
     public static BloonManager? Instance;
     private float _time;
 
+    private Label? _countDebugLabel;
+    
     public override void _Ready()
     {
         Instance = this;
         base._Ready();
+        
+        _countDebugLabel = GetNode<Label>("/root/game_root/debug_overlay/overlay/bloon_count_display");
     }
 
     public override void _ExitTree()
@@ -25,6 +29,7 @@ public partial class BloonManager : ObjectManager<Bloon>
     public override void _Process(double delta)
     {
         base._Process(delta);
+        if (_countDebugLabel != null) _countDebugLabel.Text = Count + " bloons";
 
         _time += (float)delta;
         if (!(_time >= 0.1f)) return;

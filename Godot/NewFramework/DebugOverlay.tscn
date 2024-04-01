@@ -35,4 +35,14 @@ offset_bottom = 23.0
 text = "Mask: None"
 script = ExtResource("4_xea6t")
 
+[node name="bloon_count_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("4_xea6t")
+
+[node name="tower_count_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("4_xea6t")
+
 [node name="debug_render" type="Node2D" parent="overlay"]

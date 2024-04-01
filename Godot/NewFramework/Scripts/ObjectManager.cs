@@ -8,6 +8,7 @@ public partial class ObjectManager<T> : Node2D where T : Node, IManagedObject
 {
 	private Node2D? _container;
 	public IEnumerable<T> Objects => _container?.GetChildren().AsEnumerable().Cast<T>() ?? Enumerable.Empty<T>();
+	public int Count => _container?.GetChildCount() ?? 0;
 
 	private int nextId = 0;
 

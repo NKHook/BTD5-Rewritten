@@ -1,4 +1,5 @@
 using System;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using Godot;
