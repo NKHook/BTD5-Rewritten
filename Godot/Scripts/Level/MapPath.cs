@@ -65,20 +65,20 @@ public partial class MapPath : Node2D
 
     private static PathSegment GeneratePathSegment(int index, JsonWrapper nodeJson)
     {
-        var flags = nodeJson["Flags"].EnumValue<SegmentFlags>();
-        var points = nodeJson["Points"].EnumerateArray().Select(pointJson => pointJson.GetVector2() * 4.0f).ToList();
+        var flags = nodeJson["Flags"]!.GetFlag<SegmentFlags>();
+        var points = nodeJson["Points"]!.EnumerateArray().Select(pointJson => pointJson.GetVector2() * 4.0f).ToList();
         return new PathSegment(index, flags, points);
     }
 
     private static List<PathSegment> GenerateSegments(JsonWrapper document)
     {
-        return document["Nodes"].EnumerateArray()
+        return document["Nodes"]!.EnumerateArray()
             .Select((segmentJson, i) => GeneratePathSegment(i, segmentJson)).ToList();
     }
 
     private static List<PathLink> GenerateLinks(JsonWrapper document)
     {
-        return document["Links"].EnumerateArray().Select(linkJson => PathLink.FromJson(linkJson)).ToList();
+        return document["Links"]!.EnumerateArray().Select(linkJson => PathLink.FromJson(linkJson)).ToList();
     }
 
     private static List<List<PathSegment>> LinkPaths(List<PathLink> links, List<PathSegment> segmentTable)
@@ -86,15 +86,24 @@ public partial class MapPath : Node2D
         List<List<PathSegment>> linkedPaths = new();
 
         //Search the links first to find the entrances
-        foreach (var link in links)
+        if (links.Count != 0)
         {
-            var startSegment = segmentTable[link.Start];
-            var endSegment = segmentTable[link.End];
-
-            if ((startSegment.Flags & SegmentFlags.Entrance) != 0)
+            foreach (var link in links)
             {
-                linkedPaths.Add(new List<PathSegment> { startSegment });
+                var startSegment = segmentTable[link.Start];
+                var endSegment = segmentTable[link.End];
+
+                if ((startSegment.Flags & SegmentFlags.Entrance) != 0)
+                {
+                    linkedPaths.Add(new List<PathSegment> { startSegment });
+                }
             }
+        }
+        else
+        {
+            //If theres no links, its one segment, just return that
+            linkedPaths.Add(segmentTable);
+            return linkedPaths;
         }
 
         //For each enterance, link segments until there are no longer any segments to be linked

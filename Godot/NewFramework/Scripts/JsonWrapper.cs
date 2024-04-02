@@ -126,6 +126,11 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
             return EnumName<TFlag>();
         }
 
+        if (ValueKind == JsonType.Integer || ValueKind == JsonType.Number)
+        {
+            return (TFlag)(object)GetInt32();
+        }
+
         if (ValueKind == JsonType.Array && typeof(TFlag).GetEnumUnderlyingType() == typeof(ulong))
         {
             return (TFlag)(object)ArrayAs<string>().Select(text => Enum.Parse<TFlag>(text))
