@@ -15,7 +15,7 @@ public partial class MultiFireTask : WeaponTask
     public override void Execute(Vector2 where, float angle, Bloon? who)
     {
         var totalAngle = InitialOffset + AngleIncrement * FireCount;
-        var direction = InitialOffset + (AimAtTarget ? angle - totalAngle * 0.5f : 0.0f);
+        var direction = InitialOffset + (AimAtTarget ? angle - totalAngle * 0.5f + 90 : 0.0f);
         for (var i = 0; i < FireCount; i++)
         {
             var offset = (Offsets.Length > i ? Offsets[i] : Vector2.Zero) * 4.0f;
