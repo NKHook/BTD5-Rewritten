@@ -108,12 +108,12 @@ public partial class BaseTower : Node2D, IManagedObject
             _lastTargetPos = target?.GlobalPosition ?? _lastTargetPos;
         }
 
-        RotateToTarget();
+        if(_definition.RotatesToTarget) RotateToTarget();
         if (_lastTargetPos == null) return;
         
         for (var i = 0; i < _weaponSlots.Count; i++)
         {
-            if (!_activeWeaponSlots[i]) continue;
+            if (_activeWeaponSlots.Length > i && !_activeWeaponSlots[i]) continue;
 
             var weaponSlot = _weaponSlots[i];
             if (!(weaponSlot?.Cooled ?? false)) continue;
@@ -129,8 +129,11 @@ public partial class BaseTower : Node2D, IManagedObject
 
             var firePos = _firePosNode?.GlobalPosition ?? GlobalPosition;
             var offset = _definition.WeaponOffsets.Length > i ? _definition.WeaponOffsets[i] : Vector2.Zero;
+            var direction = _definition.RotatesToTarget
+                ? firePos.AngleToPoint(_lastTargetPos!.Value)
+                : Rotation;
             _animStarted = false;
-            weaponSlot.Fire(firePos + offset, Vector2.FromAngle(firePos.AngleToPoint(_lastTargetPos!.Value)));
+            weaponSlot.Fire(firePos + offset, Mathf.RadToDeg(direction));
             _lastTargetPos = null;
         }
     }
@@ -305,7 +308,7 @@ public partial class BaseTower : Node2D, IManagedObject
         var firePosArr = newSprite.CustomVariables.ContainsKey("FirePosition")
             ? newSprite.CustomVariables["FirePosition"].Value as float[]
             : Array.Empty<float>();
-        if (firePosArr == null) return;
+        if (firePosArr == null || firePosArr.Length == 0) return;
 
         if (_firePosNode == null)
         {

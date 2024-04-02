@@ -12,7 +12,7 @@ public partial class EffectTask : WeaponTask
 
     private CompoundSprite? _sprite;
     
-    public override void Execute(Vector2 where, Vector2 direction, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who)
     {
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var taskObjects = gameScreen?.GetNode<TaskObjectManager>("TaskObjects");

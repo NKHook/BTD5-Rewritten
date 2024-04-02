@@ -10,7 +10,7 @@ public partial class AreaOfEffectTask : WeaponTask
     public float Range;
     public int MaxTargets;
     
-    public override void Execute(Vector2 where, Vector2 direction, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who)
     {
         var bloons = BloonManager.Instance.Objects;
         var targets = bloons.Where(bloon => bloon.Position.DistanceTo(Position) < Range * 2.5f).ToArray();
@@ -20,7 +20,7 @@ public partial class AreaOfEffectTask : WeaponTask
 
             foreach (var task in Tasks)
             {
-                task.Execute(where, direction, target);
+                task.Execute(where, angle, target);
             }
         }
     }

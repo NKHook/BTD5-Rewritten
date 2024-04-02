@@ -5,6 +5,7 @@ using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
@@ -114,7 +115,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
                     : throw new BTD5WouldCrashException("Projectile requires movement");
                 result.DisabledTasks = element["DisabledTasks"]?.ArrayAs<int>() ?? Array.Empty<int>();
                 result.TasksToProcessOnCollision =
-                    element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? Array.Empty<int>();
+                    element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? new[] { 0 };
                 result.TasksToProcessOnTerminate =
                     element["TasksToProcessOnTerminate"]?.ArrayAs<int>() ?? Array.Empty<int>();
                 result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
@@ -122,6 +123,18 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
                 return result;
             }
             case TaskType.MultiFire:
+            {
+                var result = new MultiFireTask();
+                result.Type = TaskType.MultiFire;
+                result.InitialOffset = element["InitialOffset"] ?? 0.0f;
+                result.AngleIncrement = element["AngleIncrement"] ?? 0.0f;
+                result.FireCount = element["FireCount"] ?? 0;
+                result.AimAtTarget = element["AimAtTarget"] ?? true;
+                result.Offsets = element["Offsets"]?.ArrayAs<Vector2>() ?? Array.Empty<Vector2>();
+                result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
+                               Array.Empty<WeaponTask>();
+                return result;
+            }
                 break;
             case TaskType.Damage:
             {

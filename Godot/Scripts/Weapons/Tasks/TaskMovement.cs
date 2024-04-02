@@ -13,14 +13,14 @@ public class TaskMovement : ICloneable
     //Node info
     public Vector2 Direction = Vector2.Zero;
     
-    public void Move(Tasks.MoveableTask task, float delta)
+    public void Move(MoveableTask task, float delta)
     {
         switch (Type)
         {
             case MovementType.None:
                 return;
             case MovementType.Forward:
-                task.Position += 4.0f * delta * Speed * Direction;
+                task.Position += delta * Speed * Direction;
                 break;
             case MovementType.RotateAroundTower:
                 break;

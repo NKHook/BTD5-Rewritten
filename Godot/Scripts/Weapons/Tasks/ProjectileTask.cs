@@ -29,7 +29,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
         AddChild(sprite);
     }
 
-    public override void Execute(Vector2 where, Vector2 direction, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who)
     {
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var taskObjects = gameScreen?.GetNode<TaskObjectManager>("TaskObjects");
@@ -37,10 +37,10 @@ public partial class ProjectileTask : Tasks.MoveableTask
         if (Clone() is not ProjectileTask clone) return;
         
         clone.Position = where;
-        clone.Rotation = direction.Angle();
-        if (clone is Tasks.MoveableTask { Movement: not null } movable)
+        clone.Rotation = Mathf.DegToRad(angle);
+        if (clone is MoveableTask { Movement: not null } movable)
         {
-            movable.Movement.Direction = direction;
+            movable.Movement.Direction = Vector2.FromAngle(Mathf.DegToRad(angle));
             movable.Origin = where;
         }
             
@@ -63,7 +63,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
                 if (DisabledTasks.Contains(taskId)) continue;
                     
                 var task = Tasks[taskId];
-                task.Execute(bloon.Position, Vector2.Zero, bloon);
+                task.Execute(bloon.Position, 0.0f, bloon);
             }
 
             switch (CollisionType)
@@ -89,7 +89,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
             if (DisabledTasks.Contains(taskId)) continue;
 
             var task = Tasks[taskId];
-            task.Execute(Position, Vector2.FromAngle(Rotation), null);
+            task.Execute(Position, RotationDegrees, null);
         }
     }
 

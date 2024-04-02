@@ -25,6 +25,12 @@ public abstract partial class WeaponTask : Node2D, IManagedObject, ICloneable
         return clone;
     }
 
-    public abstract void Execute(Vector2 where, Vector2 direction, Bloon? who);
+    /// <summary>
+    /// Executes the weapon task
+    /// </summary>
+    /// <param name="where">The location where the task should be executed</param>
+    /// <param name="angle">The angle the task should use, in degrees</param>
+    /// <param name="who">What bloon, if any, is relevant to this task</param>
+    public abstract void Execute(Vector2 where, float angle, Bloon? who);
     public virtual void Terminate() => QueueFree();
 }

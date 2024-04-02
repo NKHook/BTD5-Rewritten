@@ -103,11 +103,11 @@ public partial class Bloon : Node2D, IManagedObject
             QueueFree();
         }
     }
-    
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
 
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        
         var progressThisFrame = 3.0f * Speed * (float)delta;
         PathFollower!.Progress += progressThisFrame;
 

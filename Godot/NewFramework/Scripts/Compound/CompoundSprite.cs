@@ -240,19 +240,22 @@ public partial class CompoundSprite : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() => Initialize();
 
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+
+        if (FullyLoaded) return;
+        FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
+
+        if (!FullyLoaded) return;
+        
+        RefreshTextures();
+        Loaded?.Invoke(this, null!);
+    }
+
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (!FullyLoaded)
-        {
-            FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
-            if (FullyLoaded)
-            {
-                RefreshTextures();
-                Loaded?.Invoke(this, null!);
-            }
-        }
-        
         if (Animating)
         {
             _timeline?.Tick((float)delta);

@@ -33,7 +33,12 @@ public partial class Weapon
         FireTimer += delta;
     }
 
-    public void Fire(Vector2 where, Vector2 direction)
+    /// <summary>
+    /// Fires the weapon
+    /// </summary>
+    /// <param name="where">Where the weapon was fired</param>
+    /// <param name="angle">The angle the weapon was rotated, in degrees</param>
+    public void Fire(Vector2 where, float angle)
     {
         CooldownTimer = 0.0f;
         FireTimer = 0.0f;
@@ -48,7 +53,7 @@ public partial class Weapon
 
         foreach (var task in _tasks)
         {
-            task.Execute(where, direction, null);
+            task.Execute(where, angle, null);
         }
     }
 }
