@@ -33,7 +33,7 @@ public partial class ObjectManager<T> : Node2D where T : Node, IManagedObject
 		return nextId - 1;
 	}
 
-	public void RemoveObject(T obj)
+	public virtual void RemoveObject(T obj)
 	{
 		_container?.RemoveChild(obj);
 	}

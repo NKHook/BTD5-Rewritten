@@ -12,14 +12,15 @@ public partial class Bloon : Node2D, IManagedObject
     private BloonManager? _owner;
     private readonly BloonInfo _definition;
 
-    private PathFollow2D? _pathFollower;
+    public PathFollow2D? PathFollower;
     public int PathOption = 0;
-    public float Progress => _pathFollower?.ProgressRatio ?? 0.0f;
+    public float Progress => PathFollower?.ProgressRatio ?? 0.0f;
 
-    private float _speed = 1.0f;
-    private float _speedMultiplier = 1.0f;
+    public float Speed = 1.0f;
     private int _health = 1;
 
+    public EventHandler? BloonReady;
+    
     public Bloon(BloonInfo definition)
     {
         _definition = definition;
@@ -63,17 +64,18 @@ public partial class Bloon : Node2D, IManagedObject
         _health = _definition.InitialHealth;
         
         //Set up the path follower stuff
-        _pathFollower = new PathFollow2D();
+        PathFollower = new PathFollow2D();
         var remote = new RemoteTransform2D();
         remote.RemotePath = GetPath();
-        _pathFollower.AddChild(remote);
-        _pathFollower.Loop = false;
-        _pathFollower.Rotates = _definition.RotateToPathDirection;
+        PathFollower.AddChild(remote);
+        PathFollower.Loop = false;
+        PathFollower.Rotates = _definition.RotateToPathDirection;
         
-        bloonPath?.AddChild(_pathFollower);
+        bloonPath?.AddChild(PathFollower);
 
-        _speed = _definition.BaseSpeed;
-        _speedMultiplier = _definition.SpeedMultiplier;
+        Speed = _definition.BaseSpeed * _definition.SpeedMultiplier;
+        
+        BloonReady?.Invoke(this, null!);
     }
 
     public void Damage(int amount)
@@ -87,20 +89,31 @@ public partial class Bloon : Node2D, IManagedObject
 
     public void Pop()
     {
-        QueueFree();
+        Remove();
+        
+        //TODO: Pop effect
+    }
+
+    public void Remove()
+    {
+        if (_owner != null) _owner.RemoveObject(this);
+        else
+        {
+            PathFollower?.QueueFree();
+            QueueFree();
+        }
     }
     
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-        var progressThisFrame = 3.0f * _speed * _speedMultiplier * (float)delta;
-        _pathFollower!.Progress += progressThisFrame;
+        var progressThisFrame = 3.0f * Speed * (float)delta;
+        PathFollower!.Progress += progressThisFrame;
 
-        if (_pathFollower!.ProgressRatio < 1.0f) return;
+        if (PathFollower!.ProgressRatio < 1.0f) return;
         
-        _pathFollower.QueueFree();
-        QueueFree();
+        Remove();
     }
 
     public void OwnedBy(object? owner)
