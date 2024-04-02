@@ -9,6 +9,10 @@ public class TaskMovement : ICloneable
     public MovementType Type;
     public float Speed;
     public int CutOffDistance;
+    public Vector2[][] Curves = Array.Empty<Vector2[]>();
+    public float AngleOffsets;
+    public bool TerminateAtEndOfCurve;
+    public bool ScaleCurvesByDirection;
 
     //Node info
     public Vector2 Direction = Vector2.Zero;
@@ -29,6 +33,7 @@ public class TaskMovement : ICloneable
             case MovementType.Target:
                 break;
             case MovementType.MotionCurve:
+                
                 break;
             case MovementType.ReturnToSender:
                 break;

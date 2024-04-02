@@ -14,6 +14,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
     public int NumPersists;
     public bool TerminateOnZeroPersists;
     public CollisionType CollisionType;
+    public int SpinRate;
     public int[] DisabledTasks = Array.Empty<int>();
     public int[] TasksToProcessOnCollision = Array.Empty<int>();
     public int[] TasksToProcessOnTerminate = Array.Empty<int>();
