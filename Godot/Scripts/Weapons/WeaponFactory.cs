@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 using Godot;
@@ -145,7 +146,12 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
                 return result;
             }
             case TaskType.StatusEffect:
-                break;
+            {
+                var result = new StatusEffectTask();
+                result.Type = TaskType.StatusEffect;
+                result.Status = element["Status"]?.GetFlag<StatusFlag>() ?? StatusFlag.None;
+                return result;
+            }
             case TaskType.RemoveStatusEffect:
                 break;
             case TaskType.AreaOfEffect:

@@ -14,10 +14,18 @@ public partial class Bloon : Node2D, IManagedObject
 
     public PathFollow2D? PathFollower;
     public int PathOption = 0;
-    public float Progress => PathFollower?.ProgressRatio ?? 0.0f;
+    public float Progress
+    {
+        get => PathFollower?.ProgressRatio ?? 0.0f;
+        private set
+        {
+            if (PathFollower != null) PathFollower.ProgressRatio = value;
+        }
+    }
 
     public float Speed = 1.0f;
     private int _health = 1;
+    private StatusFlag _status = StatusFlag.None;
 
     public EventHandler? BloonReady;
     
@@ -26,6 +34,9 @@ public partial class Bloon : Node2D, IManagedObject
         _definition = definition;
     }
 
+    public void SetStatusFlag(StatusFlag flag) => _status |= flag;
+    public bool HasStatusFlag(StatusFlag flag) => _status.HasFlag(flag);
+    
     private void DisableSpriteProcess(CompoundSprite sprite)
     {
         foreach (var actor in sprite.GetActors())
@@ -87,9 +98,25 @@ public partial class Bloon : Node2D, IManagedObject
         }
     }
 
-    public void Pop()
+    public void Pop(bool spawnChildren = true)
     {
         Remove();
+
+        if (spawnChildren)
+        {
+            foreach (var childInfo in _definition.ChildBloons)
+            {
+                var child = BloonFactory.Instance.Instantiate(childInfo)!;
+                child.Progress = Progress;
+
+                if (HasStatusFlag(StatusFlag.MultiLayerDamage) && _health <= 0)
+                {
+                    child.Damage(_health);
+                }
+                
+                _owner?.AddObject(child);
+            }
+        }
         
         //TODO: Pop effect
     }
@@ -107,6 +134,9 @@ public partial class Bloon : Node2D, IManagedObject
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        
+        if(_health <= 0)
+            Pop();
         
         var progressThisFrame = 3.0f * Speed * (float)delta;
         PathFollower!.Progress += progressThisFrame;

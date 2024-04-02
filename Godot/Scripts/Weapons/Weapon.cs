@@ -1,4 +1,5 @@
 ﻿using BloonsTD5Rewritten.Godot.Screens;
+using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 using Godot;
@@ -38,7 +39,8 @@ public partial class Weapon
     /// </summary>
     /// <param name="where">Where the weapon was fired</param>
     /// <param name="angle">The angle the weapon was rotated, in degrees</param>
-    public void Fire(Vector2 where, float angle)
+    /// <param name="who">The bloon, if any, that is the target of the weapon</param>
+    public void Fire(Vector2 where, float angle, Bloon? who)
     {
         CooldownTimer = 0.0f;
         FireTimer = 0.0f;
@@ -53,7 +55,7 @@ public partial class Weapon
 
         foreach (var task in _tasks)
         {
-            task.Execute(where, angle, null);
+            task.Execute(where, angle, who);
         }
     }
 }

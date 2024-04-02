@@ -102,9 +102,10 @@ public partial class BaseTower : Node2D, IManagedObject
         }
 
         var targets = ValidTargets();
+        Bloon? target = null;
         if (targets.Length > 0)
         {
-            var target = targets.MaxBy(bloon => bloon.Progress);
+            target = targets.MaxBy(bloon => bloon.Progress);
             _lastTargetPos = target?.GlobalPosition ?? _lastTargetPos;
         }
 
@@ -133,7 +134,7 @@ public partial class BaseTower : Node2D, IManagedObject
                 ? firePos.AngleToPoint(_lastTargetPos!.Value)
                 : Rotation;
             _animStarted = false;
-            weaponSlot.Fire(firePos + offset, Mathf.RadToDeg(direction));
+            weaponSlot.Fire(firePos + offset, Mathf.RadToDeg(direction), target);
             _lastTargetPos = null;
         }
     }
@@ -190,7 +191,7 @@ public partial class BaseTower : Node2D, IManagedObject
 
         if (!_selected) return;
 
-        var range = GetAttackRange();
+        var range = GetVisibleRange();
         var selectRadius = _circle2d?.Instantiate();
         if (selectRadius == null) return;
 
@@ -265,11 +266,12 @@ public partial class BaseTower : Node2D, IManagedObject
 
     public bool AtValidPosition() => !AtInvalidPosition();
 
+    private float GetVisibleRange()
+    {
+        return _definition.UseDefaultRangeCircle ? 64.0f * 2.5f : GetAttackRange();
+    }
     private float GetAttackRange()
     {
-        if (_definition.UseDefaultRangeCircle)
-            return 64.0f;
-
         if (_weaponSlots.Count == 0)
             return 0.0f;
 

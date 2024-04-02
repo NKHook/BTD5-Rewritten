@@ -157,7 +157,8 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
 
     public int ArrayLen() => _data.AsGodotArray().Count;
 
-    public TFlag EnumName<TFlag>() where TFlag : struct, Enum => Enum.Parse<TFlag>(_data.AsString());
+    public TFlag EnumName<TFlag>() where TFlag : struct, Enum =>
+        _data.AsString() != string.Empty ? Enum.Parse<TFlag>(_data.AsString()) : default;
 
     public T EnumValue<T>() where T : struct, Enum =>
         Enum.GetValues<T>().First(v => _data.AsInt32() == (int)(object)v);
