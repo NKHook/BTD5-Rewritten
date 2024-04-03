@@ -18,6 +18,7 @@ public partial class ProjectileTask : MoveableTask
     public int NumPersists;
     public bool TerminateOnZeroPersists;
     public CollisionType CollisionType;
+    public float Radius;
     public int SpinRate;
     public int[] DisabledTasks = Array.Empty<int>();
     public int[] TasksToProcessOnCollision = Array.Empty<int>();
@@ -92,10 +93,13 @@ public partial class ProjectileTask : MoveableTask
         {
             if (!bloon.Collided(this)) continue;
 
-            foreach (var taskId in TasksToProcessOnCollision)
+            var taskIds = TasksToProcessOnCollision.Length > 0
+                ? TasksToProcessOnCollision
+                : Tasks.Select((task, i) => i).ToArray();
+            foreach (var taskId in taskIds)
             {
                 if (DisabledTasks.Contains(taskId)) continue;
-                    
+                
                 var task = Tasks[taskId];
                 task.Execute(bloon.Position, 0.0f, bloon, null);
             }

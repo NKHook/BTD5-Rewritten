@@ -14,7 +14,7 @@ public partial class AreaOfEffectTask : WeaponTask
     public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         var bloons = BloonManager.Instance.Objects;
-        var targets = bloons.Where(bloon => bloon.Position.DistanceTo(Position) < Range * 2.5f).ToArray();
+        var targets = bloons.Where(bloon => bloon.Position.DistanceTo(where) < Range * 2.5f).ToArray();
         for (var i = 0; i < Math.Min(MaxTargets, targets.Length); i++)
         {
             var target = targets[i];

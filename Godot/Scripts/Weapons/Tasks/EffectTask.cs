@@ -8,13 +8,14 @@ namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
 public partial class EffectTask : WeaponTask
 {
-    public string SpriteFile;
-    public float Scale;
+    public string SpriteFile = "";
+    public float EffectScale;
     public WeaponRenderLayer DrawLayer;
     public bool LoopForever;
     public float Duration;
 
     private CompoundSprite? _sprite;
+    private float _time;
     
     public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
@@ -35,7 +36,7 @@ public partial class EffectTask : WeaponTask
         const string weaponSpritesDir = "Assets/JSON/WeaponSprites/";
         _sprite = new CompoundSprite();
         _sprite.SpriteDefinitionRes = weaponSpritesDir + SpriteFile;
-        _sprite.Scale = Scale * Vector2.One;
+        _sprite.Scale = EffectScale * Vector2.One;
         _sprite.Loop = LoopForever;
         AddChild(_sprite);
     }
@@ -43,8 +44,20 @@ public partial class EffectTask : WeaponTask
     public override void _Process(double delta)
     {
         base._Process(delta);
+        _time += (float)delta;
         
-        if (_sprite?.Time > (Duration < 0 ? _sprite?.Duration : Duration))
+        if (_time > (Duration < 0 ? _sprite?.Duration : Duration))
             Terminate();
+    }
+
+    public override object Clone()
+    {
+        var clone = base.Clone() as EffectTask;
+        clone!.SpriteFile = SpriteFile;
+        clone.EffectScale = EffectScale;
+        clone.DrawLayer = DrawLayer;
+        clone.LoopForever = LoopForever;
+        clone.Duration = Duration;
+        return clone;
     }
 }

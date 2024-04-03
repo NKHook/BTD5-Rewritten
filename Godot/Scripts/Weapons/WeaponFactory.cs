@@ -140,6 +140,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.NumPersists = element["NumPersists"] ?? 0;
 				result.TerminateOnZeroPersists = element["TerminateOnZeroPersists"] ?? true;
 				result.CollisionType = element["CollisionType"]?.GetFlag<CollisionType>() ?? CollisionType.None;
+				result.Radius = element["Radius"]?.GetFloat() ?? 1.0f;
 				result.SpinRate = element["SpinRate"] ?? 0;
 				var movement = element["Movement"];
 				result.Movement = movement != null
@@ -147,7 +148,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 					: throw new BTD5WouldCrashException("Projectile requires movement");
 				result.DisabledTasks = element["DisabledTasks"]?.ArrayAs<int>() ?? Array.Empty<int>();
 				result.TasksToProcessOnCollision =
-					element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? new[] { 0 };
+					element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? Array.Empty<int>();
 				result.TasksToProcessOnTerminate =
 					element["TasksToProcessOnTerminate"]?.ArrayAs<int>() ?? Array.Empty<int>();
 				result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
@@ -213,7 +214,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				var result = new EffectTask();
 				result.Type = taskType;
 				result.SpriteFile = element["SpriteFile"] ?? "";
-				result.Scale = element["Scale"] ?? 1.0f;
+				result.EffectScale = element["Scale"] ?? 1.0f;
 				result.DrawLayer = element["DrawLayer"]?.GetFlag<WeaponRenderLayer>() ?? WeaponRenderLayer.Ground;
 				result.LoopForever = element["LoopForever"]?.GetBool() ?? false;
 				result.Duration = element["Duration"] ?? -1.0f;
