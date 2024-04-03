@@ -14,7 +14,7 @@ public partial class RandomFireTask : WeaponTask
     public bool OnlyTargetPlacementLocations;
     public TowerType PlacementTowerType;
     
-    public override void Execute(Vector2 where, float angle, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         var randomWhere = Vector2.Zero;
         if (OnlyTargetPlacementLocations)
@@ -24,7 +24,7 @@ public partial class RandomFireTask : WeaponTask
 
         foreach (var task in Tasks)
         {
-            task.Execute(randomWhere, angle, who);
+            task.Execute(randomWhere, angle, who, user);
         }
     }
 

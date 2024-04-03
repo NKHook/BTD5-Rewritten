@@ -11,7 +11,7 @@ public partial class CreateTowerTask : WeaponTask
     public float TowerLifetime;
     public bool UseParentTowerUpgradeLevel;
     
-    public override void Execute(Vector2 where, float angle, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         
     }

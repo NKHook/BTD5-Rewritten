@@ -136,6 +136,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				var result = new ProjectileTask();
 				result.Type = taskType;
 				result.GraphicName = element["GraphicName"] ?? "";
+				result.SpriteFile = element["SpriteFile"] ?? "";
 				result.NumPersists = element["NumPersists"] ?? 0;
 				result.TerminateOnZeroPersists = element["TerminateOnZeroPersists"] ?? true;
 				result.CollisionType = element["CollisionType"]?.GetFlag<CollisionType>() ?? CollisionType.None;
@@ -231,7 +232,19 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 			case TaskType.LaunchAircraft:
 				break;
 			case TaskType.TowerModifier:
-				break;
+			{
+				var result = new TowerModifierTask();
+				result.Type = taskType;
+				result.Range = element["Range"] ?? 1.0f;
+				result.PriorityLevel = element["PriorityLevel"] ?? 0;
+				result.ApplyToUserTower = element["ApplyToUserTower"] ?? false;
+				result.TerminateOnUserUpgrade = element["TerminateOnUserUpgrade"] ?? false;
+				result.Duration = element["Duration"] ?? 1.0f;
+				result.NumPersists = element["NumPersists"] ?? 1;
+				//TODO: result.TargetingFiler = ...
+				result.Modifier = new TowerModifier(); //TODO: Make modifier stuff
+				return result;
+			}
 			case TaskType.Harpoon:
 				break;
 			case TaskType.Sacrifice:

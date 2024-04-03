@@ -40,7 +40,8 @@ public partial class Weapon
     /// <param name="where">Where the weapon was fired</param>
     /// <param name="angle">The angle the weapon was rotated, in degrees</param>
     /// <param name="who">The bloon, if any, that is the target of the weapon</param>
-    public void Fire(Vector2 where, float angle, Bloon? who)
+    /// <param name="user">The tower that fired the weapon</param>
+    public void Fire(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         CooldownTimer = 0.0f;
         FireTimer = 0.0f;
@@ -55,7 +56,7 @@ public partial class Weapon
 
         foreach (var task in _tasks)
         {
-            task.Execute(where, angle, who);
+            task.Execute(where, angle, who, user);
         }
     }
 }

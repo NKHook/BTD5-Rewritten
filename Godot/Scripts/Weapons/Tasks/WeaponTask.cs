@@ -1,6 +1,7 @@
 ﻿using System;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
+using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
@@ -31,6 +32,7 @@ public abstract partial class WeaponTask : Node2D, IManagedObject, ICloneable
     /// <param name="where">The location where the task should be executed</param>
     /// <param name="angle">The angle the task should use, in degrees</param>
     /// <param name="who">What bloon, if any, is relevant to this task</param>
-    public abstract void Execute(Vector2 where, float angle, Bloon? who);
+    /// <param name="user">The tower that used the weapon or triggered the task</param>
+    public abstract void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user);
     public virtual void Terminate() => QueueFree();
 }

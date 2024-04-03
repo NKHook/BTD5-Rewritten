@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
+using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
@@ -11,6 +14,7 @@ public partial class ProjectileTask : MoveableTask
 {
     //Definition info
     public string GraphicName = "";
+    public string SpriteFile = "";
     public int NumPersists;
     public bool TerminateOnZeroPersists;
     public CollisionType CollisionType;
@@ -21,22 +25,41 @@ public partial class ProjectileTask : MoveableTask
 
     //Node info
     private int _persistsLeft = 0;
-    private Sprite? _sprite;
+    private Node2D? _sprite;
     
     public override void _Ready()
     {
         base._Ready();
 
-        _sprite = new Sprite();
-        _sprite.SpriteName = GraphicName;
-        _sprite.TextureName = "InGame";
-        _sprite.RotationDegrees = 90;
-        AddChild(_sprite);
+        if (GraphicName != "" && SpriteFile != "")
+            throw new BTD5WouldCrashException("Both a GraphicName and SpriteFile are defined in the Projectile");
+
+        if (GraphicName == "" && SpriteFile == "")
+            throw new BTD5WouldCrashException("Neither a GraphicName or SpriteFile are defined in the Projectile");
+        
+        if (GraphicName != "")
+        {
+            var sprite = new Sprite();
+            sprite.SpriteName = GraphicName;
+            sprite.TextureName = "InGame";
+            sprite.RotationDegrees = 90;
+            AddChild(sprite);
+            _sprite = sprite;
+        }
+
+        if (SpriteFile != "")
+        {
+            const string weaponSprites = "Assets/JSON/WeaponSprites/";
+            var compound = new CompoundSprite();
+            compound.SpriteDefinitionRes = weaponSprites + SpriteFile;
+            AddChild(compound);
+            _sprite = compound;
+        }
 
         _persistsLeft = NumPersists;
     }
 
-    public override void Execute(Vector2 where, float angle, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var taskObjects = gameScreen?.GetNode<TaskObjectManager>("TaskObjects");
@@ -74,7 +97,7 @@ public partial class ProjectileTask : MoveableTask
                 if (DisabledTasks.Contains(taskId)) continue;
                     
                 var task = Tasks[taskId];
-                task.Execute(bloon.Position, 0.0f, bloon);
+                task.Execute(bloon.Position, 0.0f, bloon, null);
             }
 
             switch (CollisionType)
@@ -102,7 +125,7 @@ public partial class ProjectileTask : MoveableTask
             if (DisabledTasks.Contains(taskId)) continue;
 
             var task = Tasks[taskId];
-            task.Execute(Position, RotationDegrees, null);
+            task.Execute(Position, RotationDegrees, null, null);
         }
     }
 
@@ -110,6 +133,7 @@ public partial class ProjectileTask : MoveableTask
     {
         var clone = base.Clone() as ProjectileTask;
         clone!.GraphicName = GraphicName;
+        clone.SpriteFile = SpriteFile;
         clone.NumPersists = NumPersists;
         clone.TerminateOnZeroPersists = TerminateOnZeroPersists;
         clone.CollisionType = CollisionType;

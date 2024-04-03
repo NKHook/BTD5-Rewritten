@@ -134,7 +134,7 @@ public partial class BaseTower : Node2D, IManagedObject
                 ? firePos.AngleToPoint(_lastTargetPos!.Value)
                 : Rotation;
             _animStarted = false;
-            weaponSlot.Fire(firePos + offset, Mathf.RadToDeg(direction), target);
+            weaponSlot.Fire(firePos + offset, Mathf.RadToDeg(direction), target, this);
             _lastTargetPos = null;
         }
     }
@@ -322,7 +322,7 @@ public partial class BaseTower : Node2D, IManagedObject
             _firePosNode = new Node2D();
             AddChild(_firePosNode);
         }
-        _firePosNode.Position = new Vector2(firePosArr[0], -firePosArr[1]) * 4.0f;
+        _firePosNode.Position = new Vector2(-firePosArr[1], firePosArr[0]) * 4.0f;
     }
 
     private Bloon[] ValidTargets()

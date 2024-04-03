@@ -1,6 +1,7 @@
 ﻿using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
+using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
@@ -15,7 +16,7 @@ public partial class EffectTask : WeaponTask
 
     private CompoundSprite? _sprite;
     
-    public override void Execute(Vector2 where, float angle, Bloon? who)
+    public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
         var gameScreen = ScreenManager.Instance().CurrentScreen as GameScreen;
         var taskObjects = gameScreen?.GetNode<TaskObjectManager>("TaskObjects");
