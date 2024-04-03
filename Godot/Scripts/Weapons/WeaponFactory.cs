@@ -139,6 +139,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.NumPersists = element["NumPersists"] ?? 0;
 				result.TerminateOnZeroPersists = element["TerminateOnZeroPersists"] ?? true;
 				result.CollisionType = element["CollisionType"]?.GetFlag<CollisionType>() ?? CollisionType.None;
+				result.SpinRate = element["SpinRate"] ?? 0;
 				var movement = element["Movement"];
 				result.Movement = movement != null
 					? GenerateMovement(movement)

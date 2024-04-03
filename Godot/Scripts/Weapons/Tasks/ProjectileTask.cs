@@ -7,7 +7,7 @@ using Godot;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
 
-public partial class ProjectileTask : Tasks.MoveableTask
+public partial class ProjectileTask : MoveableTask
 {
     //Definition info
     public string GraphicName = "";
@@ -19,15 +19,21 @@ public partial class ProjectileTask : Tasks.MoveableTask
     public int[] TasksToProcessOnCollision = Array.Empty<int>();
     public int[] TasksToProcessOnTerminate = Array.Empty<int>();
 
+    //Node info
+    private int _persistsLeft = 0;
+    private Sprite? _sprite;
+    
     public override void _Ready()
     {
         base._Ready();
 
-        var sprite = new Sprite();
-        sprite.SpriteName = GraphicName;
-        sprite.TextureName = "InGame";
-        sprite.RotationDegrees = 90;
-        AddChild(sprite);
+        _sprite = new Sprite();
+        _sprite.SpriteName = GraphicName;
+        _sprite.TextureName = "InGame";
+        _sprite.RotationDegrees = 90;
+        AddChild(_sprite);
+
+        _persistsLeft = NumPersists;
     }
 
     public override void Execute(Vector2 where, float angle, Bloon? who)
@@ -39,6 +45,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
         
         clone.Position = where;
         clone.Rotation = Mathf.DegToRad(angle);
+        clone.Angle = angle;
         if (clone is MoveableTask { Movement: not null } movable)
         {
             movable.Movement.Direction = Vector2.FromAngle(Mathf.DegToRad(angle));
@@ -51,6 +58,9 @@ public partial class ProjectileTask : Tasks.MoveableTask
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (_sprite != null)
+            _sprite.RotationDegrees += SpinRate * (float)delta;
 
         var bloons = BloonManager.Instance?.Objects;
         if (bloons == null) return;
@@ -70,7 +80,9 @@ public partial class ProjectileTask : Tasks.MoveableTask
             switch (CollisionType)
             {
                 case CollisionType.Once:
-                    Terminate();
+                    _persistsLeft--;
+                    if (_persistsLeft <= 0)
+                        Terminate();
                     break;
                 case CollisionType.Continual:
                 case CollisionType.None:
@@ -101,6 +113,7 @@ public partial class ProjectileTask : Tasks.MoveableTask
         clone.NumPersists = NumPersists;
         clone.TerminateOnZeroPersists = TerminateOnZeroPersists;
         clone.CollisionType = CollisionType;
+        clone.SpinRate = SpinRate;
         clone.DisabledTasks = DisabledTasks;
         clone.TasksToProcessOnCollision = TasksToProcessOnCollision;
         clone.TasksToProcessOnTerminate = TasksToProcessOnTerminate;

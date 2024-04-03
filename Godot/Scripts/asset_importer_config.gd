@@ -12,7 +12,7 @@ func _ready():
 		game_dir = PathUtil.get_parent_path(executable_path)
 	else:
 		#game_dir = "D:/SteamLibrary/steamapps/common/BloonsTD5"
-		game_dir = "/media/mike/Shared/SteamLibrary/steamapps/common/BloonsTD5"
+		game_dir = "/mnt/CA425B49425B3A01/SteamLibrary/steamapps/common/BloonsTD5"
 		#HEY!!! You probably see this isnt working for you!!
 		#CHANGE THE PATH ABOVE to the path of *YOUR OWN BTD5 FOLDER*!!!
 		#This is the path where the BTD5 exe file is located
