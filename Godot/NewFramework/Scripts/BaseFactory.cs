@@ -25,7 +25,7 @@ public abstract partial class BaseFactory<TIdentifier, TInfo, TInstance> : Node2
 	protected abstract string ToFileName(string factoryName);
 
 	public virtual TInfo GetInfo(string factoryName) => GetInfo(StringToFlag<TIdentifier>(factoryName));
-	protected TInfo GetInfo(TIdentifier flag) => _factoryData.GetValueOrDefault(flag, _invalid);
+	public TInfo GetInfo(TIdentifier flag) => _factoryData.GetValueOrDefault(flag, _invalid);
 	public virtual void AddInfo(TIdentifier id, TInfo info) => _factoryData[id] = info;
 
 	public TFlag StringToFlag<TFlag>(string text) where TFlag : struct, Enum =>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
@@ -30,11 +31,15 @@ public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
         return factoryName + ".bloon";
     }
 
+    private Dictionary<BloonType, BloonInfo> _generatedCache = new ();
+    
     protected override BloonInfo GenerateInfo(JsonWrapper element)
     {
         var info = new BloonInfo();
         info.Type = element["Type"]?.GetFlag<BloonType>() ??
                     throw new BTD5WouldCrashException("'Type' is an invalid BloonType flag");
+        if (_generatedCache.TryGetValue(info.Type, out var generateInfo))
+            return generateInfo;
         info.DrawLayer = element["DrawLayer"]?.GetFlag<BloonDrawLayer>() ?? BloonDrawLayer.Ground;
         info.InitialHealth = element["InitialHealth"] ?? 1;
         info.SpriteFile = element["SpriteFile"] ?? string.Empty;
@@ -54,6 +59,7 @@ public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
         info.Radius = element["Radius"] ?? 10;
         info.HitAddon = element["HitAddon"] ?? 0;
         info.BloonAbility = element["BloonAbility"]?.GetFlag<BloonAbilityFlag>() ?? BloonAbilityFlag.None;
+        _generatedCache[info.Type] = info;
         return info;
     }
 

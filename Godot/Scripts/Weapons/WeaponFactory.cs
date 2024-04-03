@@ -166,7 +166,6 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 							   Array.Empty<WeaponTask>();
 				return result;
 			}
-				break;
 			case TaskType.Damage:
 			{
 				var result = new DamageTask();
@@ -195,7 +194,17 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				return result;
 			}
 			case TaskType.RandomFire:
-				break;
+			{
+				var result = new RandomFireTask();
+				result.Type = taskType;
+				result.Range = element["Range"] ?? 0.0f;
+				result.FireFullRange = element["FireFullRange"] ?? false;
+				result.OnlyTargetPlacementLocations = element["OnlyTargetPlacementLocations"] ?? false;
+				result.PlacementTowerType = element["PlacementTowerType"]?.GetFlag<TowerType>() ?? TowerType.Invalid;
+				result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
+				               Array.Empty<WeaponTask>();
+				return result;
+			}
 			case TaskType.TimerFire:
 				break;
 			case TaskType.Effect:
@@ -204,6 +213,9 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.Type = taskType;
 				result.SpriteFile = element["SpriteFile"] ?? "";
 				result.Scale = element["Scale"] ?? 1.0f;
+				result.DrawLayer = element["DrawLayer"]?.GetFlag<WeaponRenderLayer>() ?? WeaponRenderLayer.Ground;
+				result.LoopForever = element["LoopForever"]?.GetBool() ?? false;
+				result.Duration = element["Duration"] ?? -1.0f;
 				return result;
 			}
 			case TaskType.TextEffect:
@@ -229,7 +241,15 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 			case TaskType.ChangeTerrain:
 				break;
 			case TaskType.CreateTower:
-				break;
+			{
+				var result = new CreateTowerTask();
+				result.Type = taskType;
+				result.TowerType = element["TowerType"]?.GetFlag<TowerType>() ?? TowerType.Invalid;
+				result.TowerColor = element["TowerColour"]?.GetColor() ?? Colors.White;
+				result.TowerLifetime = element["TowerLifetime"]?.GetFloat() ?? 1.0f;
+				result.UseParentTowerUpgradeLevel = element["UseParentTowerUpgradeLevel"] ?? false;
+				return result;
+			}
 			case TaskType.ResetPopCount:
 				break;
 			case TaskType.EnableNextWeaponSlot:

@@ -221,42 +221,47 @@ public partial class BaseTower : Node2D, IManagedObject
         if (_mapMask?.MaskData == null)
             return false;
 
-        var maskRelative = _mapMask.MapToMask(Position) / 4;
-        if (PlacementShape is CircleShape2D circle)
+        return IsInvalidAt(_mapMask, _definition, Position, _definition.PlacementRadius, _definition.PlacementW, _definition.PlacementH);
+    }
+
+    public static bool IsInvalidAt(MapMaskNode mapMask, TowerInfo definition, Vector2 where, float radius = 0.0f, float sizeX = 0.0f, float sizeY = 0.0f)
+    {
+        var maskRelative = mapMask.MapToMask(where) / 4;
+        if (definition.UseRadiusPlacement)
         {
-            var radius = circle.Radius / 4.0f;
             for (var t = 0.0f; t < 2.0f * Math.PI; t += 0.1f)
             {
                 var x = Mathf.Sin(t) * radius + maskRelative.X;
                 var y = Mathf.Cos(t) * radius + maskRelative.Y;
 
-                if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
+                if (!mapMask.MaskData?.HasPixel((int)x, (int)y) ?? false)
                     continue;
 
-                var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
+                var mask = mapMask.MaskData?.GetPixel((int)x, (int)y);
                 if ((mask & MaskBit.BlockTower) != 0)
                 {
                     return true;
                 }
             }
         }
-
-        if (PlacementShape is not RectangleShape2D rect) return false;
-        var size = rect.Size / 4.0f;
-        var min = maskRelative - size * 0.5f;
-        var max = maskRelative + size * 0.5f;
-
-        for (var x = min.X; x < max.X; x++)
+        else
         {
-            for (var y = min.Y; y < max.Y; y++)
-            {
-                if (!_mapMask.MaskData.HasPixel((int)x, (int)y))
-                    continue;
+            var size = new Vector2(sizeX, sizeY);
+            var min = maskRelative - size * 0.5f;
+            var max = maskRelative + size * 0.5f;
 
-                var mask = _mapMask.MaskData.GetPixel((int)x, (int)y);
-                if ((mask & MaskBit.BlockTower) != 0)
+            for (var x = min.X; x < max.X; x++)
+            {
+                for (var y = min.Y; y < max.Y; y++)
                 {
-                    return true;
+                    if (!mapMask.MaskData?.HasPixel((int)x, (int)y) ?? false)
+                        continue;
+
+                    var mask = mapMask.MaskData?.GetPixel((int)x, (int)y);
+                    if ((mask & MaskBit.BlockTower) != 0)
+                    {
+                        return true;
+                    }
                 }
             }
         }

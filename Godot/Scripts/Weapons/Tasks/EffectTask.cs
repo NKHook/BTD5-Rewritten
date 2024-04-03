@@ -9,6 +9,9 @@ public partial class EffectTask : WeaponTask
 {
     public string SpriteFile;
     public float Scale;
+    public WeaponRenderLayer DrawLayer;
+    public bool LoopForever;
+    public float Duration;
 
     private CompoundSprite? _sprite;
     
@@ -32,7 +35,7 @@ public partial class EffectTask : WeaponTask
         _sprite = new CompoundSprite();
         _sprite.SpriteDefinitionRes = weaponSpritesDir + SpriteFile;
         _sprite.Scale = Scale * Vector2.One;
-        _sprite.Loop = false;
+        _sprite.Loop = LoopForever;
         AddChild(_sprite);
     }
 
@@ -40,7 +43,7 @@ public partial class EffectTask : WeaponTask
     {
         base._Process(delta);
         
-        if (_sprite?.Time > _sprite?.Duration)
+        if (_sprite?.Time > (Duration < 0 ? _sprite?.Duration : Duration))
             Terminate();
     }
 }

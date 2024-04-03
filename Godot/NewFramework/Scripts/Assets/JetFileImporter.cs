@@ -39,6 +39,7 @@ public partial class JetFileImporter : Node
 		var stream = new MemoryStream();
 		entry?.Extract(stream);
 		stream.Seek(0, SeekOrigin.Begin);
+		GD.Print("Read file: " + path);
 		return stream;
 	}
 

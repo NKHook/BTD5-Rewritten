@@ -52,6 +52,49 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
     public double GetDouble() => Unwrap().AsDouble();
     public string GetString() => Unwrap().AsString();
     public Vector2 GetVector2() => new(this[0], this[1]);
+
+    public Color GetColor()
+    {
+        if (ValueKind == JsonType.Array && ArrayLen() > 0)
+        {
+            if (ElementKind == JsonType.Integer)
+            {
+                var valInts = new[] { 255, 255, 255, 255 };
+                var ints = ArrayAs<int>();
+                for (var i = 0; i < ints.Length; i++)
+                {
+                    valInts[i] = ints[i];
+                }
+
+                return new Color(valInts[0] / 255.0f, valInts[1] / 255.0f, valInts[2] / 255.0f, valInts[3] / 255.0f);
+            }
+
+            if (ElementKind == JsonType.Number)
+            {
+                var valSingles = new[] { 1.0f, 1.0f, 1.0f, 1.0f };
+                var singles = ArrayAs<float>();
+                for (var i = 0; i < singles.Length; i++)
+                {
+                    valSingles[i] = singles[i];
+                }
+
+                return new Color(singles[0], singles[1], singles[2], singles[3]);
+            }
+        }
+
+        if (ValueKind == JsonType.Integer)
+        {
+            var result = Colors.White;
+            var bytes = BitConverter.GetBytes(GetUInt32());
+            result.R = bytes[0] * 0.00390625f;
+            result.G = bytes[1] * 0.00390625f;
+            result.B = bytes[2] * 0.00390625f;
+            result.A = bytes[3] * 0.00390625f;
+            return result;
+        }
+        
+        return Colors.White;
+    }
     public JsonWrapper[] GetArray() => EnumerateArray().ToArray();
 
     public T ValueAs<T>()
@@ -111,6 +154,11 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
             return (T)(object)GetVector2();
         }
 
+        if (typeof(T) == typeof(Color))
+        {
+            return (T)(object)GetColor();
+        }
+        
         if (typeof(T) == typeof(JsonWrapper[]))
         {
             return (T)(object)GetArray();
@@ -145,16 +193,12 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
 
     public T[] ArrayAs<T>()
     {
-        if (typeof(T).IsArray)
-        {
-            var thisMethod = typeof(JsonWrapper).GetMethod("ArrayAs");
-            var compiled = thisMethod!.MakeGenericMethod(typeof(T).GetElementType()!);
-            return EnumerateArray().Select(entry => compiled.Invoke(entry, null)).Cast<T>().ToArray();
-        }
-        else
-        {
+        if (!typeof(T).IsArray)
             return EnumerateArray().Select(entry => entry.ValueAs<T>()).ToArray();
-        }
+        
+        var thisMethod = typeof(JsonWrapper).GetMethod("ArrayAs");
+        var compiled = thisMethod!.MakeGenericMethod(typeof(T).GetElementType()!);
+        return EnumerateArray().Select(entry => compiled.Invoke(entry, null)).Cast<T>().ToArray();
     }
 
     public System.Collections.Generic.Dictionary<TK, TV> DictAs<TK, TV>() => EnumerateProperties()
@@ -168,6 +212,75 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
     public T EnumValue<T>() where T : struct, Enum =>
         Enum.GetValues<T>().First(v => _data.AsInt32() == (int)(object)v);
 
+    public JsonType ElementKind
+    {
+        get
+        {
+            if (ValueKind == JsonType.Array)
+            {
+                if (ArrayLen() <= 0)
+                    return JsonType.Null;
+
+                var resultKind = JsonType.Null;
+                foreach (var val in EnumerateArray())
+                {
+                    switch (val.ValueKind)
+                    {
+                        case JsonType.Array:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Array;
+                            else if (resultKind != JsonType.Array)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.Object:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.Null:
+                            break;
+                        case JsonType.Vector2:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Vector2;
+                            else if (resultKind != JsonType.Vector2)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.String:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.String;
+                            else if (resultKind != JsonType.String)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.Integer:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Integer;
+                            else if (resultKind != JsonType.Integer)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.Number:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Number;
+                            else if (resultKind == JsonType.Integer)
+                                resultKind = JsonType.Number;
+                            else if (resultKind != JsonType.Number)
+                                resultKind = JsonType.Object;
+                            break;
+                        case JsonType.Bool:
+                            if(resultKind == JsonType.Null)
+                                resultKind = JsonType.Bool;
+                            else if (resultKind != JsonType.Bool)
+                                resultKind = JsonType.Object;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                return resultKind;
+            }
+
+            return JsonType.Null;
+        }
+    }
     public JsonType ValueKind
     {
         get
