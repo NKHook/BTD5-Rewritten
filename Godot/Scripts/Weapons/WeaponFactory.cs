@@ -130,7 +130,6 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 		{
 			case TaskType.Invalid:
 				throw new BTD5WouldCrashException("Task type is invalid");
-				break;
 			case TaskType.Projectile:
 			{
 				var result = new ProjectileTask();
@@ -143,9 +142,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.Radius = element["Radius"]?.GetFloat() ?? 1.0f;
 				result.SpinRate = element["SpinRate"] ?? 0;
 				var movement = element["Movement"];
-				result.Movement = movement != null
-					? GenerateMovement(movement)
-					: throw new BTD5WouldCrashException("Projectile requires movement");
+				result.Movement = movement != null ? GenerateMovement(movement) : null;
 				result.DisabledTasks = element["DisabledTasks"]?.ArrayAs<int>() ?? Array.Empty<int>();
 				result.TasksToProcessOnCollision =
 					element["TasksToProcessOnCollision"]?.ArrayAs<int>() ?? Array.Empty<int>();
@@ -184,7 +181,11 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				return result;
 			}
 			case TaskType.RemoveStatusEffect:
-				break;
+			{
+				var result = new RemoveStatusEffectTask();
+				result.Status = element["Status"]?.GetFlag<StatusFlag>() ?? StatusFlag.None;
+				return result;
+			}
 			case TaskType.AreaOfEffect:
 			{
 				var result = new AreaOfEffectTask();

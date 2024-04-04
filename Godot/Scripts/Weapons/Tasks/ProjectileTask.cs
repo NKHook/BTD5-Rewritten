@@ -17,7 +17,11 @@ public partial class ProjectileTask : MoveableTask
     public string SpriteFile = "";
     public int NumPersists;
     public bool TerminateOnZeroPersists;
+    public bool RemoveOnRoundEnd;
+    public bool HasLimitedDuration;
+    public float LimitedDuration;
     public CollisionType CollisionType;
+    public StatusFlag IgnoreStatusEffect;
     public float Radius;
     public int SpinRate;
     public int[] DisabledTasks = Array.Empty<int>();

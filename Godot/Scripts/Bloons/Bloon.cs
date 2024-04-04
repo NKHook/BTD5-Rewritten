@@ -35,6 +35,7 @@ public partial class Bloon : Node2D, IManagedObject
     }
 
     public void SetStatusFlag(StatusFlag flag) => _status |= flag;
+    public void RemoveStatusFlag(StatusFlag flag) => _status &= ~flag;
     public bool HasStatusFlag(StatusFlag flag) => _status.HasFlag(flag);
     
     private void DisableSpriteProcess(CompoundSprite sprite)
