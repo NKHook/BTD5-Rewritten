@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using BloonsTD5Rewritten.Godot.Scripts.Towers;
 using Godot;
@@ -20,8 +21,11 @@ public partial class MultiFireTask : WeaponTask
         for (var i = 0; i < FireCount; i++)
         {
             var offset = (Offsets.Length > i ? Offsets[i] : Vector2.Zero) * 4.0f;
-            foreach (var task in Tasks)
+            for (var taskId = 0; taskId < Tasks.Length; taskId++)
             {
+                if (DisabledTasks.Contains(taskId)) continue;
+                var task = Tasks[taskId];
+                
                 task.Execute(where + offset, direction - 90, who, user);
             }
             direction += AngleIncrement;

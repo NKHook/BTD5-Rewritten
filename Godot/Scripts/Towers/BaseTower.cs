@@ -328,7 +328,9 @@ public partial class BaseTower : Node2D, IManagedObject
     private Bloon[] ValidTargets()
     {
         var bloons = BloonManager.Instance?.Objects;
-        return bloons?.Where(bloon => bloon.Position.DistanceTo(Position) < GetAttackRange()).ToArray() ??
+        return bloons?
+                   .Where(bloon => bloon.Position.DistanceTo(Position) < GetAttackRange())
+                   .ToArray() ??
                Array.Empty<Bloon>();
     }
 

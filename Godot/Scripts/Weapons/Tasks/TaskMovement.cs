@@ -8,6 +8,9 @@ public class TaskMovement : ICloneable
     //Definition info
     public MovementType Type;
     public float Speed;
+    public float ReturnSpeed;
+    public bool TargetShouldFaceWeapon;
+    public bool StartOnTarget;
     public int CutOffDistance;
     public Vector2[][] Curves = Array.Empty<Vector2[]>();
     public float AngleOffsets;
@@ -16,6 +19,8 @@ public class TaskMovement : ICloneable
 
     //Node info
     public Vector2 Direction = Vector2.Zero;
+    public float _distance = 0.0f;
+    public float _moveFactor = 0.0f;
     private float _t = 0.0f;
     
     private static Vector2 CubicBezier(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float t)
@@ -33,7 +38,6 @@ public class TaskMovement : ICloneable
     
     public void Move(MoveableTask task, float delta)
     {
-        _t += Speed * 0.01f * delta;
         switch (Type)
         {
             case MovementType.None:
@@ -48,6 +52,7 @@ public class TaskMovement : ICloneable
             case MovementType.Target:
                 break;
             case MovementType.MotionCurve:
+                _moveFactor = 0.01f;
                 if (Mathf.FloorToInt(_t) >= Curves.Length)
                 {
                     if(TerminateAtEndOfCurve)
@@ -64,8 +69,20 @@ public class TaskMovement : ICloneable
                         curve[3] * 4.0f,
                         _t - curveId);
                 task.Position = pos.Rotated(Mathf.DegToRad(task.Angle)) + task.Origin;
+                _t += Speed * _moveFactor * delta;
                 break;
             case MovementType.ReturnToSender:
+                if (StartOnTarget && _t <= 0.0f)
+                {
+                    task.Position = task.Target?.Position ?? Vector2.Zero;
+                    _distance = task.Position.DistanceTo(task.Sender?.Position ?? Vector2.Zero);
+                    _moveFactor = 1.0f / _distance;
+                }
+                if (task.Target != null)
+                {
+                    task.Target.Position = task.Position.Lerp(task.Sender?.Position ?? Vector2.Zero, _t);
+                }
+                _t += ReturnSpeed * _moveFactor * delta;
                 break;
             case MovementType.MoveToTouch:
                 break;
@@ -84,6 +101,9 @@ public class TaskMovement : ICloneable
         {
             Type = Type,
             Speed = Speed,
+            ReturnSpeed = ReturnSpeed,
+            TargetShouldFaceWeapon = TargetShouldFaceWeapon,
+            StartOnTarget = StartOnTarget,
             CutOffDistance = CutOffDistance,
             Curves = Curves,
             AngleOffsets = AngleOffsets,

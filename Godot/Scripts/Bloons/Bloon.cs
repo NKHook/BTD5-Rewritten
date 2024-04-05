@@ -139,6 +139,9 @@ public partial class Bloon : Node2D, IManagedObject
         if(_health <= 0)
             Pop();
         
+        if (HasStatusFlag(StatusFlag.BloonChipperSuck) || HasStatusFlag(StatusFlag.ShredBloon))
+            return;
+        
         var progressThisFrame = 3.0f * Speed * (float)delta;
         PathFollower!.Progress += progressThisFrame;
 

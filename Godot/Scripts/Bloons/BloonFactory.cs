@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
@@ -32,6 +33,79 @@ public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
     }
 
     private Dictionary<BloonType, BloonInfo> _generatedCache = new ();
+
+    public StatusEffect GenerateStatusEffect(JsonWrapper element)
+    {
+        var statusType = element["Status"]?.GetFlag<StatusFlag>() ?? StatusFlag.None;
+        switch (statusType)
+        {
+            case StatusFlag.Ice:
+                break;
+            case StatusFlag.Glue:
+                break;
+            case StatusFlag.GlueOnTrack:
+                break;
+            case StatusFlag.Napalm:
+                break;
+            case StatusFlag.MoveToPath:
+                break;
+            case StatusFlag.Stun:
+                break;
+            case StatusFlag.CrippleMOAB:
+                break;
+            case StatusFlag.ViralFrost:
+                break;
+            case StatusFlag.IceShards:
+                break;
+            case StatusFlag.Regen:
+                break;
+            case StatusFlag.Camo:
+                break;
+            case StatusFlag.MultiLayerDamage:
+                break;
+            case StatusFlag.Permafrost:
+                break;
+            case StatusFlag.Slow:
+                break;
+            case StatusFlag.Sabotage:
+                break;
+            case StatusFlag.SignalFlare:
+                break;
+            case StatusFlag.BeeTarget:
+                break;
+            case StatusFlag.BeeSting:
+                break;
+            case StatusFlag.AbsoluteZero:
+                break;
+            case StatusFlag.AbsoluteZeroPermafrost:
+                break;
+            case StatusFlag.Foam:
+                break;
+            case StatusFlag.ShredBloon:
+            {
+                var result = new ShredBloonEffect();
+                result.Type = statusType;
+                return result;
+            }
+            case StatusFlag.MoveOnCurve:
+                break;
+            case StatusFlag.DazeEffect:
+                break;
+            case StatusFlag.VacStatus:
+                break;
+            case StatusFlag.Freeplay:
+                break;
+            case StatusFlag.BloonChipperSuck:
+                break;
+            case StatusFlag.DamageOverTime:
+                break;
+            case StatusFlag.DamageMultiplier:
+                break;
+            case StatusFlag.None:
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
     
     protected override BloonInfo GenerateInfo(JsonWrapper element)
     {

@@ -109,6 +109,9 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				movement.ScaleCurvesByDirection = element["ScaleCurvesByDirection"] ?? false;
 				break;
 			case MovementType.ReturnToSender:
+				movement.ReturnSpeed = element["ReturnSpeed"]?.GetFloat() ?? 0.0f;
+				movement.TargetShouldFaceWeapon = element["TargetShouldFaceWeapon"]?.GetBool() ?? true;
+				movement.StartOnTarget = element["StartOnTarget"]?.GetBool() ?? true;
 				break;
 			case MovementType.MoveToTouch:
 				break;
@@ -139,6 +142,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.NumPersists = element["NumPersists"] ?? 0;
 				result.TerminateOnZeroPersists = element["TerminateOnZeroPersists"] ?? true;
 				result.CollisionType = element["CollisionType"]?.GetFlag<CollisionType>() ?? CollisionType.None;
+				result.CollidesOnlyWithTarget = element["CollidesOnlyWithTarget"]?.GetBool() ?? false;
 				result.Radius = element["Radius"]?.GetFloat() ?? 1.0f;
 				result.SpinRate = element["SpinRate"] ?? 0;
 				var movement = element["Movement"];
@@ -278,7 +282,14 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 			case TaskType.ChangeSubtaskEnabled:
 				break;
 			case TaskType.CollectCollectables:
-				break;
+			{
+				var result = new CollectCollectablesTask();
+				result.Range = element["Range"]?.GetFloat() ?? 0.0f;
+				result.Speed = element["Speed"]?.GetFloat() ?? 0.0f;
+				result.CollectionDelay = element["CollectionDelay"]?.GetFloat() ?? 0.0f;
+				result.AnimateOnCollection = element["AnimateOnCollection"]?.GetBool() ?? false;
+				return result;
+			}
 			case TaskType.RestoreAmmo:
 				break;
 			case TaskType.FireTaskAtLocation:

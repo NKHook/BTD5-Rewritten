@@ -21,16 +21,19 @@ public partial class ProjectileTask : MoveableTask
     public bool HasLimitedDuration;
     public float LimitedDuration;
     public CollisionType CollisionType;
+    public bool CollidesOnlyWithTarget;
     public StatusFlag IgnoreStatusEffect;
     public float Radius;
     public int SpinRate;
-    public int[] DisabledTasks = Array.Empty<int>();
     public int[] TasksToProcessOnCollision = Array.Empty<int>();
     public int[] TasksToProcessOnTerminate = Array.Empty<int>();
 
     //Node info
     private int _persistsLeft = 0;
     private Node2D? _sprite;
+    private Bloon? _target;
+    private BaseTower? _sender;
+    private Bloon? _lastCollision;
     
     public override void _Ready()
     {
@@ -38,9 +41,6 @@ public partial class ProjectileTask : MoveableTask
 
         if (GraphicName != "" && SpriteFile != "")
             throw new BTD5WouldCrashException("Both a GraphicName and SpriteFile are defined in the Projectile");
-
-        if (GraphicName == "" && SpriteFile == "")
-            throw new BTD5WouldCrashException("Neither a GraphicName or SpriteFile are defined in the Projectile");
         
         if (GraphicName != "")
         {
@@ -70,7 +70,9 @@ public partial class ProjectileTask : MoveableTask
         var taskObjects = gameScreen?.GetNode<TaskObjectManager>("TaskObjects");
         
         if (Clone() is not ProjectileTask clone) return;
-        
+
+        clone._target = who;
+        clone._sender = user;
         clone.Position = where;
         clone.Rotation = Mathf.DegToRad(angle);
         clone.Angle = angle;
@@ -78,6 +80,8 @@ public partial class ProjectileTask : MoveableTask
         {
             movable.Movement.Direction = Vector2.FromAngle(Mathf.DegToRad(angle));
             movable.Origin = where;
+            movable.Sender = user;
+            movable.Target = who;
         }
             
         taskObjects?.AddObject(clone);
@@ -85,6 +89,20 @@ public partial class ProjectileTask : MoveableTask
 
     public override void _Process(double delta)
     {
+        if (CollidesOnlyWithTarget && _target != null)
+        {
+            foreach (var taskId in TasksToProcessOnCollision)
+            {
+                if (DisabledTasks.Contains(taskId)) continue;
+
+                var task = Tasks[taskId];
+                task.Execute(_target.Position, 0.0f, _target, _sender);
+            }
+            base._Process(delta);
+            
+            return;
+        }
+        
         base._Process(delta);
 
         if (_sprite != null)
@@ -96,31 +114,46 @@ public partial class ProjectileTask : MoveableTask
         foreach (var bloon in bloons)
         {
             if (!bloon.Collided(this)) continue;
-
-            var taskIds = TasksToProcessOnCollision.Length > 0
-                ? TasksToProcessOnCollision
-                : Tasks.Select((task, i) => i).ToArray();
-            foreach (var taskId in taskIds)
-            {
-                if (DisabledTasks.Contains(taskId)) continue;
-                
-                var task = Tasks[taskId];
-                task.Execute(bloon.Position, 0.0f, bloon, null);
-            }
-
+            
             switch (CollisionType)
             {
                 case CollisionType.Once:
-                    _persistsLeft--;
-                    if (_persistsLeft <= 0)
-                        Terminate();
+                    if (_lastCollision != bloon)
+                    {
+                        if (_persistsLeft > 0)
+                            Collided(bloon);
+                        
+                        _persistsLeft--;
+                        _lastCollision = bloon;
+                    }
                     break;
                 case CollisionType.Continual:
+                    if (_persistsLeft > 0)
+                        Collided(bloon);
+                    _persistsLeft--;
+                    break;
                 case CollisionType.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        
+        if (TerminateOnZeroPersists && _persistsLeft <= 0)
+            Terminate();
+    }
+
+    private void Collided(Bloon? with)
+    {
+        var taskIds = TasksToProcessOnCollision.Length > 0
+            ? TasksToProcessOnCollision
+            : Tasks.Select((task, i) => i).ToArray();
+        foreach (var taskId in taskIds)
+        {
+            if (DisabledTasks.Contains(taskId)) continue;
+                
+            var task = Tasks[taskId];
+            task.Execute(with?.Position ?? Vector2.Zero, 0.0f, with, null);
         }
     }
 
@@ -145,6 +178,7 @@ public partial class ProjectileTask : MoveableTask
         clone.NumPersists = NumPersists;
         clone.TerminateOnZeroPersists = TerminateOnZeroPersists;
         clone.CollisionType = CollisionType;
+        clone.CollidesOnlyWithTarget = CollidesOnlyWithTarget;
         clone.SpinRate = SpinRate;
         clone.DisabledTasks = DisabledTasks;
         clone.TasksToProcessOnCollision = TasksToProcessOnCollision;

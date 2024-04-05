@@ -11,6 +11,7 @@ public abstract partial class WeaponTask : Node2D, IManagedObject, ICloneable
     protected TaskObjectManager? _owner;
     
     public TaskType Type = TaskType.Invalid;
+    public int[] DisabledTasks = Array.Empty<int>();
     public WeaponTask[] Tasks = Array.Empty<WeaponTask>();
     
     public void OwnedBy(object? owner)
