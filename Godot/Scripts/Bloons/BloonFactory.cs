@@ -105,6 +105,8 @@ public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        throw new BTD5WouldCrashException("Invalid type?");
     }
     
     protected override BloonInfo GenerateInfo(JsonWrapper element)

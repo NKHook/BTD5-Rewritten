@@ -132,9 +132,9 @@ public partial class Bloon : Node2D, IManagedObject
         }
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
-        base._PhysicsProcess(delta);
+        base._Process(delta);
         
         if(_health <= 0)
             Pop();

@@ -244,6 +244,22 @@ public partial class CompoundSprite : Node2D
     {
         base._PhysicsProcess(delta);
 
+        if (Animating)
+        {
+            _timeline?.Tick((float)delta);
+        }
+        
+        foreach (var actor in GetActors())
+        {
+            var state = _timeline?.GetStateForUid(actor.SpriteUid) ?? _initialStates[actor.SpriteUid];
+            Debug.Assert(state is not null);
+            
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (actor.Node is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
+                state?.ApplyColor(sprite);
+            state?.Apply(actor.Node);
+        }
+        
         if (FullyLoaded) return;
         FullyLoaded = _usedCells.All(cell => cell.GetTexture() != null);
 
@@ -254,7 +270,7 @@ public partial class CompoundSprite : Node2D
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
+    /*public override void _Process(double delta)
     {
         if (Animating)
         {
@@ -271,5 +287,5 @@ public partial class CompoundSprite : Node2D
                 state?.ApplyColor(sprite);
             state?.Apply(actor.Node);
         }
-    }
+    }*/
 }
