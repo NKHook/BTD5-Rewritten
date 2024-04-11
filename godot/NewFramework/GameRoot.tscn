@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://6l6x63tp4vbi"]
+
+[ext_resource type="Script" path="res://Scripts/Weapons/WeaponFactory.cs" id="1_6tnbn"]
+[ext_resource type="PackedScene" uid="uid://c6weu5t2b1ii1" path="res://Scripts/Towers/TowerFactory.tscn" id="1_xlx14"]
+[ext_resource type="Script" path="res://Scripts/ScreenManager.cs" id="2_kfyl1"]
+[ext_resource type="PackedScene" uid="uid://b2c7lcjokten3" path="res://NewFramework/DebugOverlay.tscn" id="3_cv8am"]
+[ext_resource type="Script" path="res://Scripts/Bloons/BloonFactory.cs" id="3_mkv0y"]
+
+[node name="game_root" type="Node2D"]
+
+[node name="WeaponFactory" type="Node2D" parent="."]
+script = ExtResource("1_6tnbn")
+
+[node name="TowerFactory" parent="." instance=ExtResource("1_xlx14")]
+
+[node name="BloonFactory" type="Node2D" parent="."]
+script = ExtResource("3_mkv0y")
+
+[node name="debug_overlay" parent="." instance=ExtResource("3_cv8am")]
+
+[node name="screen_manager" type="Node2D" parent="."]
+script = ExtResource("2_kfyl1")

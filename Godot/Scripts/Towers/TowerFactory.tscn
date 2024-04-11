@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6weu5t2b1ii1"]
-
-[ext_resource type="Script" path="res://Godot/Scripts/Towers/TowerFactory.cs" id="1_ip6gm"]
-
-[node name="TowerFactory" type="Node2D"]
-script = ExtResource("1_ip6gm")

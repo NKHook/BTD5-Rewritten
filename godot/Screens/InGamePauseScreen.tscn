@@ -1,0 +1,151 @@
+[gd_scene load_steps=5 format=3 uid="uid://33ylsuxxqaw0"]
+
+[ext_resource type="PackedScene" uid="uid://cc3ei4bes1nnk" path="res://Screens/PopupScreenBase.tscn" id="1_p4v6q"]
+[ext_resource type="Script" path="res://Screens/InGamePauseScreen.cs" id="1_twp3k"]
+[ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="3_12aek"]
+[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="4_ty4gr"]
+
+[node name="InGamePauseScreen" instance=ExtResource("1_p4v6q")]
+script = ExtResource("1_twp3k")
+
+[node name="popup_layer" parent="." index="0"]
+layer = 2
+
+[node name="home_button" parent="popup_layer" index="2" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 88.0
+offset_top = -34.0
+offset_right = 213.0
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="home_icon" parent="popup_layer/home_button" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(62.5, 62.5)
+scale = Vector2(0.47, 0.47)
+SpriteName = "home"
+TextureName = "shared_sheet"
+
+[node name="info_toggle" parent="popup_layer" index="3" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = -34.0
+offset_right = 63.0
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="info_icon" parent="popup_layer/info_toggle" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(62.5, 62.5)
+scale = Vector2(0.47, 0.47)
+SpriteName = "info"
+TextureName = "shared_sheet"
+
+[node name="sound_toggle" parent="popup_layer" index="4" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -212.0
+offset_top = -34.0
+offset_right = -87.0
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="sound_icon" parent="popup_layer/sound_toggle" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(62.5, 62.5)
+scale = Vector2(0.47, 0.47)
+SpriteName = "sound"
+TextureName = "shared_sheet"
+
+[node name="music_toggle" parent="popup_layer" index="5" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 163.0
+offset_top = -166.0
+offset_right = 288.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="music_icon" parent="popup_layer/music_toggle" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(62.5, 62.5)
+scale = Vector2(0.47, 0.47)
+SpriteName = "music"
+TextureName = "shared_sheet"
+
+[node name="lives_cash_button" parent="popup_layer" index="6" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 13.0
+offset_top = -166.0
+offset_right = 138.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lives_cash_icon" parent="popup_layer/lives_cash_button" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(62.5, 62.5)
+scale = Vector2(0.47, 0.47)
+SpriteName = "paused_lives_cash_icon"
+TextureName = "shared_sheet"
+
+[node name="add_icon" parent="popup_layer/lives_cash_button" index="1" instance=ExtResource("4_ty4gr")]
+position = Vector2(90, 34)
+scale = Vector2(0.47, 0.47)
+SpriteName = "paused_add_icon"
+TextureName = "shared_sheet"
+
+[node name="restart_button" parent="popup_layer" index="7" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = -166.0
+offset_right = -13.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="restart_icon" parent="popup_layer/restart_button" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(63, 63)
+scale = Vector2(0.47, 0.47)
+SpriteName = "paused_restart_icon"
+TextureName = "shared_sheet"
+
+[node name="resume_button" parent="popup_layer" index="8" instance=ExtResource("3_12aek")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -166.0
+offset_right = -163.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="new_icon" parent="popup_layer/resume_button" index="0" instance=ExtResource("4_ty4gr")]
+position = Vector2(63, 63)
+scale = Vector2(0.47, 0.47)
+SpriteName = "new_icon_shared"
+TextureName = "shared_sheet"

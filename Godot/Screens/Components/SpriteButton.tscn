@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjr6s3y6q20p8"]
-
-[ext_resource type="Script" path="res://Godot/Screens/Components/SpriteButton.cs" id="1_f716q"]
-
-[node name="SpriteButton" type="Button"]
-flat = true
-script = ExtResource("1_f716q")
-SpriteName = "newshared_button"
-TextureName = "newshared"

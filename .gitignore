@@ -6,3 +6,5 @@
 
 # Temporary files
 *.tmp
+
+native/cmake-build-debug/

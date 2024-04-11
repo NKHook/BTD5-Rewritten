@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://c01mpys52ok27"]
+
+[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://godot/NewFramework/Sprite.tscn" id="1_mowui"]
+
+[node name="TowerSelectionEntry" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 0
+offset_left = 142.0
+offset_top = 125.0
+offset_right = 382.0
+offset_bottom = 245.0
+
+[node name="background" parent="CenterContainer" instance=ExtResource("1_mowui")]
+SpriteName = "side_hud_scroll"
+TextureName = "in_game_hud"
+
+[node name="entries" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 3.0
+offset_right = 265.0
+offset_bottom = 123.0
+columns = 2

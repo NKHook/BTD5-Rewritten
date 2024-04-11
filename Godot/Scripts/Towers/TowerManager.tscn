@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://dyhcmtnm3c7js"]
-
-[ext_resource type="PackedScene" uid="uid://b50sylfdauatt" path="res://Godot/NewFramework/ObjectManager.tscn" id="1_rqcmf"]
-[ext_resource type="Script" path="res://Godot/Scripts/Towers/TowerManager.cs" id="2_xmvw5"]
-
-[node name="TowerManager" instance=ExtResource("1_rqcmf")]
-script = ExtResource("2_xmvw5")

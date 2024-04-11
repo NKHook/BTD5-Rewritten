@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhfpsgj1w4jo6"]
-
-[ext_resource type="Script" path="res://Godot/NewFramework/Scripts/Compound/CompoundSprite.cs" id="1_qu4sw"]
-
-[node name="compound_sprite" type="Node2D"]
-script = ExtResource("1_qu4sw")

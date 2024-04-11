@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://g5lef6l43ast"]
+
+[ext_resource type="Script" path="res://NewFramework/Scripts/Sprites/Sprite.cs" id="1_mwmyd"]
+[ext_resource type="Shader" uid="uid://c3xsonjd3fdif" path="res://Shaders/compound_sprite.tres" id="1_reqsi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k5niy"]
+shader = ExtResource("1_reqsi")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/alpha = 1.0
+
+[node name="Sprite" type="Sprite2D"]
+material = SubResource("ShaderMaterial_k5niy")
+script = ExtResource("1_mwmyd")

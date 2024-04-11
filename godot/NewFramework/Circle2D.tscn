@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckitdx6r5ucxw"]
+
+[ext_resource type="Script" path="res://NewFramework/Scripts/Circle2D.gd" id="1_62cyq"]
+
+[node name="Circle2D" type="Node2D"]
+z_index = -1
+script = ExtResource("1_62cyq")

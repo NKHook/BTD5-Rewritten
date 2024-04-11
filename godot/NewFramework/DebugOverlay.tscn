@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2c7lcjokten3"]
+
+[ext_resource type="Script" path="res://Scripts/Debug/fps_display.gd" id="1_pl1y1"]
+[ext_resource type="Script" path="res://Scripts/Debug/node_count_display.gd" id="2_3q0m4"]
+[ext_resource type="Script" path="res://Scripts/Debug/frame_time_display.gd" id="3_qd5kh"]
+[ext_resource type="Script" path="res://Scripts/Debug/debug_label.gd" id="4_xea6t"]
+
+[node name="DebugOverlay" type="Node2D"]
+
+[node name="overlay" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="fps_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+script = ExtResource("1_pl1y1")
+
+[node name="frame_time_display" type="Label" parent="overlay"]
+offset_top = 50.0
+offset_right = 40.0
+offset_bottom = 73.0
+script = ExtResource("3_qd5kh")
+
+[node name="node_count_display" type="Label" parent="overlay"]
+offset_top = 25.0
+offset_right = 40.0
+offset_bottom = 48.0
+script = ExtResource("2_3q0m4")
+
+[node name="mask_hover_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Mask: None"
+script = ExtResource("4_xea6t")
+
+[node name="bloon_count_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("4_xea6t")
+
+[node name="tower_count_display" type="Label" parent="overlay"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("4_xea6t")
+
+[node name="debug_render" type="Node2D" parent="overlay"]
