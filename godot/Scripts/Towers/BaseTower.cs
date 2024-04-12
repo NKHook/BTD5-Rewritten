@@ -9,6 +9,7 @@ using BloonsTD5Rewritten.Godot.Scripts.Bloons;
 using BloonsTD5Rewritten.Godot.Scripts.Level;
 using BloonsTD5Rewritten.Godot.Scripts.Weapons;
 using Godot;
+using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
 

@@ -4,6 +4,7 @@ using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens;
 using BloonsTD5Rewritten.Godot.Scripts.Level;
 using Godot;
+using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
 namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
 

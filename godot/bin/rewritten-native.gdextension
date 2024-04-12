@@ -1,0 +1,9 @@
+[configuration]
+
+entry_symbol = "rewritten_native_init"
+compatibility_minimum = "4.2.1"
+
+[libraries]
+
+linux.debug.x86_64 = "res://bin/librewritten-native.so"
+linux.release.x86_64 = "res://bin/librewritten-native.so"

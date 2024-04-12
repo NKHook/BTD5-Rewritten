@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 
 public partial class CompoundSprite : Node2D
 {

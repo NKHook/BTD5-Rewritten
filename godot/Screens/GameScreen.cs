@@ -4,6 +4,7 @@ using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using BloonsTD5Rewritten.Godot.Screens.Components;
 using BloonsTD5Rewritten.Godot.Scripts;
 using Godot;
+using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 using MapMaskNode = BloonsTD5Rewritten.Godot.Scripts.Level.MapMaskNode;
 using MapPath = BloonsTD5Rewritten.Godot.Scripts.Level.MapPath;
 
