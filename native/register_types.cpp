@@ -4,7 +4,7 @@
 
 #include "register_types.h"
 
-#include "CompoundSprite.h"
+#include "compound_sprite.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -16,7 +16,7 @@ void godot::initialize_native_module(ModuleInitializationLevel level) {
     if(level != MODULE_INITIALIZATION_LEVEL_SCENE)
         return;
 
-    ClassDB::register_class<CompoundSprite>();
+    ClassDB::register_class<compound_sprite>();
 }
 
 void godot::uninitialize_native_module(ModuleInitializationLevel level) {

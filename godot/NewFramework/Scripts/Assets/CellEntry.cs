@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class CellEntry : Node
 {

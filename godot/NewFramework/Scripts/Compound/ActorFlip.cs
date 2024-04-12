@@ -1,4 +1,4 @@
-﻿namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
+﻿namespace BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 
 public enum ActorFlip
 {

@@ -5,9 +5,11 @@ project(rewritten-native)
 set(CMAKE_CXX_STANDARD 23)
 
 add_library(rewritten-native SHARED
-        library.cpp
-        CompoundSprite.cpp
+        compound_sprite.cpp
         register_types.cpp
+        timeline_interpolator.cpp
+        actor.h
+        actor.cpp
 )
 
 FetchContent_Declare(
@@ -21,4 +23,15 @@ if(NOT gdcpp_POPULATED)
     add_subdirectory(${gdcpp_SOURCE_DIR} ${gdcpp_BINARY_DIR})
 endif()
 
-target_link_libraries(rewritten-native PRIVATE godot-cpp)
+FetchContent_Declare(
+        entt
+        GIT_REPOSITORY https://github.com/skypjack/entt.git
+        GIT_TAG v3.13.2
+)
+FetchContent_GetProperties(entt)
+if(NOT entt_POPULATED)
+    FetchContent_Populate(entt)
+    add_subdirectory(${entt_SOURCE_DIR} ${entt_BINARY_DIR})
+endif()
+
+target_link_libraries(rewritten-native PRIVATE godot-cpp EnTT)

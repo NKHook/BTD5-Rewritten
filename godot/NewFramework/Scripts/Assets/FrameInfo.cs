@@ -17,7 +17,7 @@ public partial class FrameInfo : Node
     private int _texh;
     private TextureType _type;
     private readonly List<AnimationEntry> _animations = new();
-    private readonly List<CellEntry> _cells = new();
+    private readonly List<BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry> _cells = new();
     private Image? _frameImage;
     private ImageTexture? _frameTexture;
     private Task<Image>? _imageTask;
@@ -114,7 +114,7 @@ public partial class FrameInfo : Node
         _animations.Add(entry);
     }
 
-    public void AddCell(Assets.CellEntry entry)
+    public void AddCell(BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry entry)
     {
         _cells.Add(entry);
     }
@@ -124,12 +124,12 @@ public partial class FrameInfo : Node
         return _animations.Find(entry => entry.AnimationName == name);
     }
 
-    public CellEntry? GetCell(string name)
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? GetCell(string name)
     {
         return _cells.Find(entry => entry.CellName == name);
     }
 
-    public CellEntry? FindCell(string name)
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name)
     {
         foreach (var result in _animations.Select(animation => animation.FindCell(name)).Where(result => result != null))
         {

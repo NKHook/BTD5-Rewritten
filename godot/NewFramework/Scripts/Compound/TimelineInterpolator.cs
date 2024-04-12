@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 using Godot;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;

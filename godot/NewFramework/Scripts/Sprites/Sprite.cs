@@ -1,6 +1,7 @@
 using System;
 using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
+using CellEntry = BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry;
 
 namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
 

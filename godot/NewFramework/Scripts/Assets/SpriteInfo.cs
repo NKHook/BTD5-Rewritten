@@ -33,9 +33,9 @@ public partial class SpriteInfo : Node
         Load();
     }
 
-    public CellEntry? FindCell(string name) => FindCell(name, "");
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name) => FindCell(name, "");
 
-    public CellEntry? FindCell(string name, string texture)
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name, string texture)
     {
         foreach (var result in _children.Select(info => info.FindCell(name, texture)).Where(result => result != null))
         {
@@ -127,7 +127,7 @@ public partial class SpriteInfo : Node
                             var cellAw = attributesDict.ContainsKey("aw") ? attributesDict["aw"].AsInt32() : 0;
                             var cellAh = attributesDict.ContainsKey("ah") ? attributesDict["ah"].AsInt32() : 0;
 
-                            var theCell = new CellEntry(null, _texturesDirPath, Path, _firstQuality, cellName,
+                            var theCell = new BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry(null, _texturesDirPath, Path, _firstQuality, cellName,
                                 cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh);
                             if (currentAnimation != null)
                             {

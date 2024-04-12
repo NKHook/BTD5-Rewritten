@@ -8,7 +8,7 @@ public partial class AnimationEntry : Node
     private string _texturesDirPath;
     private string _filePath;
     private TextureQuality _quality;
-    private readonly List<CellEntry> _cells = new();
+    private readonly List<BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry> _cells = new();
 
     public string AnimationName;
     public FrameInfo Parent;
@@ -22,17 +22,17 @@ public partial class AnimationEntry : Node
         AnimationName = animationName;
     }
 
-    public void AddCell(CellEntry entry)
+    public void AddCell(BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry entry)
     {
         _cells.Add(entry);
     }
 
-    public CellEntry? GetCell(string name)
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? GetCell(string name)
     {
         return _cells.Find(entry => entry.CellName == name);
     }
 
-    public CellEntry? FindCell(string name)
+    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name)
     {
         return _cells.Find(cell => cell.CellName == name);
     }
