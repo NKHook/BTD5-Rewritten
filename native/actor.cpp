@@ -4,7 +4,7 @@
 
 #include "actor.h"
 
-using namespace rewritten;
+using namespace rewritten::parsing;
 
 NativeCellEntry::NativeCellEntry(const godot::Variant& cell_variant) : underlying_cell(cell_variant) {
     x = cell_variant.get("X");

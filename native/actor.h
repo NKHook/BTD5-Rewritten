@@ -11,7 +11,7 @@
 #include "godot_cpp/variant/variant.hpp"
 #include "godot_cpp/variant/vector2.hpp"
 
-namespace rewritten {
+namespace rewritten::parsing {
     enum struct ActorAlignment
     {
         Default,

@@ -8,8 +8,9 @@ add_library(rewritten-native SHARED
         compound_sprite.cpp
         register_types.cpp
         timeline_interpolator.cpp
-        actor.h
         actor.cpp
+        actor_components.cpp
+        constants.h
 )
 
 FetchContent_Declare(
