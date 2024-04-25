@@ -10,16 +10,16 @@
 #include "timeline_interpolator.h"
 
 namespace godot {
-    class compound_sprite : public Node2D {
-        GDCLASS(compound_sprite, Node2D)
+    class CompoundSprite : public Node2D {
+        GDCLASS(CompoundSprite, Node2D)
 
         String definition_path;
         bool animating = true;
 
         bool was_animating = false;
-        rewritten::timeline_interpolator timeline;
+        rewritten::TimelineInterpolator timeline;
     public:
-        compound_sprite();
+        CompoundSprite();
         void initialize();
 
         void _ready() override;

@@ -7,13 +7,12 @@
 
 #include <array>
 
-#include "godot_cpp/godot.hpp"
 #include "godot_cpp/variant/color.hpp"
 #include "godot_cpp/variant/variant.hpp"
 #include "godot_cpp/variant/vector2.hpp"
 
 namespace rewritten {
-    enum struct actor_alignment
+    enum struct ActorAlignment
     {
         Default,
         MinX,
@@ -23,7 +22,7 @@ namespace rewritten {
         Unknown3
     };
 
-    enum struct actor_flip
+    enum struct ActorFlip
     {
         Default,
         Horizontal,
@@ -31,7 +30,7 @@ namespace rewritten {
         Both
     };
 
-    enum struct texture_quality
+    enum struct TextureQuality
     {
         Invalid = 0,
         Low = 1,
@@ -40,7 +39,7 @@ namespace rewritten {
         Ultra = 4
     };
 
-    struct native_cell_entry {
+    struct NativeCellEntry {
         godot::String cell_name{};
         int x{};
         int y{};
@@ -51,35 +50,24 @@ namespace rewritten {
         int aw{};
         int ah{};
 
-        explicit native_cell_entry(const godot::Variant& cell_variant) : underlying_cell(cell_variant) {
-            x = cell_variant.get("X");
-            y = cell_variant.get("Y");
-            w = cell_variant.get("W");
-            h = cell_variant.get("H");
-            ax = cell_variant.get("Ax");
-            ay = cell_variant.get("Ay");
-            aw = cell_variant.get("Aw");
-            ah = cell_variant.get("Ah");
-
-            cell_name = cell_variant.get("CellName");
-        }
+        explicit NativeCellEntry(const godot::Variant& cell_variant);
 
     private:
         const godot::Variant& underlying_cell{};
     };
 
-    struct actor_state {
+    struct ActorState {
 
     private:
         godot::Variant cell_entry;
 
-        std::array<actor_alignment, 2> alignment{};
-        auto alpha = 1.0f;
-        auto angle = 0.0f;
-        auto color = godot::Color::hex(0xFFFFFFFF);
-        auto flip = actor_flip::Default;
-        auto position = godot::Vector2(0.0f,0.0f);
-        auto scale = godot::Vector2(0.0f,0.0f);
+        std::array<ActorAlignment, 2> alignment{};
+        float alpha = 1.0f;
+        float angle = 0.0f;
+        godot::Color color = godot::Color::hex(0xFFFFFFFF);
+        ActorFlip flip = ActorFlip::Default;
+        godot::Vector2 position;
+        godot::Vector2 scale{ 1.0f, 1.0f };
         bool shown = true;
         float time = 0.0f;
     };

@@ -16,7 +16,7 @@ void godot::initialize_native_module(ModuleInitializationLevel level) {
     if(level != MODULE_INITIALIZATION_LEVEL_SCENE)
         return;
 
-    ClassDB::register_class<compound_sprite>();
+    ClassDB::register_class<CompoundSprite>();
 }
 
 void godot::uninitialize_native_module(ModuleInitializationLevel level) {

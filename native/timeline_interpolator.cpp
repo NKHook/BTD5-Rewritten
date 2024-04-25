@@ -4,6 +4,6 @@
 
 #include "timeline_interpolator.h"
 
-rewritten::timeline_interpolator::timeline_interpolator(entt::registry& registry) : actor_registry(registry) {
+rewritten::TimelineInterpolator::TimelineInterpolator(entt::registry& registry) : actor_registry(registry) {
 
 }

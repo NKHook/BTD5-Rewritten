@@ -7,11 +7,9 @@
 
 #include <entt/entt.hpp>
 
-#include <memory>
-
 namespace rewritten {
-    struct timeline_interpolator {
-        timeline_interpolator(entt::registry& registry);
+    struct TimelineInterpolator {
+        TimelineInterpolator(entt::registry& registry);
     private:
         entt::registry& actor_registry;
     };
