@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0142iwg4wpwy"]
+[gd_scene load_steps=4 format=3 uid="uid://b0142iwg4wpwy"]
 
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://NewFramework/CompoundSprite.tscn" id="1_nqikj"]
 [ext_resource type="Script" path="res://Screens/LoadingScreen.cs" id="1_voue1"]
+[ext_resource type="Script" path="res://NewFramework/Scripts/Compound/CompoundSprite.cs" id="3_bbnrt"]
 
 [node name="LoadingScreen" type="Node2D" node_paths=PackedStringArray("LoadingSprite", "SpriteRoot")]
 script = ExtResource("1_voue1")
@@ -15,4 +16,5 @@ scale = Vector2(0.5, 0.5)
 transform = Transform2D(0.5, 0, 0, 0.5, 640, 360)
 
 [node name="loading_sprite" parent="loading_overlay" instance=ExtResource("1_nqikj")]
+script = ExtResource("3_bbnrt")
 SpriteDefinitionRes = "Assets/JSON/UILayout/loading_screen.json"

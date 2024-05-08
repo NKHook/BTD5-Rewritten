@@ -7,12 +7,13 @@ var jet_file: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if OS.has_feature("standalone"):
-		var executable_path: String = OS.get_executable_path()
-		game_dir = PathUtil.get_parent_path(executable_path)
-	else:
+	var executable_path: String = OS.get_executable_path()
+	game_dir = PathUtil.get_parent_path(executable_path)
+	assets_dir = game_dir + "/Assets"
+	
+	if not FileAccess.file_exists(assets_dir):
 		#game_dir = "D:/SteamLibrary/steamapps/common/BloonsTD5"
-		game_dir = "/mnt/CA425B49425B3A01/SteamLibrary/steamapps/common/BloonsTD5"
+		game_dir = "/home/mike/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/BloonsTD5"
 		#HEY!!! You probably see this isnt working for you!!
 		#CHANGE THE PATH ABOVE to the path of *YOUR OWN BTD5 FOLDER*!!!
 		#This is the path where the BTD5 exe file is located

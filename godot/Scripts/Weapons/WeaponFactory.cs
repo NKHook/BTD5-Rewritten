@@ -209,7 +209,7 @@ public partial class WeaponFactory : BaseFactory<WeaponType, WeaponInfo, Weapon>
 				result.OnlyTargetPlacementLocations = element["OnlyTargetPlacementLocations"] ?? false;
 				result.PlacementTowerType = element["PlacementTowerType"]?.GetFlag<TowerType>() ?? TowerType.Invalid;
 				result.Tasks = element["Tasks"]?.EnumerateArray().Select(GenerateTask).ToArray() ??
-				               Array.Empty<WeaponTask>();
+							   Array.Empty<WeaponTask>();
 				return result;
 			}
 			case TaskType.TimerFire:
