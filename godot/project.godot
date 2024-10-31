@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Bloons TD 5 Rewritten"
 run/main_scene="res://NewFramework/GameRoot.tscn"
-config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -33,6 +33,12 @@ window/vsync/vsync_mode=0
 [dotnet]
 
 project/assembly_name="Bloons TD 5 Rewritten"
+
+[editor]
+
+movie_writer/movie_file="/mnt/CA425B49425B3A01/Github/BTD5-Rewritten/godot/video.avi"
+movie_writer/disable_vsync=true
+movie_writer/fps=300
 
 [physics]
 

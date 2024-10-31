@@ -8,3 +8,5 @@
 *.tmp
 
 native/cmake-build-debug/
+/godot/build
+godot/.fuse_hidden000028b300000001
