@@ -1,7 +1,7 @@
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
+using BloonsTD5Rewritten.NewFramework.Scripts.Sprites;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens.Components;
+namespace BloonsTD5Rewritten.Screens.Components;
 
 public partial class TowerSelectionButton : SpriteButton
 {

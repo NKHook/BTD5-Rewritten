@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
-using Godot;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public partial class TowerUpgradeSprites
 {

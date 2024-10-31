@@ -1,4 +1,4 @@
-﻿namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+﻿namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public enum FlightMode
 {

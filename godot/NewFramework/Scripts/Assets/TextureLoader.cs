@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class TextureLoader : Node
 {

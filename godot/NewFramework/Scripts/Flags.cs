@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public static class Flags
 {

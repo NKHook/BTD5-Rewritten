@@ -1,16 +1,15 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.Screens;
-using LoadingScreen = BloonsTD5Rewritten.Screens.LoadingScreen;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Screens;
+using Godot;
+
+namespace BloonsTD5Rewritten.Scripts;
 
 public partial class ScreenManager : Node2D
 {
-	private static ScreenManager _instance = null;
+	private static ScreenManager _instance = null!;
 	public static ScreenManager Instance() => _instance;
 
 	[Export] private string _startingScreen = "DGSplashScreen";

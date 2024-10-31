@@ -1,6 +1,6 @@
-﻿using BloonsTD5Rewritten.Godot.Scripts.Towers;
+﻿using BloonsTD5Rewritten.Scripts.Towers;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
+namespace BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 
 public partial class MultiLayerDamageEffect : StatusEffect
 {

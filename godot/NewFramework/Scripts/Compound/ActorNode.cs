@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 
 public partial class ActorNode : Node2D
 {

@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.Screens;
+using BloonsTD5Rewritten.Screens;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public partial class TowerManager : BloonsTD5Rewritten.NewFramework.Scripts.ObjectManager<BaseTower>
 {

@@ -1,4 +1,4 @@
-﻿namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+﻿namespace BloonsTD5Rewritten.Scripts.Weapons;
 
 public enum CollisionType : ulong
 {

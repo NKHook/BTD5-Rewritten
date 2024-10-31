@@ -1,6 +1,4 @@
-﻿using Godot;
-
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+﻿namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public interface IManagedObject
 {

@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Godot;
-using Godot.Collections;
-using Array = System.Array;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonWrapper>
 {
@@ -201,7 +198,7 @@ public class JsonWrapper : IEnumerable<(string, JsonWrapper)>, IEnumerable<JsonW
         return EnumerateArray().Select(entry => compiled.Invoke(entry, null)).Cast<T>().ToArray();
     }
 
-    public System.Collections.Generic.Dictionary<TK, TV> DictAs<TK, TV>() => EnumerateProperties()
+    public Dictionary<TK, TV> DictAs<TK, TV>() where TK : notnull => EnumerateProperties()
         .ToDictionary(pair => (TK)(object)pair.Item1, pair => pair.Item2.ValueAs<TV>());
 
     public int ArrayLen() => _data.AsGodotArray().Count;

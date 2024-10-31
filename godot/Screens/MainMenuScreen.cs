@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
-using BloonsTD5Rewritten.Godot.Scripts.MainMenu;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.NewFramework.Scripts.Compound;
+using BloonsTD5Rewritten.Scripts.MainMenu;
 using Godot;
-using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
 namespace BloonsTD5Rewritten.Screens;
 
@@ -24,14 +23,17 @@ public partial class MainMenuScreen : Node2D
             if (actor.Node is not CompoundSprite) continue;
 
             foreach (var building in buildingJson.EnumerateArray())
-            {
-                if (actor.Node is not CompoundSprite sprite ||
-                    !sprite.SpriteDefinitionRes.EndsWith(building["SpriteFile"]))
+			{
+				var spriteFile = building["SpriteFile"];
+				Debug.Assert(spriteFile != null);
+				if (spriteFile == null) continue;
+				
+                if (actor.Node is not CompoundSprite sprite || !sprite.SpriteDefinitionRes.EndsWith(spriteFile))
                     continue;
 
                 var buildingObj = new Building();
-                buildingObj.Screen = building["Screen"];
-                buildingObj.LocName = building["Name"];
+                buildingObj.Screen = building["Screen"]!;
+                buildingObj.LocName = building["Name"]!;
 
                 sprite.AddChild(buildingObj);
 
@@ -59,7 +61,7 @@ public partial class MainMenuScreen : Node2D
     {
         var buildingsJson = JetFileImporter.Instance()
             .GetJsonParsed("Assets/JSON/ScreenDefinitions/MainMenu/BuildingsNoSocial.json");
-        _buildings = GetBuildingSprites(buildingsJson["Buildings"]);
+        _buildings = GetBuildingSprites(buildingsJson["Buildings"]!);
         Debug.Assert(_buildings.Count > 0);
 
         foreach (var building in _buildings)
@@ -98,7 +100,7 @@ public partial class MainMenuScreen : Node2D
         var buttonEvent = @event as InputEventMouseButton;
         if (!(buttonEvent?.IsPressed() ?? false) || buttonEvent.ButtonIndex != MouseButton.Left) return;
 
-        ScreenManager.Instance().OpenPopup(building.Screen);
+        Scripts.ScreenManager.Instance().OpenPopup(building.Screen);
     }
 
     private void BuildingMouseExited(Building building)

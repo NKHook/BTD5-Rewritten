@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public class SparseEnumerator<T> : IEnumerator
 {

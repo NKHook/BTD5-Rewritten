@@ -1,11 +1,10 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using Godot;
 using Ionic.Zip;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class JetFileImporter : Node
 {

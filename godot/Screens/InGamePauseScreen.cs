@@ -1,6 +1,6 @@
-using BloonsTD5Rewritten.Godot.Screens.Components;
+using BloonsTD5Rewritten.Screens.Components;
 
-namespace BloonsTD5Rewritten.Godot.Screens;
+namespace BloonsTD5Rewritten.Screens;
 
 public partial class InGamePauseScreen : PopupScreenBase
 {
@@ -10,6 +10,6 @@ public partial class InGamePauseScreen : PopupScreenBase
 		base._Ready();
 
 		var homeButton = GetNode<SpriteButton>("popup_layer/home_button");
-		homeButton.Pressed += () => ScreenManager.Instance().SetScreen("MainMenuScreen", true);
+		homeButton.Pressed += () => Scripts.ScreenManager.Instance().SetScreen("MainMenuScreen", true);
 	}
 }

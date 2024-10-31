@@ -1,9 +1,9 @@
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
+namespace BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 
 public partial class DamageOverTimeStatusEffect : StatusEffect
 {
     public float DamageRate;
-    public float Duration;
+    public float DamageDuration;
     public int NumPersists;
     public int Amount;
     

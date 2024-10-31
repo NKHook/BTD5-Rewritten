@@ -1,6 +1,8 @@
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+using System;
+
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public class TowerModifier
 {
-    public int[] TargetRange;
+    public int[] TargetRange = Array.Empty<int>();
 }

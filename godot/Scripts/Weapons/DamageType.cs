@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Scripts.Weapons;
 
 [Flags]
 public enum DamageType : ulong

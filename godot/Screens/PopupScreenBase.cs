@@ -1,7 +1,8 @@
-using BloonsTD5Rewritten.Godot.Screens.Components;
+using BloonsTD5Rewritten.Screens.Components;
+using BloonsTD5Rewritten.Scripts;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens;
+namespace BloonsTD5Rewritten.Screens;
 
 public partial class PopupScreenBase : Node2D
 {

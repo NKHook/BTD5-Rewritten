@@ -1,7 +1,6 @@
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.MainMenu;
+namespace BloonsTD5Rewritten.Scripts.MainMenu;
 
 public partial class Building : Node
 {

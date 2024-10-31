@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.Screens;
-using BloonsTD5Rewritten.Godot.Scripts.Level;
-using Godot;
+﻿using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
+namespace BloonsTD5Rewritten.Scripts.Bloons;
 
 public partial class BloonManager : BloonsTD5Rewritten.NewFramework.Scripts.ObjectManager<Bloon>
 {

@@ -6,7 +6,7 @@ using Godot;
 using Godot.Collections;
 using FileAccess = Godot.FileAccess;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class SpriteInfo : Node
 {
@@ -15,7 +15,7 @@ public partial class SpriteInfo : Node
     private readonly string _texturesDirPath;
     private readonly TextureQuality _firstQuality;
     private readonly List<SpriteInfo> _children = new();
-    private readonly List<Assets.FrameInfo> _frames = new();
+    private readonly List<FrameInfo> _frames = new();
 
     public readonly string Path;
 

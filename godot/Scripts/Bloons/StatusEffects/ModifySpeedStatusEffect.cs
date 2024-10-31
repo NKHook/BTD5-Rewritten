@@ -1,4 +1,4 @@
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
+namespace BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 
 public partial class ModifySpeedStatusEffect : StatusEffect
 {

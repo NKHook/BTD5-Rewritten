@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
-using System.Text.Json;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Scripts.Weapons;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public partial class TowerFactory : BaseFactory<TowerType, TowerInfo, BaseTower>
 {

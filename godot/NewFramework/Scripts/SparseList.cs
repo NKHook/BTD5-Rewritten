@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public class SparseList<T> : IDictionary<int, T?>
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class JpngLoader : Node
 {
@@ -37,17 +37,17 @@ public partial class JpngLoader : Node
 			var jfifData = new ArraySegment<byte>(buffer, jfifOffset, jfifSize).ToArray();
 			var pngData = new ArraySegment<byte>(buffer, pngOffset, pngSize).ToArray();
 
-			var pngImage = Image.Create(width, height, false, Image.Format.R8);
+			var pngImage = Image.CreateEmpty(width, height, false, Image.Format.R8);
 			Debug.Assert(Error.Ok == pngImage.LoadPngFromBuffer(pngData));
 			Debug.Assert(pngImage.GetWidth() > 0, "PNG image data doesnt match! Assuming JPNG load failed");
 			Debug.Assert(pngImage.GetHeight() > 0, "PNG image data doesnt match! Assuming JPNG load failed");
-			var jfifImage = Image.Create(width, height, false, Image.Format.Rgba8);
+			var jfifImage = Image.CreateEmpty(width, height, false, Image.Format.Rgba8);
 			
 			Debug.Assert(Error.Ok == jfifImage.LoadJpgFromBuffer(jfifData));
 			Debug.Assert(jfifImage.GetWidth() > 0, "JFIF image data doesnt match! Assuming JPNG load failed");
 			Debug.Assert(jfifImage.GetHeight() > 0, "JFIF image data doesnt match! Assuming JPNG load failed");
 
-			var jpngImage = Image.Create(width, height, false, Image.Format.Rgba8);
+			var jpngImage = Image.CreateEmpty(width, height, false, Image.Format.Rgba8);
 			Debug.Assert(jpngImage.GetWidth() > 0, "JPNG image data doesnt match! Likely programmer skill issue");
 			Debug.Assert(jpngImage.GetHeight() > 0, "JPNG image data doesnt match! Likely programmer skill issue");
 

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
+using BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 using Godot;
-using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
-namespace BloonsTD5Rewritten.Godot.Screens;
+namespace BloonsTD5Rewritten.Screens;
 
 public partial class BloonsBaseScreen : Node2D
 {

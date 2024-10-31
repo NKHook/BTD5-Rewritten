@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
-using BloonsTD5Rewritten.Godot.Screens;
-using BloonsTD5Rewritten.Godot.Scripts.Bloons;
-using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Sprites;
+using BloonsTD5Rewritten.Screens;
+using BloonsTD5Rewritten.Scripts.Bloons;
+using BloonsTD5Rewritten.Scripts.Towers;
 using Godot;
 using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+namespace BloonsTD5Rewritten.Scripts.Weapons.Tasks;
 
 public partial class ProjectileTask : MoveableTask
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Level;
+namespace BloonsTD5Rewritten.Scripts.Level;
 
 [Flags]
 public enum MaskBit : byte

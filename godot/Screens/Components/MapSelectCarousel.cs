@@ -1,8 +1,8 @@
-using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using System.Diagnostics;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens.Components;
+namespace BloonsTD5Rewritten.Screens.Components;
 
 public partial class MapSelectCarousel : Node
 {
@@ -18,6 +18,7 @@ public partial class MapSelectCarousel : Node
 
 		var tracklist = JetFileImporter.Instance().GetJsonParsed("Assets/JSON/tracklist.json");
 		var tracks = tracklist["Tracks"];
+		Debug.Assert(tracks != null, "Could not read tracklist.json");
 		foreach (var track in tracks.EnumerateArray())
 		{
 			string trackName = track[1];

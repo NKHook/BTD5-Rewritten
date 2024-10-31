@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using BloonsTD5Rewritten.Godot.Scripts.Bloons;
-using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.Scripts.Bloons;
+using BloonsTD5Rewritten.Scripts.Towers;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+namespace BloonsTD5Rewritten.Scripts.Weapons.Tasks;
 
 public partial class MultiFireTask : WeaponTask
 {

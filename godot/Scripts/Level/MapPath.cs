@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Level;
+namespace BloonsTD5Rewritten.Scripts.Level;
 
 public partial class MapPath : Node2D
 {
@@ -47,7 +44,7 @@ public partial class MapPath : Node2D
         Instant = 1 << 2,
     }
 
-    class PathLink
+	private class PathLink
     {
         public int Start { get; set; }
         public int End { get; set; }
@@ -55,11 +52,12 @@ public partial class MapPath : Node2D
 
         public static PathLink FromJson(JsonWrapper elem)
         {
-            var result = new PathLink();
-            result.Start = elem["Start"];
-            result.End = elem["End"];
-            result.Flags = elem["Flags"];
-            return result;
+			return new PathLink
+			{
+				Start = elem["Start"]!,
+				End = elem["End"]!,
+				Flags = elem["Flags"]!
+			};
         }
     }
 

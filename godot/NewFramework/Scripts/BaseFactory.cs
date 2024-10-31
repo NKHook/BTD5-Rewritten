@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public abstract partial class BaseFactory<TIdentifier, TInfo, TInstance> : Node2D
 	where TIdentifier : struct, Enum

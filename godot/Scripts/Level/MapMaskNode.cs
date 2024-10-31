@@ -1,7 +1,7 @@
-using BloonsTD5Rewritten.Godot.Screens;
+using BloonsTD5Rewritten.Screens;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Level;
+namespace BloonsTD5Rewritten.Scripts.Level;
 
 public partial class MapMaskNode : Node2D
 {

@@ -1,10 +1,10 @@
-﻿using BloonsTD5Rewritten.Godot.Screens;
-using BloonsTD5Rewritten.Godot.Scripts.Bloons;
-using BloonsTD5Rewritten.Godot.Scripts.Towers;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+﻿using BloonsTD5Rewritten.Screens;
+using BloonsTD5Rewritten.Scripts.Bloons;
+using BloonsTD5Rewritten.Scripts.Towers;
+using BloonsTD5Rewritten.Scripts.Weapons.Tasks;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Scripts.Weapons;
 
 public partial class Weapon
 {

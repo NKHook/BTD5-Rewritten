@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 [Flags]
 public enum TargetingMode

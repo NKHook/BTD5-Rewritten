@@ -1,9 +1,8 @@
-using System;
 using System.IO;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Level;
+namespace BloonsTD5Rewritten.Scripts.Level;
 
 public class MapMask
 {
@@ -74,7 +73,7 @@ public class MapMask
 
 	public Image CreateImageForMask()
 	{
-		var image = Image.Create(_width, _height, false, Image.Format.Rgbaf);
+		var image = Image.CreateEmpty(_width, _height, false, Image.Format.Rgbaf);
 		var total = 0;
 		foreach (var mask in _maskBuffer)
 		{

@@ -1,8 +1,8 @@
 ﻿using System;
-using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.Scripts.Towers;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
+namespace BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 
 public partial class StatusEffect : Node2D, ICloneable
 {

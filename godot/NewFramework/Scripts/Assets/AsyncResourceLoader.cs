@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class AsyncResourceLoader : Node
 {

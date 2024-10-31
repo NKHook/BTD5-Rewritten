@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
 public partial class FrameInfo : Node
 {
@@ -109,7 +109,7 @@ public partial class FrameInfo : Node
         return frameImage;
     }
 
-    public void AddAnimation(Assets.AnimationEntry entry)
+    public void AddAnimation(AnimationEntry entry)
     {
         _animations.Add(entry);
     }

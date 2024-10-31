@@ -1,4 +1,4 @@
-﻿namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
+﻿namespace BloonsTD5Rewritten.Scripts.Bloons;
 
 public enum BloonType
 {

@@ -2,16 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
-using BloonsTD5Rewritten.Godot.Screens;
-using BloonsTD5Rewritten.Godot.Scripts.Bloons;
-using BloonsTD5Rewritten.Godot.Scripts.Level;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.Screens;
+using BloonsTD5Rewritten.Scripts.Bloons;
+using BloonsTD5Rewritten.Scripts.Level;
+using BloonsTD5Rewritten.Scripts.Weapons;
 using Godot;
 using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public partial class BaseTower : Node2D, IManagedObject
 {

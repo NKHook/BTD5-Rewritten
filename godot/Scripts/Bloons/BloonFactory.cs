@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.Scripts.Bloons.StatusEffects;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
+using BloonsTD5Rewritten.Scripts.Weapons;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
+namespace BloonsTD5Rewritten.Scripts.Bloons;
 
 public partial class BloonFactory : BaseFactory<BloonType, BloonInfo, Bloon>
 {

@@ -1,7 +1,7 @@
 ﻿using System;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+using BloonsTD5Rewritten.Scripts.Weapons.Tasks;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons;
+namespace BloonsTD5Rewritten.Scripts.Weapons;
 
 public class WeaponInfo
 {

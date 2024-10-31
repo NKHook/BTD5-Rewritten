@@ -1,6 +1,7 @@
+using BloonsTD5Rewritten.Scripts;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens;
+namespace BloonsTD5Rewritten.Screens;
 
 public partial class DGSplashScreen : Node2D
 {

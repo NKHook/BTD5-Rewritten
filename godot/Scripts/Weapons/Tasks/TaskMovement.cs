@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Weapons.Tasks;
+namespace BloonsTD5Rewritten.Scripts.Weapons.Tasks;
 
 public class TaskMovement : ICloneable
 {

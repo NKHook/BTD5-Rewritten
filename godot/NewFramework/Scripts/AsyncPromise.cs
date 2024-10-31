@@ -1,7 +1,6 @@
 ﻿using System;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public class AsyncPromise<T> : IAsyncPromise where T : class
 {

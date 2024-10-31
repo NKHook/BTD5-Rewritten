@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using System.Text.Json;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.Screens.Components;
-using BloonsTD5Rewritten.Godot.Scripts.Towers;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.Screens.Components;
+using BloonsTD5Rewritten.Scripts;
+using BloonsTD5Rewritten.Scripts.Towers;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens;
+namespace BloonsTD5Rewritten.Screens;
 
 public partial class InGameTowerSelectionScreen : Node
 {
@@ -25,7 +25,7 @@ public partial class InGameTowerSelectionScreen : Node
 		var leftItems = leftOrder["Items"];
 
 		var selectionGrid = GetNode<GridContainer>("tower_selection_scroll/tower_selection_grid");
-		var biggest = Math.Max(leftItems.EnumerateArray().Count(), rightItems.EnumerateArray().Count());
+		var biggest = Math.Max(leftItems!.EnumerateArray().Count(), rightItems!.EnumerateArray().Count());
 		selectionGrid.CustomMinimumSize = new Vector2(selectionGrid.CustomMinimumSize.X, biggest * 125);
 
 		for (var i = 0; i < biggest; i++)
@@ -33,7 +33,7 @@ public partial class InGameTowerSelectionScreen : Node
 			var left = leftItems.ArrayLen() > i ? leftItems[i] : default;
 			var right = rightItems.ArrayLen() > i ? rightItems[i] : default;
 
-			var entry = CreateEntry(left, right);
+			var entry = CreateEntry(left!, right!);
 			selectionGrid.AddChild(entry);
 		}
 	}
@@ -66,8 +66,8 @@ public partial class InGameTowerSelectionScreen : Node
 		cell.CustomMinimumSize = Vector2.One * 120;
 		cell.Size = Vector2.One * 120;
 
-		string icon = item["Icon"];
-		string factoryName = item["FactoryName"];
+		string icon = item["Icon"]!;
+		string factoryName = item["FactoryName"]!;
 		var button = TowerSelectionButtonScene?.Instantiate<TowerSelectionButton>();
 		button!.Name = factoryName + "_button";
 		button.TowerIcon = icon!;

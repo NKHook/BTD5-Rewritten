@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using BloonsTD5Rewritten.Scripts.Weapons;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Towers;
+namespace BloonsTD5Rewritten.Scripts.Towers;
 
 public class TowerInfo
 {
@@ -23,25 +19,26 @@ public class TowerInfo
     public bool TargetIsWeaponOrigin;
     public float Duration;
     public int DestroyAfterPops;
-    public WeaponType[] DefaultWeapons;
-    public int[] SlotsToFireOnBloonEscape;
-    public int[] SlotsToFireEveryNShots;
-    public int[] SlotsToFireOnDestroyAfterPops;
+    public WeaponType[] DefaultWeapons = Array.Empty<WeaponType>();
+    public int[] SlotsToFireOnBloonEscape = Array.Empty<int>();
+    public int[] SlotsToFireEveryNShots = Array.Empty<int>();
+    public int[] SlotsToFireOnDestroyAfterPops = Array.Empty<int>();
     public int NumberOfShotsToFire;
     public bool PlayAllAnimationsOnFire;
     public bool CanSpotForTowers;
-    public bool[] ActiveWeaponSlots;
-    public Vector2[] WeaponOffsets;
-    public string FE_Avatar;
+    public bool[] ActiveWeaponSlots = Array.Empty<bool>();
+    public Vector2[] WeaponOffsets = Array.Empty<Vector2>();
+	// ReSharper disable once InconsistentNaming
+	public string FE_Avatar = string.Empty;
     public int BaseCost;
     public int RankToUnlock;
     public int PopsToUnlock;
-    public string[][] Upgrades;
-    public int[][] UpgradePrices;
-    public string[][] UpgradeIcons;
-    public string[][] UpgradeAvatars;
-    public UpgradeGateway[][] UpgradeGateway;
-    public TowerInfo[] AircraftList;
+    public string[][] Upgrades = Array.Empty<string[]>();
+    public int[][] UpgradePrices = Array.Empty<int[]>();
+    public string[][] UpgradeIcons = Array.Empty<string[]>();
+    public string[][] UpgradeAvatars = Array.Empty<string[]>();
+    public UpgradeGateway[][] UpgradeGateway = Array.Empty<UpgradeGateway[]>();
+    public TowerInfo[] AircraftList = Array.Empty<TowerInfo>();
     public bool CanBePlacedInWater;
     public bool CanBePlacedOnLand;
     public bool CanBePlacedOnPath;
@@ -55,8 +52,8 @@ public class TowerInfo
     public bool RotatesToTarget;
     public bool FireWeaponAndDestroy;
     public bool FiresWeaponsInSequence;
-    public int[][] FiringSequence;
-    public int[] PlacementFiringSequence;
+    public int[][] FiringSequence = Array.Empty<int[]>();
+    public int[] PlacementFiringSequence = Array.Empty<int>();
     public bool SkipFirstFrameWhenFiring;
     public bool UseDefaultRangeCircle;
     public int DefaultRangeSize;
@@ -66,7 +63,7 @@ public class TowerInfo
     public bool ConfirmLevel4FirstUpgrade;
     public float InitialAngle;
     public TowerUpgradeSprites? SpriteUpgradeDefinition;
-    public string DefaultSprite;
+    public string DefaultSprite = string.Empty;
     
     private readonly List<WeaponInfo?> _defaultWeapons = new();
 

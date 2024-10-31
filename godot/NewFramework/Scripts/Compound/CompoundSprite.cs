@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Compound;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Sprites;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.NewFramework.Scripts.Sprites;
 using Godot;
-using CellEntry = BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry;
 
 namespace BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 
@@ -138,10 +135,10 @@ public partial class CompoundSprite : Node2D
     {
         var infosJson = stageOptions["SpriteInfo"];
 
-        return (from info in infosJson.EnumerateArray()
+        return (from info in infosJson!.EnumerateArray()
             let sprite = info["SpriteInfo"]
             let texture = info["Texture"]
-            select TextureLoader.Instance().FindCell(sprite, texture).As<CellEntry>()
+            select TextureLoader.Instance()!.FindCell(sprite, texture).As<CellEntry>()
             into cell
             where cell != null
             select cell).ToList();
@@ -149,7 +146,7 @@ public partial class CompoundSprite : Node2D
 
     public static TimelineInterpolator LoadStageOptions(JsonWrapper stageOptions)
     {
-        var duration = stageOptions["StageLength"];
+        var duration = stageOptions["StageLength"]!;
         return new TimelineInterpolator(duration);
     }
 

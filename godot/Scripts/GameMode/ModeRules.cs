@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.GameMode;
+namespace BloonsTD5Rewritten.Scripts.GameMode;
 
 public partial class ModeRules
 {

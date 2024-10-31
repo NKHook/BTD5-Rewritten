@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+namespace BloonsTD5Rewritten.NewFramework.Scripts;
 
 public interface IAsyncPromise
 {

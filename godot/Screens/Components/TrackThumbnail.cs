@@ -1,8 +1,8 @@
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts.Assets;
+using BloonsTD5Rewritten.NewFramework.Scripts;
+using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using Godot;
 
-namespace BloonsTD5Rewritten.Godot.Screens.Components;
+namespace BloonsTD5Rewritten.Screens.Components;
 
 public partial class TrackThumbnail : Button
 {
@@ -23,7 +23,7 @@ public partial class TrackThumbnail : Button
 				if (sender is GameScreen screen) screen.MapName = TrackName;
 			};
 			
-			ScreenManager.Instance().SetScreen("GameScreen", true);
+			Scripts.ScreenManager.Instance().SetScreen("GameScreen", true);
 		};
 
 		var titleLabel = GetNode<Label>("title_plate/title_label");

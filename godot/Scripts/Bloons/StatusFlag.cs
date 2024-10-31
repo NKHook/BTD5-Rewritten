@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
+namespace BloonsTD5Rewritten.Scripts.Bloons;
 
 [Flags]
 public enum StatusFlag : ulong

@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using Godot;
+﻿using System;
+using System.Text.Json.Serialization;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.GameMode;
+namespace BloonsTD5Rewritten.Scripts.GameMode;
 
 public partial class Reward
 {
@@ -55,5 +55,5 @@ public partial class Reward
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("LockedTowers")]
-    public string[] LockedTowers { get; set; }
+    public string[] LockedTowers = Array.Empty<string>();
 }

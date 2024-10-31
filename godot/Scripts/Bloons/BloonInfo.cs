@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BloonsTD5Rewritten.Godot.NewFramework.Scripts;
-using BloonsTD5Rewritten.Godot.Scripts.Weapons;
+using BloonsTD5Rewritten.Scripts.Weapons;
 
-namespace BloonsTD5Rewritten.Godot.Scripts.Bloons;
+namespace BloonsTD5Rewritten.Scripts.Bloons;
 
 public class BloonInfo
 {
