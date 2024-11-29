@@ -5,6 +5,7 @@ using System.Linq;
 using BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 using BloonsTD5Rewritten.NewFramework.Scripts.Sprites;
 using Godot;
+using FileAccess = Godot.FileAccess;
 
 namespace BloonsTD5Rewritten.NewFramework.Scripts.Compound;
 
@@ -12,6 +13,7 @@ public partial class CompoundSprite : Node2D
 {
     [ExportCategory("Compound Sprite")]
     [Export] public string SpriteDefinitionRes = "";
+	[Export] public bool LoadDefinitionFromJet = true;
     [Export] public bool Animating = true;
 
     private bool _wasAnimating = false;
@@ -163,7 +165,7 @@ public partial class CompoundSprite : Node2D
 
         if (SpriteDefinitionRes == "")
             return;
-        var spriteDefinitionJson = JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes);
+        var spriteDefinitionJson = LoadDefinitionFromJet ? JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes) : new JsonWrapper(Json.ParseString(FileAccess.GetFileAsString(SpriteDefinitionRes)));
 
         var customVarsJson = spriteDefinitionJson["customvariables"];
         if (customVarsJson != null && customVarsJson.ValueKind != JsonType.Null)

@@ -13,6 +13,7 @@ public partial class JetFileImporter : Node
 	
 	private Node? _assetImporterConfig;
 	private ZipFile? _jetFile;
+	public ZipFile? JetFile => _jetFile;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
