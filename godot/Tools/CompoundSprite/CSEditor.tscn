@@ -70,4 +70,5 @@ layout_mode = 2
 
 [node name="Preview" type="SubViewport" parent="CanvasLayer/HSplitContainer/CenterContainer/SpriteRender"]
 handle_input_locally = false
+size = Vector2i(640, 640)
 render_target_update_mode = 4
