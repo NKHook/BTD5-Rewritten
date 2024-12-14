@@ -4,6 +4,7 @@ namespace BloonsTD5Rewritten.Tools.CompoundSprite;
 
 public partial class FileSelecter : MenuButton
 {
+	[Export] public CsEditorZone? EditorZone;
 	[Export] public LineEdit? PathEdit;
 	[Export] public CodeEdit? JsonEdit;
 	[Export] public SubViewport? PreviewViewport;
@@ -63,6 +64,7 @@ public partial class FileSelecter : MenuButton
 			sprite.LoadDefinitionFromJet = false;
 			sprite.Position = Vector2.One * 640.0f * 0.5f;
 			PreviewViewport?.AddChild(sprite);
+			EditorZone!.PreviewSprite = sprite;
 		}).CallDeferred();
 		PathEdit!.Text = path;
 		JsonEdit!.Text = FileAccess.GetFileAsString(path);

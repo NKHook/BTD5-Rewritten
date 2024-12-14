@@ -22,6 +22,7 @@ public partial class CompoundSprite : Node2D
 	private readonly SparseList<ActorState> _initialStates = new();
 	private readonly SparseList<CellEntry> _childCells = new();
 	public Dictionary<string, CustomVariable> CustomVariables = new();
+	public double PlaybackSpeed = 1.0;
 
 	public EventHandler? Loaded = null;
 	public bool FullyLoaded { get; private set; }
@@ -241,10 +242,8 @@ public partial class CompoundSprite : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() => Initialize();
 
-	public override void _PhysicsProcess(double delta)
+	public void StepTimeline(double delta)
 	{
-		base._PhysicsProcess(delta);
-
 		if (Animating)
 		{
 			_timeline?.Tick((float)delta);
@@ -270,23 +269,15 @@ public partial class CompoundSprite : Node2D
 		Loaded?.Invoke(this, null!);
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	/*public override void _Process(double delta)
+	/*public override void _PhysicsProcess(double delta)
 	{
-		if (Animating)
-		{
-			_timeline?.Tick((float)delta);
-		}
-		
-		foreach (var actor in GetActors())
-		{
-			var state = _timeline?.GetStateForUid(actor.SpriteUid) ?? _initialStates[actor.SpriteUid];
-			Debug.Assert(state is not null);
-			
-			// ReSharper disable once CompareOfFloatsByEqualityOperator
-			if (actor.Node is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
-				state?.ApplyColor(sprite);
-			state?.Apply(actor.Node);
-		}
+		base._PhysicsProcess(delta);
+		StepTimeline(delta * PlaybackSpeed);
 	}*/
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		StepTimeline(delta * PlaybackSpeed);
+	}
 }
