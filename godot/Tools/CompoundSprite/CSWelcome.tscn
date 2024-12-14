@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4nkvrpmfm6gq"]
+
+[ext_resource type="Texture2D" uid="uid://dwytstcsdc45v" path="res://Tools/CompoundSprite/ToolAddNode.svg" id="1_1qvw5"]
+[ext_resource type="Script" path="res://Tools/CompoundSprite/NewTab.cs" id="2_511nk"]
+
+[node name="Welcome" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+text = "New Tab"
+icon = ExtResource("1_1qvw5")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+script = ExtResource("2_511nk")

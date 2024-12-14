@@ -32,7 +32,7 @@ public partial class ReloadButton : Button
 			var sprite = new NewFramework.Scripts.Compound.CompoundSprite();
 			sprite.SpriteDefinitionRes = tempPath;
 			sprite.LoadDefinitionFromJet = false;
-			sprite.Position = Vector2.One * 256.0f;
+			sprite.Position = Vector2.One * 640.0f * 0.5f;
 			PreviewViewport?.AddChild(sprite);
 		}).CallDeferred();
 	}

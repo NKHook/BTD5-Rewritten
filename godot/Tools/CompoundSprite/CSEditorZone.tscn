@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://c473gwv88bal8"]
+
+[ext_resource type="Script" path="res://Tools/CompoundSprite/FileSelecter.cs" id="1_n0tx7"]
+[ext_resource type="Script" path="res://Tools/CompoundSprite/ReloadButton.cs" id="2_q043h"]
+[ext_resource type="Texture2D" uid="uid://d2cbyfg6vj2ia" path="res://Tools/CompoundSprite/GuiClose.svg" id="3_f3ci4"]
+
+[node name="EditorZone" type="HSplitContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="FileContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="PathEdit" type="LineEdit" parent="VBoxContainer/FileContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "No file selected"
+
+[node name="FileSelect" type="MenuButton" parent="VBoxContainer/FileContainer" node_paths=PackedStringArray("PathEdit", "JsonEdit", "PreviewViewport")]
+layout_mode = 2
+text = "..."
+flat = false
+item_count = 2
+popup/item_0/text = "Open from file"
+popup/item_1/text = "Open from JET"
+popup/item_1/id = 1
+script = ExtResource("1_n0tx7")
+PathEdit = NodePath("../PathEdit")
+JsonEdit = NodePath("../../JsonEditor")
+PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
+
+[node name="JsonEditor" type="CodeEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Reload" type="Button" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("JsonEdit", "PreviewViewport")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reload"
+script = ExtResource("2_q043h")
+JsonEdit = NodePath("../../JsonEditor")
+PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
+
+[node name="Close" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_f3ci4")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpriteRender" type="SubViewportContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Preview" type="SubViewport" parent="CenterContainer/SpriteRender"]
+handle_input_locally = false
+size = Vector2i(640, 640)
+render_target_update_mode = 4
