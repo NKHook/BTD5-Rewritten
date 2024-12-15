@@ -7,7 +7,7 @@ public partial class ReloadButton : Button
 	[Export] public CsEditorZone? EditorZone;
 	[Export] public SpeedAdjust? SpeedAdjust;
 	[Export] public CodeEdit? JsonEdit;
-	[Export] public SubViewport? PreviewViewport;
+	[Export] public Node2D? PreviewOwner;
 	public override void _Ready()
 	{
 		Pressed += OnPressed;
@@ -25,17 +25,17 @@ public partial class ReloadButton : Button
 		access?.StoreString(JsonEdit?.Text);
 		access?.Close();
 		GD.Print("Reloading!");
-		for (var i = 0; i < PreviewViewport?.GetChildCount(); i++)
+		for (var i = 0; i < PreviewOwner?.GetChildCount(); i++)
 		{
-			PreviewViewport.GetChild(i).QueueFree();
+			PreviewOwner.GetChild(i).QueueFree();
 		}
 		Callable.From(() =>
 		{
 			var sprite = new NewFramework.Scripts.Compound.CompoundSprite();
 			sprite.SpriteDefinitionRes = tempPath;
 			sprite.LoadDefinitionFromJet = false;
-			sprite.Position = Vector2.One * 640.0f * 0.5f;
-			PreviewViewport?.AddChild(sprite);
+			sprite.Position = Vector2.Zero; //Vector2.One * 640.0f * 0.5f;
+			PreviewOwner?.AddChild(sprite);
 			EditorZone!.PreviewSprite = sprite;
 			sprite.PlaybackSpeed = SpeedAdjust?.AdjustedSpeed ?? 1.0f;
 		}).CallDeferred();

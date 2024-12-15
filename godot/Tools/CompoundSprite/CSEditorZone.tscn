@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://c473gwv88bal8"]
+[gd_scene load_steps=9 format=3 uid="uid://c473gwv88bal8"]
 
 [ext_resource type="Script" path="res://Tools/CompoundSprite/CsEditorZone.cs" id="1_2e1j1"]
 [ext_resource type="Script" path="res://Tools/CompoundSprite/FileSelecter.cs" id="1_n0tx7"]
 [ext_resource type="Script" path="res://Tools/CompoundSprite/ReloadButton.cs" id="2_q043h"]
 [ext_resource type="Script" path="res://Tools/CompoundSprite/SpeedAdjust.cs" id="3_2a7ba"]
 [ext_resource type="Texture2D" uid="uid://d2cbyfg6vj2ia" path="res://Tools/CompoundSprite/GuiClose.svg" id="3_f3ci4"]
+[ext_resource type="Script" path="res://Tools/CompoundSprite/ZoomSlider.cs" id="6_kp16v"]
+[ext_resource type="Texture2D" uid="uid://btikhffoc65vr" path="res://Tools/CompoundSprite/CenterView.svg" id="6_modrh"]
+[ext_resource type="Script" path="res://Tools/CompoundSprite/ResetZoom.cs" id="8_avg6s"]
 
 [node name="EditorZone" type="HSplitContainer" node_paths=PackedStringArray("PreviewViewport")]
 anchors_preset = 15
@@ -32,7 +35,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "No file selected"
 
-[node name="FileSelect" type="MenuButton" parent="VBoxContainer/FileContainer" node_paths=PackedStringArray("EditorZone", "PathEdit", "JsonEdit", "PreviewViewport")]
+[node name="FileSelect" type="MenuButton" parent="VBoxContainer/FileContainer" node_paths=PackedStringArray("EditorZone", "PathEdit", "JsonEdit", "PreviewOwner")]
 layout_mode = 2
 text = "..."
 flat = false
@@ -44,7 +47,7 @@ script = ExtResource("1_n0tx7")
 EditorZone = NodePath("../../..")
 PathEdit = NodePath("../PathEdit")
 JsonEdit = NodePath("../../JsonEditor")
-PreviewViewport = NodePath("../../../MarginContainer/SpriteRender/Preview")
+PreviewOwner = NodePath("../../../MarginContainer/SpriteRender/Preview/PreviewOwner")
 
 [node name="JsonEditor" type="CodeEdit" parent="VBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
@@ -70,7 +73,7 @@ EditorZone = NodePath("../../..")
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Reload" type="Button" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("EditorZone", "SpeedAdjust", "JsonEdit", "PreviewViewport")]
+[node name="Reload" type="Button" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("EditorZone", "SpeedAdjust", "JsonEdit", "PreviewOwner")]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Reload"
@@ -78,7 +81,7 @@ script = ExtResource("2_q043h")
 EditorZone = NodePath("../../..")
 SpeedAdjust = NodePath("../../PlaySpeed/LineEdit")
 JsonEdit = NodePath("../../JsonEditor")
-PreviewViewport = NodePath("../../../MarginContainer/SpriteRender/Preview")
+PreviewOwner = NodePath("../../../MarginContainer/SpriteRender/Preview/PreviewOwner")
 
 [node name="Close" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -101,3 +104,41 @@ stretch = true
 handle_input_locally = false
 size = Vector2i(256, 256)
 render_target_update_mode = 4
+
+[node name="PreviewOwner" type="Node2D" parent="MarginContainer/SpriteRender/Preview"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MarginContainer/SpriteRender/Preview"]
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SpriteRender/Preview/CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VFlowContainer" type="VFlowContainer" parent="MarginContainer/SpriteRender/Preview/CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="ZoomSlider" type="VSlider" parent="MarginContainer/SpriteRender/Preview/CanvasLayer/MarginContainer/VFlowContainer" node_paths=PackedStringArray("PreviewCamera")]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+min_value = 0.05
+max_value = 3.0
+step = 0.01
+value = 1.2
+script = ExtResource("6_kp16v")
+PreviewCamera = NodePath("../../../../Camera2D")
+
+[node name="ResetZoom" type="TextureButton" parent="MarginContainer/SpriteRender/Preview/CanvasLayer/MarginContainer/VFlowContainer" node_paths=PackedStringArray("ZoomSlider")]
+layout_mode = 2
+texture_normal = ExtResource("6_modrh")
+texture_pressed = ExtResource("6_modrh")
+texture_hover = ExtResource("6_modrh")
+texture_disabled = ExtResource("6_modrh")
+texture_focused = ExtResource("6_modrh")
+script = ExtResource("8_avg6s")
+ZoomSlider = NodePath("../ZoomSlider")
+
+[node name="Camera2D" type="Camera2D" parent="MarginContainer/SpriteRender/Preview"]
+drag_horizontal_enabled = true

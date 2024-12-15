@@ -13,6 +13,6 @@ public partial class CsEditorZone : HSplitContainer
 		if (PreviewSprite == null)
 			return;
 		var resolution = PreviewViewport?.Size ?? Vector2.Zero;
-		PreviewSprite!.Position = resolution * 0.5f;
+		//PreviewSprite!.Position = resolution * 0.5f;
 	}
 }

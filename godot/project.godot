@@ -37,6 +37,19 @@ movie_writer/movie_file="/mnt/CA425B49425B3A01/Github/BTD5-Rewritten/godot/video
 movie_writer/disable_vsync=true
 movie_writer/fps=300
 
+[input]
+
+ZoomIn={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(220, 14),"global_position":Vector2(229, 60),"factor":1.0,"button_index":4,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+ZoomOut={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":16,"position":Vector2(176, 25),"global_position":Vector2(185, 71),"factor":1.0,"button_index":5,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+
 [physics]
 
 2d/run_on_separate_thread=true
