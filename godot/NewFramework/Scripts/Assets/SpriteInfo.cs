@@ -33,9 +33,9 @@ public partial class SpriteInfo : Node
         Load();
     }
 
-    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name) => FindCell(name, "");
+    public CellEntry? FindCell(string name) => FindCell(name, "");
 
-    public BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry? FindCell(string name, string texture)
+    public CellEntry? FindCell(string name, string texture)
     {
         foreach (var result in _children.Select(info => info.FindCell(name, texture)).Where(result => result != null))
         {
@@ -127,7 +127,7 @@ public partial class SpriteInfo : Node
                             var cellAw = attributesDict.ContainsKey("aw") ? attributesDict["aw"].AsInt32() : 0;
                             var cellAh = attributesDict.ContainsKey("ah") ? attributesDict["ah"].AsInt32() : 0;
 
-                            var theCell = new BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry(null, _texturesDirPath, Path, _firstQuality, cellName,
+                            var theCell = new CellEntry(null, _texturesDirPath, Path, _firstQuality, cellName,
                                 cellX, cellY, cellW, cellH, cellAx, cellAy, cellAw, cellAh);
                             if (currentAnimation != null)
                             {
@@ -151,8 +151,11 @@ public partial class SpriteInfo : Node
                         case "SpriteInfoXml":
                         {
                             var sheetName = attributesDict["name"].AsString();
-                            var sheetType = attributesDict["type"].AsString();
-                            Debug.Assert(Enum.TryParse(sheetType.ToUpper(), out TextureType _));
+                            if (attributesDict.ContainsKey("type"))
+                            {
+                                var sheetType = attributesDict["type"].AsString();
+                                Debug.Assert(Enum.TryParse(sheetType.ToUpper(), out TextureType _));
+                            }
                             for (var quality = _firstQuality; quality > TextureQuality.Invalid; quality--)
                             {
                                 var filePath = _texturesDirPath + "/" + quality + "/" + sheetName + ".xml";

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +67,8 @@ public partial class TextureLoader : Node
 		if (result != null)
 			return Variant.From(result);
 
+		if (texture == "error")
+			throw new Exception("Failed to find error texture...");
 		if (texture != "" && FindFrame(texture) == null)
 			return FindCell("texture_not_found", "error");
 		

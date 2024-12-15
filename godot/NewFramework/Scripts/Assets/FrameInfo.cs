@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+using FileAccess = Godot.FileAccess;
 
 namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
@@ -17,7 +18,7 @@ public partial class FrameInfo : Node
     private int _texh;
     private TextureType _type;
     private readonly List<AnimationEntry> _animations = new();
-    private readonly List<BloonsTD5Rewritten.NewFramework.Scripts.Assets.CellEntry> _cells = new();
+    private readonly List<CellEntry> _cells = new();
     private Image? _frameImage;
     private ImageTexture? _frameTexture;
     private Task<Image>? _imageTask;
@@ -43,6 +44,7 @@ public partial class FrameInfo : Node
             TextureQuality.Low => 4.0f,
             TextureQuality.Mobile => 3.0f,
             TextureQuality.Tablet => 2.0f,
+            TextureQuality.High => 1.5f,
             TextureQuality.Ultra => 1.0f,
             TextureQuality.Invalid => throw new ArgumentOutOfRangeException(),
             _ => throw new ArgumentOutOfRangeException()
@@ -66,24 +68,38 @@ public partial class FrameInfo : Node
     {
         return _frameImage ??= await LoadFrame();
     }
-    
-    private async Task<Image> LoadFrame()
+
+    private string GetFileFaultTolerant()
     {
-        var extension = _type switch
+        while (_type != TextureType.INVALID)
         {
-            TextureType.JPNG => ".jpng",
-            TextureType.JPG => ".jpg",
-            TextureType.PNG => ".png",
-            TextureType.INVALID => throw new ArgumentOutOfRangeException(),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        Image? frameImage = null;
-        while (true)
-        {
+            var extension = _type switch
+            {
+                TextureType.JPNG => ".jpng",
+                TextureType.JPG => ".jpg",
+                TextureType.PNG => ".png",
+                TextureType.INVALID => throw new ArgumentOutOfRangeException(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
             var dir = Path.GetDirectoryName(_filePath);
             var file = dir + "/" + FrameName + extension;
-            //GD.Print("Loading frame: " + file);
+            if (FileAccess.FileExists(file))
+            {
+                return file;
+            }
 
+            _type--;
+        }
+        throw new FileNotFoundException($"No texture is available for frame {FrameName} (No known types are found)");
+    }
+
+    private async Task<Image> LoadFrame()
+    {
+        Image? frameImage;
+        while (true)
+        {
+            var file = GetFileFaultTolerant();
+            //GD.Print("Loading frame: " + file);
             switch (_type)
             {
                 case TextureType.PNG:
