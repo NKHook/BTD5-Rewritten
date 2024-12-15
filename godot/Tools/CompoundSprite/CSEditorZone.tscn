@@ -6,14 +6,17 @@
 [ext_resource type="Script" path="res://Tools/CompoundSprite/SpeedAdjust.cs" id="3_2a7ba"]
 [ext_resource type="Texture2D" uid="uid://d2cbyfg6vj2ia" path="res://Tools/CompoundSprite/GuiClose.svg" id="3_f3ci4"]
 
-[node name="EditorZone" type="HSplitContainer"]
+[node name="EditorZone" type="HSplitContainer" node_paths=PackedStringArray("PreviewViewport")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1068.0
+offset_bottom = -440.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 script = ExtResource("1_2e1j1")
+PreviewViewport = NodePath("MarginContainer/SpriteRender/Preview")
 metadata/_tab_index = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -41,7 +44,7 @@ script = ExtResource("1_n0tx7")
 EditorZone = NodePath("../../..")
 PathEdit = NodePath("../PathEdit")
 JsonEdit = NodePath("../../JsonEditor")
-PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
+PreviewViewport = NodePath("../../../MarginContainer/SpriteRender/Preview")
 
 [node name="JsonEditor" type="CodeEdit" parent="VBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
@@ -75,20 +78,26 @@ script = ExtResource("2_q043h")
 EditorZone = NodePath("../../..")
 SpeedAdjust = NodePath("../../PlaySpeed/LineEdit")
 JsonEdit = NodePath("../../JsonEditor")
-PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
+PreviewViewport = NodePath("../../../MarginContainer/SpriteRender/Preview")
 
 [node name="Close" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 icon = ExtResource("3_f3ci4")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="SpriteRender" type="SubViewportContainer" parent="CenterContainer"]
+[node name="SpriteRender" type="SubViewportContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
+stretch = true
 
-[node name="Preview" type="SubViewport" parent="CenterContainer/SpriteRender"]
+[node name="Preview" type="SubViewport" parent="MarginContainer/SpriteRender"]
 handle_input_locally = false
-size = Vector2i(640, 640)
+size = Vector2i(256, 256)
 render_target_update_mode = 4
