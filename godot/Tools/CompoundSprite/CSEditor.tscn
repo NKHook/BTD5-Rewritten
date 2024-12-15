@@ -7,28 +7,43 @@
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HSplitContainer"]
+[node name="MenuBar" type="MenuBar" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="File" type="PopupMenu" parent="CanvasLayer/VBoxContainer/MenuBar"]
+title = "File"
+prefer_native_menu = true
+item_count = 1
+item_0/text = "Set game dir"
+
+[node name="Edit" type="PopupMenu" parent="CanvasLayer/VBoxContainer/MenuBar"]
+
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HSplitContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="FileContainer" type="HBoxContainer" parent="CanvasLayer/HSplitContainer/VBoxContainer"]
+[node name="FileContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/HSplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="PathEdit" type="LineEdit" parent="CanvasLayer/HSplitContainer/VBoxContainer/FileContainer"]
+[node name="PathEdit" type="LineEdit" parent="CanvasLayer/VBoxContainer/HSplitContainer/VBoxContainer/FileContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "No file selected"
 
-[node name="FileSelect" type="MenuButton" parent="CanvasLayer/HSplitContainer/VBoxContainer/FileContainer" node_paths=PackedStringArray("PathEdit", "JsonEdit", "PreviewViewport")]
+[node name="FileSelect" type="MenuButton" parent="CanvasLayer/VBoxContainer/HSplitContainer/VBoxContainer/FileContainer" node_paths=PackedStringArray("PathEdit", "JsonEdit", "PreviewViewport")]
 layout_mode = 2
 text = "..."
 flat = false
@@ -41,33 +56,25 @@ PathEdit = NodePath("../PathEdit")
 JsonEdit = NodePath("../../JsonEditor")
 PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
 
-[node name="JsonEditor" type="CodeEdit" parent="CanvasLayer/HSplitContainer/VBoxContainer"]
+[node name="JsonEditor" type="CodeEdit" parent="CanvasLayer/VBoxContainer/HSplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="FileButtons" type="HBoxContainer" parent="CanvasLayer/HSplitContainer/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Save" type="Button" parent="CanvasLayer/HSplitContainer/VBoxContainer/FileButtons"]
-layout_mode = 2
-text = "Save"
-
-[node name="Reload" type="Button" parent="CanvasLayer/HSplitContainer/VBoxContainer/FileButtons" node_paths=PackedStringArray("JsonEdit", "PreviewViewport")]
+[node name="Reload" type="Button" parent="CanvasLayer/VBoxContainer/HSplitContainer/VBoxContainer" node_paths=PackedStringArray("JsonEdit", "PreviewViewport")]
 layout_mode = 2
 text = "Reload"
 script = ExtResource("2_de1ul")
-JsonEdit = NodePath("../../JsonEditor")
-PreviewViewport = NodePath("../../../CenterContainer/SpriteRender/Preview")
+JsonEdit = NodePath("../JsonEditor")
+PreviewViewport = NodePath("../../CenterContainer/SpriteRender/Preview")
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/HSplitContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpriteRender" type="SubViewportContainer" parent="CanvasLayer/HSplitContainer/CenterContainer"]
+[node name="SpriteRender" type="SubViewportContainer" parent="CanvasLayer/VBoxContainer/HSplitContainer/CenterContainer"]
 layout_mode = 2
 
-[node name="Preview" type="SubViewport" parent="CanvasLayer/HSplitContainer/CenterContainer/SpriteRender"]
+[node name="Preview" type="SubViewport" parent="CanvasLayer/VBoxContainer/HSplitContainer/CenterContainer/SpriteRender"]
 handle_input_locally = false
 render_target_update_mode = 4

@@ -70,6 +70,20 @@ public partial class FileSelecter : MenuButton
 
 	private void OpenFromJet()
 	{
+		var assetImporterConfig = GetNode<Node>("/root/AssetImporterConfig");
 		
+		var dialog = new FileDialog();
+		dialog.Title = "Open File";
+		dialog.Access = FileDialog.AccessEnum.Filesystem;
+		dialog.CurrentDir = assetImporterConfig.Get("game_dir").AsString();
+		dialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+		dialog.Filters = new []
+		{
+			"*.*,*.*;All files",
+			"*.json;*.tower;JET files"
+		};
+		dialog.UseNativeDialog = false;
+		dialog.FileSelected += OpenSpriteFile;
+		dialog.Show();
 	}
 }
