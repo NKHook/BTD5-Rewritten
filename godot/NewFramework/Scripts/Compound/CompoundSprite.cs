@@ -257,7 +257,7 @@ public partial class CompoundSprite : Node2D
 			Debug.Assert(state is not null);
 			
 			// ReSharper disable once CompareOfFloatsByEqualityOperator
-			if (actor.Node is Sprite sprite && state?.Color != sprite.Color && state?.Alpha != sprite.Alpha)
+			if (actor.Node is Sprite sprite && (state?.Color != sprite.Color || state?.Alpha != sprite.Alpha))
 				state?.ApplyColor(sprite);
 			state?.Apply(actor.Node);
 		}
