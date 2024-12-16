@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://btikhffoc65vr" path="res://Tools/CompoundSprite/CenterView.svg" id="6_modrh"]
 [ext_resource type="Script" path="res://Tools/CompoundSprite/ResetZoom.cs" id="8_avg6s"]
 
-[node name="EditorZone" type="HSplitContainer"]
+[node name="EditorZone" type="HSplitContainer" node_paths=PackedStringArray("PreviewOwner", "PreviewViewport")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,6 +19,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 script = ExtResource("1_2e1j1")
+PreviewOwner = NodePath("MarginContainer/SpriteRender/Preview/PreviewOwner")
+PreviewViewport = NodePath("MarginContainer/SpriteRender/Preview")
 metadata/_tab_index = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -38,10 +40,8 @@ placeholder_text = "No file selected"
 layout_mode = 2
 text = "..."
 flat = false
-item_count = 2
+item_count = 1
 popup/item_0/text = "Open from file"
-popup/item_1/text = "Open from JET"
-popup/item_1/id = 1
 script = ExtResource("1_n0tx7")
 EditorZone = NodePath("../../..")
 PathEdit = NodePath("../PathEdit")

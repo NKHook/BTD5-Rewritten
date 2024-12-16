@@ -13,7 +13,6 @@ public partial class CompoundSprite : Node2D
 {
 	[ExportCategory("Compound Sprite")]
 	[Export] public string SpriteDefinitionRes = "";
-	[Export] public bool LoadDefinitionFromJet = true;
 	[Export] public bool Animating = true;
 
 	private bool _wasAnimating = false;
@@ -23,6 +22,7 @@ public partial class CompoundSprite : Node2D
 	private readonly SparseList<CellEntry> _childCells = new();
 	public Dictionary<string, CustomVariable> CustomVariables = new();
 	public double PlaybackSpeed = 1.0;
+	public IFileImporter DataSource = JetFileImporter.Instance();
 
 	public EventHandler? Loaded = null;
 	public bool FullyLoaded { get; private set; }
@@ -52,6 +52,7 @@ public partial class CompoundSprite : Node2D
 		var compoundSprite = new CompoundSprite();
 		compoundSprite.SpriteDefinitionRes = (Path.GetDirectoryName(SpriteDefinitionRes) + "/" + sprite).Replace("\\", "/");
 		compoundSprite.Animating = Animating;
+		compoundSprite.DataSource = DataSource;
 		return compoundSprite;
 	}
 
@@ -166,7 +167,8 @@ public partial class CompoundSprite : Node2D
 
 		if (SpriteDefinitionRes == "")
 			return;
-		var spriteDefinitionJson = LoadDefinitionFromJet ? JetFileImporter.Instance().GetJsonParsed(SpriteDefinitionRes) : new JsonWrapper(Json.ParseString(FileAccess.GetFileAsString(SpriteDefinitionRes)));
+		GD.Print($"Reading JSON: {DataSource.GetFileText(SpriteDefinitionRes)}");
+		var spriteDefinitionJson = DataSource.GetJsonParsed(SpriteDefinitionRes);
 
 		var customVarsJson = spriteDefinitionJson["customvariables"];
 		if (customVarsJson != null && customVarsJson.ValueKind != JsonType.Null)

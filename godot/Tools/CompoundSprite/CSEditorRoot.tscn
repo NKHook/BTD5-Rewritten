@@ -1,28 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://dst1nrpfbxly8"]
+[gd_scene load_steps=2 format=3 uid="uid://dst1nrpfbxly8"]
 
-[ext_resource type="PackedScene" uid="uid://b4nkvrpmfm6gq" path="res://Tools/CompoundSprite/CSWelcome.tscn" id="1_tstpt"]
 [ext_resource type="PackedScene" uid="uid://c473gwv88bal8" path="res://Tools/CompoundSprite/CSEditorZone.tscn" id="2_1lvw0"]
 
 [node name="CsEditor" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="TabContainer" type="TabContainer" parent="CanvasLayer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
-drag_to_rearrange_enabled = true
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="Welcome" parent="CanvasLayer/TabContainer" instance=ExtResource("1_tstpt")]
+[node name="Editor" parent="CanvasLayer/MarginContainer" instance=ExtResource("2_1lvw0")]
 layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="Editor" parent="CanvasLayer/TabContainer" instance=ExtResource("2_1lvw0")]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
-
-[editable path="CanvasLayer/TabContainer/Welcome"]

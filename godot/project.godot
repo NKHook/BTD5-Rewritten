@@ -25,6 +25,7 @@ JetFileImporter="*res://NewFramework/Scripts/Assets/JetFileImporter.cs"
 
 [display]
 
+window/dpi/allow_hidpi=false
 window/vsync/vsync_mode=0
 
 [dotnet]

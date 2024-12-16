@@ -52,20 +52,7 @@ public partial class FileSelecter : MenuButton
 
 	private void OpenSpriteFile(string path)
 	{
-		GD.Print("Opening sprite file: " + path);
-		for (var i = 0; i < PreviewOwner?.GetChildCount(); i++)
-		{
-			PreviewOwner.GetChild(i).QueueFree();
-		}
-		Callable.From(() =>
-		{
-			var sprite = new NewFramework.Scripts.Compound.CompoundSprite();
-			sprite.SpriteDefinitionRes = path;
-			sprite.LoadDefinitionFromJet = false;
-			sprite.Position = Vector2.Zero;//Vector2.One * 640.0f * 0.5f;
-			PreviewOwner?.AddChild(sprite);
-			EditorZone!.PreviewSprite = sprite;
-		}).CallDeferred();
+		EditorZone?.OpenSpriteFile(path);
 		PathEdit!.Text = path;
 		JsonEdit!.Text = FileAccess.GetFileAsString(path);
 	}

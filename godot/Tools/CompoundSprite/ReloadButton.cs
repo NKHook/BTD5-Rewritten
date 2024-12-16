@@ -25,19 +25,6 @@ public partial class ReloadButton : Button
 		access?.StoreString(JsonEdit?.Text);
 		access?.Close();
 		GD.Print("Reloading!");
-		for (var i = 0; i < PreviewOwner?.GetChildCount(); i++)
-		{
-			PreviewOwner.GetChild(i).QueueFree();
-		}
-		Callable.From(() =>
-		{
-			var sprite = new NewFramework.Scripts.Compound.CompoundSprite();
-			sprite.SpriteDefinitionRes = tempPath;
-			sprite.LoadDefinitionFromJet = false;
-			sprite.Position = Vector2.Zero; //Vector2.One * 640.0f * 0.5f;
-			PreviewOwner?.AddChild(sprite);
-			EditorZone!.PreviewSprite = sprite;
-			sprite.PlaybackSpeed = SpeedAdjust?.AdjustedSpeed ?? 1.0f;
-		}).CallDeferred();
+		EditorZone?.OpenSpriteFile(tempPath);
 	}
 }
