@@ -6,7 +6,7 @@ using Ionic.Zip;
 
 namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 
-public partial class JetFileImporter : Node
+public partial class JetFileImporter : Node, IFileImporter
 {
 	private static JetFileImporter? _instance;
 	public static JetFileImporter Instance() => _instance!;
