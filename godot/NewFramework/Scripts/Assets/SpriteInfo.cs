@@ -11,11 +11,14 @@ namespace BloonsTD5Rewritten.NewFramework.Scripts.Assets;
 public partial class SpriteInfo : Node
 {
     private string _name;
+	public string SheetName => _name;
     private SpriteInfo? _parent = null;
     private readonly string _texturesDirPath;
     private readonly TextureQuality _firstQuality;
     private readonly List<SpriteInfo> _children = new();
+	public List<SpriteInfo> Children => _children;
     private readonly List<FrameInfo> _frames = new();
+	public List<FrameInfo> Frames => _frames;
 
     public readonly string Path;
 

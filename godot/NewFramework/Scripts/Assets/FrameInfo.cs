@@ -18,7 +18,9 @@ public partial class FrameInfo : Node
     private int _texh;
     private TextureType _type;
     private readonly List<AnimationEntry> _animations = new();
+	public List<AnimationEntry> Animations => _animations;
     private readonly List<CellEntry> _cells = new();
+	public List<CellEntry> Cells => _cells;
     private Image? _frameImage;
     private ImageTexture? _frameTexture;
     private Task<Image>? _imageTask;

@@ -1,21 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://dst1nrpfbxly8"]
+[gd_scene load_steps=3 format=3 uid="uid://dst1nrpfbxly8"]
 
 [ext_resource type="PackedScene" uid="uid://c473gwv88bal8" path="res://Tools/CompoundSprite/CSEditorZone.tscn" id="2_1lvw0"]
+[ext_resource type="PackedScene" uid="uid://cynpwsaao76y3" path="res://Tools/CompoundSprite/SpriteExplorer.tscn" id="2_arc8o"]
 
 [node name="CsEditor" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+current_tab = 0
+
+[node name="Editor" type="MarginContainer" parent="CanvasLayer/TabContainer"]
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
+metadata/_tab_index = 0
 
-[node name="Editor" parent="CanvasLayer/MarginContainer" instance=ExtResource("2_1lvw0")]
+[node name="Editor" parent="CanvasLayer/TabContainer/Editor" instance=ExtResource("2_1lvw0")]
+layout_mode = 2
+
+[node name="Explorer" type="MarginContainer" parent="CanvasLayer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+metadata/_tab_index = 1
+
+[node name="SpriteExplorer" parent="CanvasLayer/TabContainer/Explorer" instance=ExtResource("2_arc8o")]
 layout_mode = 2

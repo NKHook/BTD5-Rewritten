@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://cynpwsaao76y3"]
+
+[ext_resource type="Texture2D" uid="uid://bqkkkhraxf2hg" path="res://Tools/CompoundSprite/Search.svg" id="1_w5pkv"]
+[ext_resource type="Script" path="res://Tools/CompoundSprite/SpritesTree.cs" id="2_l0om7"]
+
+[node name="SpriteExplorer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search..."
+right_icon = ExtResource("1_w5pkv")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SplitContainer" type="HSplitContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SpritesTree" type="Tree" parent="ScrollContainer/SplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_l0om7")
+
+[node name="SpritePreview" type="TextureRect" parent="ScrollContainer/SplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

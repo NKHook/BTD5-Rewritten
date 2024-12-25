@@ -17,6 +17,7 @@ public partial class TextureLoader : Node
 	private Node? _assetImporterConfig;
 
 	private List<SpriteInfo>? _spritesRoot;
+	public List<SpriteInfo>? SpritesRoot => _spritesRoot;
 	private readonly Dictionary<string, Task<ImageTexture>> _thumbLoadTasks = new();
 	
 	// Called when the node enters the scene tree for the first time.
