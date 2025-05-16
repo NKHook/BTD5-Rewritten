@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c355drarkwqru"]
 
-[ext_resource type="Script" path="res://Screens/GameHudScreen.cs" id="1_0ewa7"]
+[ext_resource type="Script" uid="uid://jkdme4n2b0tu" path="res://Screens/GameHudScreen.cs" id="1_0ewa7"]
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="1_m5b0h"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="2_4hhv2"]
 

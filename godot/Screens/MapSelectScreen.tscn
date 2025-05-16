@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://boycfyf2ikyx1"]
 
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://NewFramework/CompoundSprite.tscn" id="1_7hok7"]
-[ext_resource type="Script" path="res://Screens/MapSelectScreen.cs" id="1_f775n"]
+[ext_resource type="Script" uid="uid://d26xjm76rqpu6" path="res://Screens/MapSelectScreen.cs" id="1_f775n"]
 [ext_resource type="PackedScene" uid="uid://dek058dsi6sap" path="res://Screens/Components/MapSelectCarousel.tscn" id="3_mn46p"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="4_1qaxe"]
 

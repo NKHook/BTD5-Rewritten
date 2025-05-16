@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dek058dsi6sap"]
 
-[ext_resource type="Script" path="res://Screens/Components/MapSelectCarousel.cs" id="1_a4bv6"]
+[ext_resource type="Script" uid="uid://6o2f72ybvrls" path="res://Screens/Components/MapSelectCarousel.cs" id="1_a4bv6"]
 
 [node name="MapSelectCarousel" type="Node2D"]
 script = ExtResource("1_a4bv6")

@@ -101,7 +101,7 @@ public partial class FrameInfo : Node
         while (true)
         {
             var file = GetFileFaultTolerant();
-            //GD.Print("Loading frame: " + file);
+            GD.Print("Loading frame: " + file);
             switch (_type)
             {
                 case TextureType.PNG:

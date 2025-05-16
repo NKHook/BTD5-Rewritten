@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://chymuxsvrvl3f"]
 
-[ext_resource type="Script" path="res://Screens/DGSplashScreen.cs" id="1_k56nm"]
-[ext_resource type="Script" path="res://NewFramework/Scripts/Compound/CompoundSprite.cs" id="2_qpsb0"]
+[ext_resource type="Script" uid="uid://dpwagxpxlwvl4" path="res://Screens/DGSplashScreen.cs" id="1_k56nm"]
+[ext_resource type="Script" uid="uid://c8rqprqfoa1rg" path="res://NewFramework/Scripts/Compound/CompoundSprite.cs" id="2_qpsb0"]
 
 [node name="DgSplashScreen" type="Node2D"]
 script = ExtResource("1_k56nm")

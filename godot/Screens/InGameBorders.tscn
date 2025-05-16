@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bas1dl0hire2i"]
 
-[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://godot/NewFramework/Sprite.tscn" id="1_4heoq"]
+[ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="1_4heoq"]
 
 [node name="InGameBorders" type="CanvasLayer"]
 

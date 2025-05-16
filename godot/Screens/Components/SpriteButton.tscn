@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjr6s3y6q20p8"]
 
-[ext_resource type="Script" path="res://Screens/Components/SpriteButton.cs" id="1_f716q"]
+[ext_resource type="Script" uid="uid://gjtnp6c6c3fr" path="res://Screens/Components/SpriteButton.cs" id="1_f716q"]
 
 [node name="SpriteButton" type="Button"]
 flat = true

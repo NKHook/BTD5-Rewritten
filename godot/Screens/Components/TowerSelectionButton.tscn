@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://i32iqe44ovgj"]
 
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="1_xcy1u"]
-[ext_resource type="Script" path="res://Screens/Components/TowerSelectionButton.cs" id="2_muojh"]
+[ext_resource type="Script" uid="uid://hjl1xtd3dxs" path="res://Screens/Components/TowerSelectionButton.cs" id="2_muojh"]
 
 [node name="TowerSelectionButton" instance=ExtResource("1_xcy1u")]
 offset_right = 113.0

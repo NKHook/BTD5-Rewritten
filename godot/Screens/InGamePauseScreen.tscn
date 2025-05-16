@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://33ylsuxxqaw0"]
 
 [ext_resource type="PackedScene" uid="uid://cc3ei4bes1nnk" path="res://Screens/PopupScreenBase.tscn" id="1_p4v6q"]
-[ext_resource type="Script" path="res://Screens/InGamePauseScreen.cs" id="1_twp3k"]
+[ext_resource type="Script" uid="uid://ddpyjiiwqtqfr" path="res://Screens/InGamePauseScreen.cs" id="1_twp3k"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="3_12aek"]
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="4_ty4gr"]
 

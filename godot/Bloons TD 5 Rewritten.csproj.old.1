@@ -1,0 +1,19 @@
+<Project Sdk="Godot.NET.Sdk/4.3.0">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>BloonsTD5Rewritten</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Godot\Scripts\Loading\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Godot\Scripts\Loading\**" />
+  </ItemGroup>
+</Project>

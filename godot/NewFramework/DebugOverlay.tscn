@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://b2c7lcjokten3"]
 
-[ext_resource type="Script" path="res://Scripts/Debug/fps_display.gd" id="1_pl1y1"]
-[ext_resource type="Script" path="res://Scripts/Debug/node_count_display.gd" id="2_3q0m4"]
-[ext_resource type="Script" path="res://Scripts/Debug/frame_time_display.gd" id="3_qd5kh"]
-[ext_resource type="Script" path="res://Scripts/Debug/debug_label.gd" id="4_xea6t"]
+[ext_resource type="Script" uid="uid://3vn6sa4hoqtr" path="res://Scripts/Debug/fps_display.gd" id="1_pl1y1"]
+[ext_resource type="Script" uid="uid://b075q0lvl8hsk" path="res://Scripts/Debug/node_count_display.gd" id="2_3q0m4"]
+[ext_resource type="Script" uid="uid://bxabj3aay20bs" path="res://Scripts/Debug/frame_time_display.gd" id="3_qd5kh"]
+[ext_resource type="Script" uid="uid://c3bpg8sqyn0yh" path="res://Scripts/Debug/debug_label.gd" id="4_xea6t"]
 
 [node name="DebugOverlay" type="Node2D"]
 

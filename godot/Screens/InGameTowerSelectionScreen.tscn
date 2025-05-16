@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c20j2e72kjj08"]
 
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="1_khenm"]
-[ext_resource type="Script" path="res://Screens/InGameTowerSelectionScreen.cs" id="1_lfrst"]
+[ext_resource type="Script" uid="uid://dpl0dpbftx33l" path="res://Screens/InGameTowerSelectionScreen.cs" id="1_lfrst"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="2_cbegi"]
 [ext_resource type="PackedScene" uid="uid://i32iqe44ovgj" path="res://Screens/Components/TowerSelectionButton.tscn" id="2_mmht6"]
 [ext_resource type="PackedScene" uid="uid://c01mpys52ok27" path="res://Screens/Components/TowerSelectionEntry.tscn" id="3_777p5"]

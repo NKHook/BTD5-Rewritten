@@ -1,16 +1,16 @@
 [gd_scene load_steps=13 format=3 uid="uid://dlxno7msjbnv7"]
 
-[ext_resource type="Script" path="res://Screens/GameScreen.cs" id="1_vs2gu"]
+[ext_resource type="Script" uid="uid://bp8kd68lhuo51" path="res://Screens/GameScreen.cs" id="1_vs2gu"]
 [ext_resource type="PackedScene" uid="uid://bhfpsgj1w4jo6" path="res://NewFramework/CompoundSprite.tscn" id="2_qs5w1"]
 [ext_resource type="PackedScene" uid="uid://dyhcmtnm3c7js" path="res://Scripts/Towers/TowerManager.tscn" id="3_1p5tl"]
 [ext_resource type="PackedScene" uid="uid://c355drarkwqru" path="res://Screens/GameHudScreen.tscn" id="3_nafbs"]
-[ext_resource type="Script" path="res://Scripts/Level/MapMaskNode.cs" id="3_tt2m0"]
-[ext_resource type="Script" path="res://Scripts/Level/MapPath.cs" id="4_3h4cp"]
-[ext_resource type="Script" path="res://Scripts/Debug/debug_camera.gd" id="4_o2i7f"]
+[ext_resource type="Script" uid="uid://bnyh5nubujald" path="res://Scripts/Level/MapMaskNode.cs" id="3_tt2m0"]
+[ext_resource type="Script" uid="uid://ccsxxvkmd76kb" path="res://Scripts/Level/MapPath.cs" id="4_3h4cp"]
+[ext_resource type="Script" uid="uid://cjdb44k3mr76r" path="res://Scripts/Debug/debug_camera.gd" id="4_o2i7f"]
 [ext_resource type="PackedScene" uid="uid://bas1dl0hire2i" path="res://Screens/InGameBorders.tscn" id="4_sbag4"]
 [ext_resource type="PackedScene" uid="uid://c20j2e72kjj08" path="res://Screens/InGameTowerSelectionScreen.tscn" id="5_83km7"]
-[ext_resource type="Script" path="res://Scripts/Bloons/BloonManager.cs" id="6_cg6qe"]
-[ext_resource type="Script" path="res://Scripts/Weapons/TaskObjectManager.cs" id="7_6cv72"]
+[ext_resource type="Script" uid="uid://ctoubexa4w1hq" path="res://Scripts/Bloons/BloonManager.cs" id="6_cg6qe"]
+[ext_resource type="Script" uid="uid://d0mu45wk708ec" path="res://Scripts/Weapons/TaskObjectManager.cs" id="7_6cv72"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t81tj"]
 size = Vector2(1792, 1280)

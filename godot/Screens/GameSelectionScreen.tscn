@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://l1ucj3ea32sg"]
 
-[ext_resource type="Script" path="res://Screens/GameSelectionScreen.cs" id="2_6t5rx"]
+[ext_resource type="Script" uid="uid://5br64q6ubeh5" path="res://Screens/GameSelectionScreen.cs" id="2_6t5rx"]
 [ext_resource type="PackedScene" uid="uid://cc3ei4bes1nnk" path="res://Screens/PopupScreenBase.tscn" id="2_px5bc"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="3_liev7"]
 [ext_resource type="PackedScene" uid="uid://g5lef6l43ast" path="res://NewFramework/Sprite.tscn" id="4_xn6e6"]
-[ext_resource type="Script" path="res://NewFramework/Scripts/text_object.gd" id="5_qavjm"]
+[ext_resource type="Script" uid="uid://b1l2jei5jbos1" path="res://NewFramework/Scripts/text_object.gd" id="5_qavjm"]
 
 [node name="GameSelectionScreen" instance=ExtResource("2_px5bc")]
 script = ExtResource("2_6t5rx")

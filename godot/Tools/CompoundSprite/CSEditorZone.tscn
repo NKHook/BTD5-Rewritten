@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://c473gwv88bal8"]
 
-[ext_resource type="Script" path="res://Tools/CompoundSprite/CsEditorZone.cs" id="1_2e1j1"]
-[ext_resource type="Script" path="res://Tools/CompoundSprite/FileSelecter.cs" id="1_n0tx7"]
-[ext_resource type="Script" path="res://Tools/CompoundSprite/ReloadButton.cs" id="2_q043h"]
-[ext_resource type="Script" path="res://Tools/CompoundSprite/SpeedAdjust.cs" id="3_2a7ba"]
+[ext_resource type="Script" uid="uid://bhp6ohb48cavt" path="res://Tools/CompoundSprite/CsEditorZone.cs" id="1_2e1j1"]
+[ext_resource type="Script" uid="uid://bmy7bfm5k6fu2" path="res://Tools/CompoundSprite/FileSelecter.cs" id="1_n0tx7"]
+[ext_resource type="Script" uid="uid://du54widpl08r" path="res://Tools/CompoundSprite/ReloadButton.cs" id="2_q043h"]
+[ext_resource type="Script" uid="uid://bx806wrxe0ly4" path="res://Tools/CompoundSprite/SpeedAdjust.cs" id="3_2a7ba"]
 [ext_resource type="Texture2D" uid="uid://d2cbyfg6vj2ia" path="res://Tools/CompoundSprite/GuiClose.svg" id="3_f3ci4"]
-[ext_resource type="Script" path="res://Tools/CompoundSprite/ZoomSlider.cs" id="6_kp16v"]
+[ext_resource type="Script" uid="uid://d2a6r4xydq0l2" path="res://Tools/CompoundSprite/ZoomSlider.cs" id="6_kp16v"]
 [ext_resource type="Texture2D" uid="uid://btikhffoc65vr" path="res://Tools/CompoundSprite/CenterView.svg" id="6_modrh"]
-[ext_resource type="Script" path="res://Tools/CompoundSprite/ResetZoom.cs" id="8_avg6s"]
+[ext_resource type="Script" uid="uid://8uvcobg4mfkr" path="res://Tools/CompoundSprite/ResetZoom.cs" id="8_avg6s"]
 
 [node name="EditorZone" type="HSplitContainer" node_paths=PackedStringArray("PreviewOwner", "PreviewViewport", "ReloadButton")]
 anchors_preset = 15
@@ -43,6 +43,7 @@ text = "..."
 flat = false
 item_count = 1
 popup/item_0/text = "Open from file"
+popup/item_0/id = 0
 script = ExtResource("1_n0tx7")
 EditorZone = NodePath("../../..")
 PathEdit = NodePath("../PathEdit")

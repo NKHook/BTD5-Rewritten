@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhfpsgj1w4jo6"]
 
-[ext_resource type="Script" path="res://NewFramework/Scripts/Compound/CompoundSprite.cs" id="1_jo1vc"]
+[ext_resource type="Script" uid="uid://c8rqprqfoa1rg" path="res://NewFramework/Scripts/Compound/CompoundSprite.cs" id="1_jo1vc"]
 
 [node name="compound_sprite" type="Node2D"]
 script = ExtResource("1_jo1vc")

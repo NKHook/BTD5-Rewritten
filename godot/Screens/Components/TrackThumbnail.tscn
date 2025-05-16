@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c6cwhgpg8qqvf"]
 
-[ext_resource type="Script" path="res://Screens/Components/TrackThumbnail.cs" id="1_o1fbd"]
+[ext_resource type="Script" uid="uid://c30kf3mn5p6lm" path="res://Screens/Components/TrackThumbnail.cs" id="1_o1fbd"]
 
 [node name="TrackThumbnail" type="Sprite2D"]
 script = ExtResource("1_o1fbd")

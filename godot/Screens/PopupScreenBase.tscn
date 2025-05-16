@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cc3ei4bes1nnk"]
 
-[ext_resource type="Script" path="res://Screens/PopupScreenBase.cs" id="1_rfico"]
+[ext_resource type="Script" uid="uid://brpohf4g4io4c" path="res://Screens/PopupScreenBase.cs" id="1_rfico"]
 [ext_resource type="PackedScene" uid="uid://bjr6s3y6q20p8" path="res://Screens/Components/SpriteButton.tscn" id="2_0dd5o"]
 
 [node name="PopupScreenBase" type="Node2D"]
