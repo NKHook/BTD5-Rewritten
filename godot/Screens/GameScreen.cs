@@ -8,7 +8,7 @@ public partial class GameScreen : BloonsBaseScreen
 {
 	public static EventHandler? Fabricate;
 
-	public string? MapName = "";
+	public string MapName = "";
 	
 	public override void _Ready()
 	{

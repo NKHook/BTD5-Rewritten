@@ -167,7 +167,7 @@ public partial class CompoundSprite : Node2D
 
 		if (SpriteDefinitionRes == "")
 			return;
-		GD.Print($"Reading JSON: {DataSource.GetFileText(SpriteDefinitionRes)}");
+		//GD.Print($"Reading JSON: {DataSource.GetFileText(SpriteDefinitionRes)}");
 		var spriteDefinitionJson = DataSource.GetJsonParsed(SpriteDefinitionRes);
 
 		var customVarsJson = spriteDefinitionJson["customvariables"];
