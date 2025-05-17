@@ -133,6 +133,7 @@ public partial class ProjectileTask : MoveableTask
                     _persistsLeft--;
                     break;
                 case CollisionType.None:
+                    Collided(bloon);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

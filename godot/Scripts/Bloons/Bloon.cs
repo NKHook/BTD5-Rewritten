@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using BloonsTD5Rewritten.NewFramework.Scripts;
 using BloonsTD5Rewritten.Screens;
+using BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 using BloonsTD5Rewritten.Scripts.Level;
 using Godot;
 using CompoundSprite = BloonsTD5Rewritten.NewFramework.Scripts.Compound.CompoundSprite;
@@ -23,9 +25,9 @@ public partial class Bloon : Node2D, IManagedObject
         }
     }
 
-    public float Speed = 1.0f;
     private int _health = 1;
     private StatusFlag _status = StatusFlag.None;
+    private Dictionary<StatusFlag, StatusEffect> _statusEffects = new();
 
     public EventHandler? BloonReady;
     
@@ -34,9 +36,24 @@ public partial class Bloon : Node2D, IManagedObject
         _definition = definition;
     }
 
-    public void SetStatusFlag(StatusFlag flag) => _status |= flag;
-    public void RemoveStatusFlag(StatusFlag flag) => _status &= ~flag;
-    public bool HasStatusFlag(StatusFlag flag) => _status.HasFlag(flag);
+    private void SetStatusFlag(StatusFlag flag) => _status |= flag;
+    private void RemoveStatusFlag(StatusFlag flag) => _status &= ~flag;
+    private bool HasStatusFlag(StatusFlag flag) => _status.HasFlag(flag);
+
+    public void AddStatusEffect(StatusEffect effect)
+    {
+        var effectType = effect.Type;
+        if (HasStatusFlag(effectType)) return;
+        
+        _statusEffects.Add(effectType, effect);
+        SetStatusFlag(effectType);
+    }
+
+    public void RemoveStatusEffect(StatusFlag effect)
+    {
+        _statusEffects.Remove(effect);
+        RemoveStatusFlag(effect);
+    }
     
     private void DisableSpriteProcess(CompoundSprite sprite)
     {
@@ -84,8 +101,6 @@ public partial class Bloon : Node2D, IManagedObject
         PathFollower.Rotates = _definition.RotateToPathDirection;
         
         bloonPath?.AddChild(PathFollower);
-
-        Speed = _definition.BaseSpeed * _definition.SpeedMultiplier;
         
         BloonReady?.Invoke(this, null!);
     }
@@ -142,7 +157,7 @@ public partial class Bloon : Node2D, IManagedObject
         if (HasStatusFlag(StatusFlag.BloonChipperSuck) || HasStatusFlag(StatusFlag.ShredBloon))
             return;
         
-        var progressThisFrame = 3.0f * Speed * (float)delta;
+        var progressThisFrame = 3.0f * GetBloonSpeed() * (float)delta;
         PathFollower!.Progress += progressThisFrame;
 
         if (PathFollower!.ProgressRatio < 1.0f) return;
@@ -156,4 +171,6 @@ public partial class Bloon : Node2D, IManagedObject
     }
 
     public bool Collided(Node2D obj) => obj.Position.DistanceTo(Position) < _definition.Radius * 2.5f;
+    
+    public float GetBloonSpeed() => _definition.BaseSpeed * _definition.SpeedMultiplier;
 }

@@ -7,7 +7,7 @@ namespace BloonsTD5Rewritten.Scripts.Bloons.StatusEffects;
 public partial class StatusEffect : Node2D, ICloneable
 {
     public StatusFlag Type;
-    public int Duration;
+    public float Duration;
 
     public Bloon? Who;
     public BaseTower? Tower;
@@ -16,6 +16,7 @@ public partial class StatusEffect : Node2D, ICloneable
     {
         Who = who;
         Tower = tower;
+        who?.AddStatusEffect(this);
     }
 
     public virtual object Clone()
@@ -29,4 +30,15 @@ public partial class StatusEffect : Node2D, ICloneable
     }
 
     public virtual float GetBloonSpeed(float speed) => speed;
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        
+        Duration -= (float)delta;
+        if (Duration <= 0)
+        {
+            QueueFree();
+        }
+    }
 }

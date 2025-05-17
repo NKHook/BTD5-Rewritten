@@ -9,6 +9,6 @@ public partial class RemoveStatusEffectTask : WeaponTask
     public StatusFlag Status;
     public override void Execute(Vector2 where, float angle, Bloon? who, BaseTower? user)
     {
-        who?.RemoveStatusFlag(Status);
+        who?.RemoveStatusEffect(Status);
     }
 }

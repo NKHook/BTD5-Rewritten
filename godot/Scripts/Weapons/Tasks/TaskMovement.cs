@@ -75,7 +75,15 @@ public class TaskMovement : ICloneable
                 if (StartOnTarget && _t <= 0.0f)
                 {
                     task.Position = task.Target?.Position ?? Vector2.Zero;
-                    _distance = task.Position.DistanceTo(task.Sender?.Position ?? Vector2.Zero);
+                    var newDistance = task.Position.DistanceTo(task.Sender?.Position ?? Vector2.Zero);
+                    // We've exceeded returning to sender, which means it must have been returned at some point
+                    // We'll use this as our condition to know if the bloon is 'returned'
+                    if (newDistance > _distance)
+                    {
+                        task.Terminate();
+                        return;
+                    }
+                    _distance = newDistance;
                     _moveFactor = 1.0f / _distance;
                 }
                 if (task.Target != null)
